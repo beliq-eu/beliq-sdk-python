@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "data": {
+    "format": "cii",
+    "profileDetected": "xrechnung",
+    "invoice": {
+      "number": "IT-2026-001",
+      "issueDate": "2026-01-15",
+      "currencyCode": "EUR"
+    }
+  }
+}

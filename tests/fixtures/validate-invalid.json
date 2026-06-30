@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "data": {
+    "valid": false,
+    "format": "cii",
+    "profileDetected": "xrechnung",
+    "schematronVersion": "1.3.16",
+    "errors": [
+      {
+        "ruleId": "BR-DE-15",
+        "severity": "error",
+        "location": "/rsm:CrossIndustryInvoice",
+        "message": "Buyer reference (BT-10) is missing."
+      }
+    ],
+    "warnings": [
+      {
+        "ruleId": "BR-CL-25",
+        "severity": "warning",
+        "message": "Country code should follow ISO 3166-1."
+      }
+    ]
+  }
+}
