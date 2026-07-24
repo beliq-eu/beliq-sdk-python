@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import json
 from types import TracebackType
 from typing import Any
@@ -27,8 +28,12 @@ from .types import (
     GenerateResult,
     Invoice,
     ParseResult,
+    RulesetArtifact,
     ValidationResult,
 )
+
+# blq_test_ marks a sandbox key; the server derives livemode from this exact prefix.
+TEST_KEY_PREFIX = "blq_test_"
 
 
 def _request_kwargs(base_url: str, api_key: str, auth: str, req: BuiltRequest) -> dict[str, Any]:
@@ -36,6 +41,8 @@ def _request_kwargs(base_url: str, api_key: str, auth: str, req: BuiltRequest) -
     kwargs: dict[str, Any] = {"method": req.method, "url": f"{base_url}{req.path}", "headers": headers}
     if req.query:
         kwargs["params"] = req.query
+    if req.accept:
+        headers["Accept"] = req.accept
     if req.json_body is not None:
         kwargs["json"] = req.json_body
     elif req.raw_body is not None:
@@ -65,11 +72,38 @@ def _data_from_json(resp: httpx.Response) -> dict[str, Any]:
     return data
 
 
+def _livemode_header(headers: httpx.Headers) -> bool | None:
+    """Read the authoritative per-response mode from x-beliq-livemode."""
+    raw = headers.get("x-beliq-livemode")
+    if raw == "true":
+        return True
+    if raw == "false":
+        return False
+    return None
+
+
+def _ruleset_artifacts(headers: httpx.Headers) -> list[RulesetArtifact] | None:
+    """The x-ruleset-artifacts header is a JSON array of {key, version, fileSha256}."""
+    raw = headers.get("x-ruleset-artifacts")
+    if not raw:
+        return None
+    try:
+        parsed = json.loads(raw)
+    except ValueError:
+        return None
+    if not isinstance(parsed, list):
+        return None
+    return [RulesetArtifact.model_validate(item) for item in parsed]
+
+
 def _generate_meta(headers: httpx.Headers) -> GenerateMeta:
     return GenerateMeta(
         schematron_version=headers.get("x-schematron-version"),
         pdf_kind=headers.get("x-pdf-kind"),
         output_envelope=headers.get("x-output-envelope"),
+        ruleset_sha256=headers.get("x-ruleset-sha256"),
+        ruleset_artifacts=_ruleset_artifacts(headers),
+        livemode=_livemode_header(headers),
     )
 
 
@@ -91,18 +125,38 @@ def _convert_meta(headers: httpx.Headers) -> ConvertMeta:
         lost_elements_count=int(count) if count is not None else None,
         lost_elements=lost_elements,
         conversion_tools=headers.get("x-conversion-tools"),
+        livemode=_livemode_header(headers),
     )
 
 
-def _generate_result(resp: httpx.Response) -> GenerateResult:
+def _generate_result(resp: httpx.Response, *, sealed: bool) -> GenerateResult:
     if resp.status_code >= 400:
         raise error_from_response(resp.status_code, resp.content)
+    meta = _generate_meta(resp.headers)
+    if sealed:
+        env = parse_envelope(resp.content)
+        if env is not None and env.get("success") is False:
+            raise error_from_response(resp.status_code, resp.content)
+        data = env.get("data") if env is not None else None
+        if not isinstance(data, dict) or data.get("output") is None:
+            raise BeliqApiError("beliq: seal response was not a JSON envelope", status=resp.status_code)
+        content = base64.b64decode(data["output"])
+        ctype = data.get("contentType") or "application/octet-stream"
+        raw_validation = data.get("validationResult")
+        return GenerateResult(
+            content_type=ctype,
+            content=content,
+            xml=content.decode("utf-8") if "xml" in ctype else None,
+            sha256=data.get("sha256"),
+            validation_result=ValidationResult.model_validate(raw_validation) if raw_validation is not None else None,
+            meta=meta,
+        )
     ctype = resp.headers.get("content-type", "application/octet-stream")
     return GenerateResult(
         content_type=ctype,
         content=resp.content,
         xml=resp.content.decode("utf-8") if "xml" in ctype else None,
-        meta=_generate_meta(resp.headers),
+        meta=meta,
     )
 
 
@@ -131,6 +185,10 @@ class Beliq:
         if not api_key:
             raise ValueError("beliq: api_key is required")
         self._api_key = api_key
+        # True for a live key, False for a blq_test_ sandbox key, derived from the
+        # prefix (the same rule the server applies). Available before any request;
+        # the per-response x-beliq-livemode header is on generate/convert meta.
+        self.livemode = not api_key.startswith(TEST_KEY_PREFIX)
         self._base_url = base_url.rstrip("/")
         self._auth = auth
         self._client = client or httpx.Client(timeout=timeout)
@@ -153,6 +211,7 @@ class Beliq:
         verify: bool | None = None,
         template: str | None = None,
         pdf_template_id: str | None = None,
+        seal: bool = False,
         advanced: dict[str, Any] | None = None,
     ) -> GenerateResult:
         req = build_generate(
@@ -164,9 +223,10 @@ class Beliq:
             verify=verify,
             template=template,
             pdf_template_id=pdf_template_id,
+            sealed=seal,
             advanced=advanced,
         )
-        return _generate_result(self._send(req))
+        return _generate_result(self._send(req), sealed=seal)
 
     def validate(
         self,
@@ -247,6 +307,10 @@ class AsyncBeliq:
         if not api_key:
             raise ValueError("beliq: api_key is required")
         self._api_key = api_key
+        # True for a live key, False for a blq_test_ sandbox key, derived from the
+        # prefix (the same rule the server applies). Available before any request;
+        # the per-response x-beliq-livemode header is on generate/convert meta.
+        self.livemode = not api_key.startswith(TEST_KEY_PREFIX)
         self._base_url = base_url.rstrip("/")
         self._auth = auth
         self._client = client or httpx.AsyncClient(timeout=timeout)
@@ -271,6 +335,7 @@ class AsyncBeliq:
         verify: bool | None = None,
         template: str | None = None,
         pdf_template_id: str | None = None,
+        seal: bool = False,
         advanced: dict[str, Any] | None = None,
     ) -> GenerateResult:
         req = build_generate(
@@ -282,9 +347,10 @@ class AsyncBeliq:
             verify=verify,
             template=template,
             pdf_template_id=pdf_template_id,
+            sealed=seal,
             advanced=advanced,
         )
-        return _generate_result(await self._send(req))
+        return _generate_result(await self._send(req), sealed=seal)
 
     async def validate(
         self,

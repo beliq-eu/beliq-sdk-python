@@ -28,6 +28,9 @@ class BuiltRequest:
     json_body: dict[str, Any] | None = None
     raw_body: bytes | None = None
     content_type: str | None = None
+    # Accept header; set when the caller wants a JSON envelope from an
+    # otherwise-binary operation (the generate seal).
+    accept: str | None = None
 
 
 def _is_facturx_family(value: str | None) -> bool:
@@ -53,6 +56,7 @@ def build_generate(
     verify: bool | None = None,
     template: str | None = None,
     pdf_template_id: str | None = None,
+    sealed: bool = False,
     advanced: dict[str, Any] | None = None,
 ) -> BuiltRequest:
     body: dict[str, Any] = {"standard": standard, "output": output, "invoice": invoice}
@@ -68,12 +72,14 @@ def build_generate(
         body["pdfTemplateId"] = pdf_template_id
     if advanced:
         body = merge_deep(body, advanced)
+    # JSON mode returns the seal envelope; binary mode returns the raw document body.
     return BuiltRequest(
         method="POST",
         path="/v1/generate",
         json_body=body,
         content_type="application/json",
-        output_kind="binary",
+        accept="application/json" if sealed else None,
+        output_kind="json" if sealed else "binary",
     )
 
 

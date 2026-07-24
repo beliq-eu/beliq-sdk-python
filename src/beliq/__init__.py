@@ -14,10 +14,12 @@ from .constants import (
     DEFAULT_BASE_URL,
     LIVE_CONVERT_SOURCE_FORMATS,
     LIVE_CONVERT_TARGET_FORMATS,
+    LIVE_GENERATE_PRESETS,
     LIVE_GENERATE_STANDARDS,
     LIVE_PARSE_FORMATS,
     LIVE_PROFILES,
     LIVE_VALIDATE_FORMATS,
+    GeneratePreset,
 )
 from .errors import BeliqApiError
 from .types import (
@@ -31,11 +33,12 @@ from .types import (
     ParseResult,
     Plan,
     Quota,
+    RulesetArtifact,
     ValidationIssue,
     ValidationResult,
 )
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "AsyncBeliq",
@@ -45,18 +48,21 @@ __all__ = [
     "ConvertMeta",
     "ConvertResult",
     "GenerateMeta",
+    "GeneratePreset",
     "GenerateResult",
     "Invoice",
     "Org",
     "ParseResult",
     "Plan",
     "Quota",
+    "RulesetArtifact",
     "ValidationIssue",
     "ValidationResult",
     "API_ERROR_CODES",
     "DEFAULT_BASE_URL",
     "LIVE_CONVERT_SOURCE_FORMATS",
     "LIVE_CONVERT_TARGET_FORMATS",
+    "LIVE_GENERATE_PRESETS",
     "LIVE_GENERATE_STANDARDS",
     "LIVE_PARSE_FORMATS",
     "LIVE_PROFILES",

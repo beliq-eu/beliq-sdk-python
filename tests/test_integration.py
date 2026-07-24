@@ -4,6 +4,7 @@ Each call consumes one quota unit, so it is opt-in: set BELIQ_API_KEY (and
 optionally BELIQ_BASE_URL) to run it, otherwise the module is skipped.
 """
 
+import hashlib
 import os
 
 import pytest
@@ -57,6 +58,11 @@ def test_live_roundtrip():
         assert "xml" in generated.content_type
         assert generated.meta.schematron_version
         assert generated.xml and generated.xml.lstrip().startswith("<")
+
+        sealed = beliq.generate(standard="xrechnung", verify=True, invoice=INVOICE, seal=True)
+        assert sealed.sha256 and hashlib.sha256(sealed.content).hexdigest() == sealed.sha256
+        assert sealed.validation_result is not None and sealed.validation_result.valid is True
+        assert sealed.meta.livemode == beliq.livemode
 
         validation = beliq.validate(generated.xml, format="auto")
         assert isinstance(validation.valid, bool)
