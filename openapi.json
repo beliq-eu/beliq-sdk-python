@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "beliq API",
-    "description": "EU e-invoicing compliance API. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, PDP, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
+    "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, PDP, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
     "version": "0.1.0"
   },
   "components": {
@@ -138,7 +138,8 @@
                           "type": "object",
                           "required": [
                             "id",
-                            "name"
+                            "name",
+                            "rulesetChannel"
                           ],
                           "properties": {
                             "id": {
@@ -146,6 +147,22 @@
                             },
                             "name": {
                               "type": "string"
+                            },
+                            "rulesetChannel": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "latest"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "previous"
+                                  ]
+                                }
+                              ]
                             }
                           }
                         },
@@ -340,6 +357,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -349,6 +396,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -508,6 +560,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -517,6 +599,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -676,6 +763,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -685,6 +802,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -703,6 +825,7 @@
         "tags": [
           "Documents"
         ],
+        "description": "Returns the generated file as a raw binary body by default. Binary responses carry the applied ruleset/artifact versions on the `X-Version-Block` header (compact JSON, e.g. `schematronVersion`, `ciusVersion`, `facturxProfile`) and the verifiability seal on `X-Ruleset-Sha256` / `X-Ruleset-Artifacts`. Request `Accept: application/json` to receive a JSON envelope instead: the file base64-encoded in `output`, its SHA-256 in `sha256` (run `sha256sum` on the download to reproduce it), and the ruleset seal in `validationResult`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -758,6 +881,12 @@
                         "type": "string",
                         "enum": [
                           "eslog"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "ksef"
                         ]
                       }
                     ]
@@ -834,6 +963,12 @@
                         "type": "string",
                         "enum": [
                           "eracun"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "fa3"
                         ]
                       }
                     ]
@@ -1281,6 +1416,14 @@
                             },
                             "taxAmount": {
                               "type": "number"
+                            },
+                            "exemptionReasonText": {
+                              "maxLength": 1000,
+                              "type": "string"
+                            },
+                            "exemptionReasonCode": {
+                              "maxLength": 100,
+                              "type": "string"
                             }
                           }
                         }
@@ -1607,7 +1750,7 @@
                     ]
                   },
                   "pdfTemplateId": {
-                    "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+                    "pattern": "^[0-9A-Za-z]{3}-[0-9A-Za-z]{3}$",
                     "type": "string"
                   }
                 }
@@ -1704,10 +1847,59 @@
                                 {
                                   "type": "string",
                                   "enum": [
+                                    "poland_ksef_fa2"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "poland_ksef_fa3"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
                                     "unknown"
                                   ]
                                 }
                               ]
+                            },
+                            "sha256": {
+                              "maxLength": 64,
+                              "type": "string"
+                            },
+                            "rulesetSha256": {
+                              "maxLength": 64,
+                              "type": "string"
+                            },
+                            "rulesetArtifacts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "key",
+                                  "version",
+                                  "fileSha256"
+                                ],
+                                "properties": {
+                                  "key": {
+                                    "maxLength": 80,
+                                    "type": "string"
+                                  },
+                                  "version": {
+                                    "maxLength": 50,
+                                    "type": "string"
+                                  },
+                                  "fileSha256": {
+                                    "maxLength": 64,
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "driftCheckedAt": {
+                              "format": "date-time",
+                              "type": "string"
                             },
                             "profileDetected": {
                               "maxLength": 50,
@@ -1779,6 +1971,25 @@
                             "netherlandsNlciusVersion": {
                               "maxLength": 40,
                               "type": "string"
+                            },
+                            "rulesetChannel": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "latest"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "previous"
+                                  ]
+                                }
+                              ]
+                            },
+                            "rulesetFellBack": {
+                              "type": "boolean"
                             },
                             "errors": {
                               "type": "array",
@@ -1887,6 +2098,25 @@
                               }
                             }
                           }
+                        },
+                        "output": {
+                          "type": "string"
+                        },
+                        "outputFormat": {
+                          "maxLength": 8,
+                          "type": "string"
+                        },
+                        "contentType": {
+                          "maxLength": 64,
+                          "type": "string"
+                        },
+                        "sha256": {
+                          "maxLength": 64,
+                          "type": "string"
+                        },
+                        "pdfKind": {
+                          "maxLength": 16,
+                          "type": "string"
                         }
                       }
                     },
@@ -2024,6 +2254,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -2033,6 +2293,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -2192,6 +2457,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -2201,6 +2496,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -2360,6 +2660,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -2369,6 +2699,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -2528,6 +2863,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -2537,6 +2902,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -2696,6 +3066,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -2705,6 +3105,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -2723,6 +3128,7 @@
         "tags": [
           "Documents"
         ],
+        "description": "The JSON response carries two verifiability hashes so you can check the result yourself. `sha256` is the lowercase-hex SHA-256 of the exact bytes you posted; run `sha256sum` on your file to reproduce it and confirm round-trip integrity. `rulesetSha256` fingerprints the rule artifacts the engine ran to judge the document (the compiled Schematron XSLT(s) for the EN 16931 family and its CIUS/national overlays, or the authority root XSD for XSD-only national formats), so you can confirm the ruleset that judged you is the one beliq publicly pins (see GET /v1/rulesets). `rulesetSha256` is present whenever a ruleset ran. `rulesetArtifacts` lists the component rows it is built from (`{ key, version, fileSha256 }` each): sort the `\"<key>@<version>=<fileSha256>\"` lines, join with newlines, and SHA-256 to reproduce `rulesetSha256` from these published values alone. That reproduction works for every result; the separate step of matching each component against the GET /v1/rulesets catalog covers publicly-supported formats only \u2014 a provisional national format (e.g. Italy FatturaPA) returns real, pinned components that are intentionally kept off the public catalog, so they will not appear there. `driftCheckedAt` is an ISO 8601 UTC instant reporting when those pinned artifacts were last confirmed to still match their upstream authority sources (the nightly drift check): where `rulesetSha256` proves the artifact we ran is the one we pin, `driftCheckedAt` says when we last confirmed that pin still matches what the authority publishes. It is a conservative lower bound (\"verified at least as recently as\"), present alongside `rulesetSha256` only when every pinned artifact cleared that check.",
         "requestBody": {
           "required": true,
           "content": {
@@ -2790,6 +3196,15 @@
             "in": "query",
             "name": "franceCtc",
             "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Beliq-Ruleset",
+            "required": false,
+            "description": "Pin the validation ruleset for this request. A channel (\"latest\" or \"previous\"), or a comma-separated list of exact per-format pins as \"<artifactKey>:<version>\" (e.g. \"xrechnung_schematron:2.4.0\"). The two forms are mutually exclusive. Default (no header) uses \"latest\". Effective on this route only \u2014 parse/generate/convert accept but ignore it. The applied ruleset is echoed in the Beliq-Ruleset-Resolved response header; see GET /v1/rulesets for selectable channels."
           }
         ],
         "responses": {
@@ -2859,10 +3274,59 @@
                             {
                               "type": "string",
                               "enum": [
+                                "poland_ksef_fa2"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "poland_ksef_fa3"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "unknown"
                               ]
                             }
                           ]
+                        },
+                        "sha256": {
+                          "maxLength": 64,
+                          "type": "string"
+                        },
+                        "rulesetSha256": {
+                          "maxLength": 64,
+                          "type": "string"
+                        },
+                        "rulesetArtifacts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "key",
+                              "version",
+                              "fileSha256"
+                            ],
+                            "properties": {
+                              "key": {
+                                "maxLength": 80,
+                                "type": "string"
+                              },
+                              "version": {
+                                "maxLength": 50,
+                                "type": "string"
+                              },
+                              "fileSha256": {
+                                "maxLength": 64,
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "driftCheckedAt": {
+                          "format": "date-time",
+                          "type": "string"
                         },
                         "profileDetected": {
                           "maxLength": 50,
@@ -2934,6 +3398,25 @@
                         "netherlandsNlciusVersion": {
                           "maxLength": 40,
                           "type": "string"
+                        },
+                        "rulesetChannel": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "latest"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "previous"
+                              ]
+                            }
+                          ]
+                        },
+                        "rulesetFellBack": {
+                          "type": "boolean"
                         },
                         "errors": {
                           "type": "array",
@@ -3177,6 +3660,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -3186,6 +3699,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -3345,6 +3863,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -3354,6 +3902,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -3513,6 +4066,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -3522,6 +4105,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -3681,6 +4269,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -3690,6 +4308,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -4197,6 +4820,14 @@
                                   },
                                   "taxAmount": {
                                     "type": "number"
+                                  },
+                                  "exemptionReasonText": {
+                                    "maxLength": 1000,
+                                    "type": "string"
+                                  },
+                                  "exemptionReasonCode": {
+                                    "maxLength": 100,
+                                    "type": "string"
                                   }
                                 }
                               }
@@ -4649,6 +5280,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -4658,6 +5319,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -4817,6 +5483,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -4826,6 +5522,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -4985,6 +5686,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -4994,6 +5725,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -5012,6 +5748,7 @@
         "tags": [
           "Documents"
         ],
+        "description": "The `X-Version-Block` response header (compact JSON) names the ruleset/artifact versions this engine build pins for the produced target format. It is descriptive (convert runs no validation over its output) and mirrors the data published by `GET /v1/rulesets`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -5323,6 +6060,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -5332,6 +6099,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -5491,6 +6263,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -5500,6 +6302,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -5659,6 +6466,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -5668,6 +6505,11 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -5827,6 +6669,36 @@
                               "enum": [
                                 "PDF_TEMPLATE_INVALID"
                               ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
                             }
                           ]
                         },
@@ -5836,6 +6708,462 @@
                         "details": {
                           "type": "object",
                           "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/rulesets": {
+      "get": {
+        "operationId": "getRulesets",
+        "summary": "Active ruleset/artefact versions + ruleset-hash catalog per supported format (public, no quota cost).",
+        "tags": [
+          "Reference"
+        ],
+        "description": "Public reference for the ruleset versions and artifact hashes Beliq pins. `artifacts` is the ruleset-hash catalog: each rule artifact that can run for a publicly-supported format, with the SHA-256 of its exact file bytes. To verify a `POST /v1/validate` response for a publicly-supported format, confirm each of its `rulesetArtifacts` components appears here, then reproduce its `rulesetSha256` by sorting the components\u2019 `\"<key>@<version>=<fileSha256>\"` lines, joining with newlines, and taking the SHA-256. (The `rulesetSha256` reproduction needs only the response\u2019s own components, so it holds for any result; provisional national formats run real, pinned artifacts that are intentionally omitted here, so their components will not appear in this catalog.) For compiled-Schematron families the published hash proves the artifact Beliq ran is the one Beliq pins, not a value reproducible from the authority\u2019s raw source.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "rulesets",
+                        "channels",
+                        "artifacts"
+                      ],
+                      "properties": {
+                        "rulesets": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "format",
+                              "label",
+                              "standard",
+                              "authority",
+                              "region",
+                              "specVersion",
+                              "rulesetVersion",
+                              "rulesetArtefact",
+                              "versionKey",
+                              "verificationTier",
+                              "rulesProvenance",
+                              "verificationBadge",
+                              "releaseDate",
+                              "repo",
+                              "tag"
+                            ],
+                            "properties": {
+                              "format": {
+                                "type": "string"
+                              },
+                              "label": {
+                                "type": "string"
+                              },
+                              "standard": {
+                                "type": "string"
+                              },
+                              "authority": {
+                                "type": "string"
+                              },
+                              "region": {
+                                "type": "string"
+                              },
+                              "specVersion": {
+                                "type": "string"
+                              },
+                              "rulesetVersion": {
+                                "type": "string"
+                              },
+                              "rulesetArtefact": {
+                                "type": "string"
+                              },
+                              "versionKey": {
+                                "type": "string"
+                              },
+                              "verificationTier": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "conformance-verified"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "builder-round-trip"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "reconstructed-rules"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "xsd-structural"
+                                    ]
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "rulesProvenance": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "authority-conformance"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "authority-artifact"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "community"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "beliq-authored"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "none"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "verificationBadge": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "authority-verified"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "independently-rule-checked"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "structure-checked"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "releaseDate": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "repo": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "tag": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        },
+                        "channels": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "label",
+                              "description"
+                            ],
+                            "properties": {
+                              "id": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "latest"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "previous"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "label": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "artifacts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "key",
+                              "version",
+                              "fileSha256"
+                            ],
+                            "properties": {
+                              "key": {
+                                "maxLength": 80,
+                                "type": "string"
+                              },
+                              "version": {
+                                "maxLength": 50,
+                                "type": "string"
+                              },
+                              "fileSha256": {
+                                "maxLength": 64,
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "message"
+                      ],
+                      "properties": {
+                        "code": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "VALIDATION_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_INVOICE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_FORMAT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PROFILE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_TYPE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PARSE_FAILED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_XML"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "AUTHENTICATION_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RATE_LIMITED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INTERNAL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_UNSUPPORTED_PAIR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_LOSSY_FAILCLOSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_AUTH_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
+                            }
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
                         }
                       }
                     }
@@ -5869,6 +7197,25 @@
     {
       "name": "Account",
       "description": "Account, plan, and quota context for the calling API key."
+    },
+    {
+      "name": "Reference",
+      "description": "Read-only reference data: the ruleset/artefact versions beliq validates and generates against. Public, no API key required."
+    }
+  ],
+  "x-providerName": "beliq.eu",
+  "x-logo": {
+    "url": "https://beliq.eu/beliq-logo-3ring-only.svg",
+    "backgroundColor": "#FFFFFF"
+  },
+  "x-apisguru-categories": [
+    "financial"
+  ],
+  "x-origin": [
+    {
+      "format": "openapi",
+      "version": "3.0",
+      "url": "https://api.beliq.eu/openapi.json"
     }
   ]
 }

@@ -59,6 +59,15 @@ def test_generate_advanced_merge():
     assert r.json_body["invoice"] == {"number": "INV-1", "note": "x"}
 
 
+def test_generate_sealed_requests_json_envelope():
+    r = build_generate(standard="xrechnung", invoice={}, sealed=True)
+    assert r.accept == "application/json"
+    assert r.output_kind == "json"
+    default = build_generate(standard="xrechnung", invoice={})
+    assert default.accept is None
+    assert default.output_kind == "binary"
+
+
 def test_validate():
     r = build_validate(raw_body=b"<x/>", content_type="application/pdf", format="auto", france_ctc=True)
     assert r.path == "/v1/validate"

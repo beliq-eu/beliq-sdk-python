@@ -85,7 +85,7 @@ asyncio.run(main())
 | `parse(document, ...)` | POST /v1/parse | XML or PDF | `ParseResult` |
 | `convert(document, ...)` | POST /v1/convert | XML or PDF | `ConvertResult` |
 
-`document` accepts a `str`, `bytes`, or `bytearray`. The content type is sniffed from the bytes (PDF vs XML) unless you pass `content_type=`. `generate` and `convert` return the raw document `content` (bytes) plus the response-header metadata (`schematron_version`, `pdf_kind`, `source_format`/`target_format`, `lost_elements`, `conversion_tools`); for an XML output, `generate` also decodes `xml`.
+`document` accepts a `str`, `bytes`, or `bytearray`. The content type is sniffed from the bytes (PDF vs XML) unless you pass `content_type=`. `generate` and `convert` return the raw document `content` (bytes) plus the response-header metadata: `meta.schematron_version`, `meta.pdf_kind`, `meta.source_format`/`meta.target_format`, `meta.lost_elements`, `meta.conversion_tools`, the ruleset fingerprint `meta.ruleset_sha256` / `meta.ruleset_artifacts`, and `meta.livemode`. For an XML output, `generate` also decodes `xml`.
 
 JSON responses are Pydantic models. Any field not explicitly typed (such as the per-country authority versions on a validation result) is preserved and accessible. Errors raise `BeliqApiError` with a typed `.code`, HTTP `.status`, and any `.details`:
 
@@ -96,6 +96,42 @@ try:
     beliq.validate("not xml")
 except BeliqApiError as err:
     print(err.code, err.status, err.message)
+```
+
+## The seal: verify it yourself
+
+Pass `seal=True` to `generate` to get the document back as a JSON envelope: the decoded `content` (bytes) plus its `sha256` and the full `validation_result`. Hashing the returned bytes reproduces the returned hash, so you can prove which ruleset the document passed.
+
+```python
+import hashlib
+
+sealed = beliq.generate(standard="xrechnung", verify=True, invoice=invoice, seal=True)
+assert hashlib.sha256(sealed.content).hexdigest() == sealed.sha256
+print(sealed.validation_result.valid, sealed.meta.ruleset_sha256)
+```
+
+Without `seal`, `generate` returns the raw document body (unchanged, the default). The ruleset fingerprint (`meta.ruleset_sha256`, `meta.ruleset_artifacts`) is present in both modes.
+
+## Sandbox and live keys
+
+A `blq_test_` key is a sandbox key; a `blq_live_` key is live. The client derives the mode from the key prefix before any request:
+
+```python
+beliq = Beliq(api_key="blq_test_...")
+beliq.livemode  # False for a sandbox key, True for a live key
+```
+
+Each `generate` / `convert` response also carries the authoritative mode from the server as `meta.livemode`.
+
+## Generate presets
+
+`LIVE_GENERATE_PRESETS` is the curated set of public generate targets (matching beliq.eu's own generator). NLCIUS is a Peppol BIS profile rather than a standalone standard, so it is reachable here:
+
+```python
+from beliq import LIVE_GENERATE_PRESETS
+
+nlcius = next(p for p in LIVE_GENERATE_PRESETS if p.id == "nlcius")
+beliq.generate(standard=nlcius.standard, profile=nlcius.profile, output=nlcius.output, invoice=invoice)
 ```
 
 ## Development
@@ -109,7 +145,7 @@ pytest                                   # unit tests (no network)
 BELIQ_API_KEY=blq_xxx pytest tests/test_integration.py   # hits the live API; draws quota
 ```
 
-`tests/test_spec_contract.py` reads the vendored `openapi.json` and fails if the error-code set or the core validate fields drift from the spec. Refresh the vendored spec with `python scripts/sync_spec.py`.
+`tests/test_spec_contract.py` reads the vendored `openapi.json` and fails if the error-code set, the core validate/seal fields, or the public option lists drift from the spec. Refresh the vendored spec with `python scripts/sync_spec.py`. A weekly workflow (`scripts/check_live_drift.py`) flags when the vendored spec falls behind the deployed API.
 
 ## Publishing
 
