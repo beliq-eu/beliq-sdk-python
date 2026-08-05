@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import asyncio
 import base64
 import json
+import random
+import time
 from types import TracebackType
 from typing import Any
 
@@ -18,7 +21,14 @@ from ._build_request import (
     build_validate,
 )
 from ._internal import DocumentInput, sniff_content_type, to_bytes
-from .constants import DEFAULT_BASE_URL
+from .constants import (
+    BACKOFF_BASE_SECONDS,
+    DEFAULT_BASE_URL,
+    DEFAULT_MAX_RETRIES,
+    DEFAULT_TIMEOUT_SECONDS,
+    MAX_RETRY_AFTER_SECONDS,
+    RETRYABLE_STATUSES,
+)
 from .errors import BeliqApiError, error_from_response, parse_envelope
 from .types import (
     AccountInfo,
@@ -34,6 +44,32 @@ from .types import (
 
 # blq_test_ marks a sandbox key; the server derives livemode from this exact prefix.
 TEST_KEY_PREFIX = "blq_test_"
+
+
+def _retry_delay(response: httpx.Response | None, attempt: int) -> float:
+    """Seconds to wait before the next attempt.
+
+    Uses the server's ``Retry-After`` when it sent one, otherwise exponential
+    backoff. Jittered either way, so a fleet of clients throttled together does
+    not all return at the same instant and re-trigger the throttle.
+    """
+    if response is not None:
+        header = response.headers.get("retry-after")
+        if header:
+            try:
+                seconds = float(header)
+            except ValueError:
+                seconds = -1.0
+            if seconds >= 0:
+                return min(seconds, MAX_RETRY_AFTER_SECONDS) + random.random() * 0.25
+    # Annotated because mypy widens `int ** int` to Any (a negative exponent
+    # would yield a float), which would then leak out of this return type.
+    backoff: float = BACKOFF_BASE_SECONDS * (2**attempt)
+    return backoff + random.random() * backoff
+
+
+def _should_retry(response: httpx.Response, attempt: int, max_retries: int) -> bool:
+    return response.status_code in RETRYABLE_STATUSES and attempt < max_retries
 
 
 def _request_kwargs(base_url: str, api_key: str, auth: str, req: BuiltRequest) -> dict[str, Any]:
@@ -180,7 +216,8 @@ class Beliq:
         base_url: str = DEFAULT_BASE_URL,
         auth: str = "header",
         client: httpx.Client | None = None,
-        timeout: float = 30.0,
+        timeout: float = DEFAULT_TIMEOUT_SECONDS,
+        max_retries: int = DEFAULT_MAX_RETRIES,
     ) -> None:
         if not api_key:
             raise ValueError("beliq: api_key is required")
@@ -193,9 +230,22 @@ class Beliq:
         self._auth = auth
         self._client = client or httpx.Client(timeout=timeout)
         self._owns_client = client is None
+        self._max_retries = max_retries
 
     def _send(self, req: BuiltRequest) -> httpx.Response:
-        return self._client.request(**_request_kwargs(self._base_url, self._api_key, self._auth, req))
+        """Issue the request, retrying transient failures.
+
+        Only 429/502/503 are retried and only up to ``max_retries``; anything
+        else, including a timeout, is surfaced immediately. A caller-supplied
+        ``client`` keeps its own timeout, which this does not override.
+        """
+        kwargs = _request_kwargs(self._base_url, self._api_key, self._auth, req)
+        for attempt in range(self._max_retries + 1):
+            response = self._client.request(**kwargs)
+            if not _should_retry(response, attempt, self._max_retries):
+                return response
+            time.sleep(_retry_delay(response, attempt))
+        raise AssertionError("unreachable: loop returns on its final attempt")
 
     def me(self) -> AccountInfo:
         return AccountInfo.model_validate(_data_from_json(self._send(build_me())))
@@ -302,7 +352,8 @@ class AsyncBeliq:
         base_url: str = DEFAULT_BASE_URL,
         auth: str = "header",
         client: httpx.AsyncClient | None = None,
-        timeout: float = 30.0,
+        timeout: float = DEFAULT_TIMEOUT_SECONDS,
+        max_retries: int = DEFAULT_MAX_RETRIES,
     ) -> None:
         if not api_key:
             raise ValueError("beliq: api_key is required")
@@ -315,11 +366,17 @@ class AsyncBeliq:
         self._auth = auth
         self._client = client or httpx.AsyncClient(timeout=timeout)
         self._owns_client = client is None
+        self._max_retries = max_retries
 
     async def _send(self, req: BuiltRequest) -> httpx.Response:
-        return await self._client.request(
-            **_request_kwargs(self._base_url, self._api_key, self._auth, req)
-        )
+        """Issue the request, retrying transient failures. See ``Beliq._send``."""
+        kwargs = _request_kwargs(self._base_url, self._api_key, self._auth, req)
+        for attempt in range(self._max_retries + 1):
+            response = await self._client.request(**kwargs)
+            if not _should_retry(response, attempt, self._max_retries):
+                return response
+            await asyncio.sleep(_retry_delay(response, attempt))
+        raise AssertionError("unreachable: loop returns on its final attempt")
 
     async def me(self) -> AccountInfo:
         return AccountInfo.model_validate(_data_from_json(await self._send(build_me())))

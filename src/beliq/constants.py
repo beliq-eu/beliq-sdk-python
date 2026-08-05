@@ -11,6 +11,28 @@ from dataclasses import dataclass
 
 DEFAULT_BASE_URL = "https://api.beliq.eu"
 
+# Per-attempt deadline. Sits above the API's own worst case so the server is
+# always the one to answer. The former 30s default sat *below* beliq's measured
+# p95 for a document request, so the client aborted work the server went on to
+# finish, leaving the caller unable to tell whether the document was produced.
+DEFAULT_TIMEOUT_SECONDS = 90.0
+
+# Extra attempts after the first, for 429 / 502 / 503 only.
+DEFAULT_MAX_RETRIES = 3
+
+# Statuses worth another attempt. All three arrive with Retry-After, and beliq
+# refunds the document's quota unit on a 503, so a retry costs nothing.
+#
+# 504 is excluded on purpose: it means the work may still be running server-side,
+# so retrying risks producing a second document rather than recovering one.
+RETRYABLE_STATUSES = frozenset({429, 502, 503})
+
+# Ceiling on a server-supplied Retry-After, so one header cannot hang a call.
+MAX_RETRY_AFTER_SECONDS = 30.0
+
+# Base for exponential backoff when no Retry-After is given.
+BACKOFF_BASE_SECONDS = 0.5
+
 # The closed set of error codes beliq returns in the { error: { code } } envelope.
 # Mirrored from openapi.json; tests/test_spec_contract.py fails if they drift.
 API_ERROR_CODES: tuple[str, ...] = (
