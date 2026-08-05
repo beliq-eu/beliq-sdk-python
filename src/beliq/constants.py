@@ -47,6 +47,9 @@ API_ERROR_CODES: tuple[str, ...] = (
     "INVALID_API_KEY",
     "QUOTA_EXCEEDED",
     "RATE_LIMITED",
+    # Distinct from RATE_LIMITED: the burst limiter clears in seconds, this one
+    # blocks every /v1 route for minutes, so back off differently.
+    "ACCOUNT_THROTTLED",
     "ENGINE_UNAVAILABLE",
     "INTERNAL_ERROR",
     "NOT_FOUND",
@@ -58,10 +61,12 @@ API_ERROR_CODES: tuple[str, ...] = (
     "PDF_TEMPLATE_NOT_FOUND",
     "PDF_TEMPLATE_INVALID",
     "TRANSMISSION_DISABLED",
+    "TRANSMISSION_NO_PROVIDER",
     "IDEMPOTENCY_KEY_REUSED",
     "INVALID_IDEMPOTENCY_KEY",
     "INBOX_UNKNOWN_PROVIDER",
     "INBOX_VERIFICATION_FAILED",
+    "INBOX_SIGNATURE_EXPIRED",
 )
 
 LIVE_GENERATE_STANDARDS: tuple[str, ...] = ("xrechnung", "zugferd", "facturx", "peppol-bis")
