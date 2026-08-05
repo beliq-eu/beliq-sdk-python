@@ -59,6 +59,34 @@ Beliq(api_key="blq_...", auth="bearer")      # sends Authorization: Bearer
 Beliq(api_key="blq_...", base_url="https://staging.beliq.eu")
 ```
 
+## Timeouts and retries
+
+The client retries transient failures for you, so you do not have to reimplement
+backoff around it.
+
+```python
+Beliq(
+    api_key="blq_...",
+    timeout=90.0,     # per-attempt deadline in seconds (default)
+    max_retries=3,    # extra attempts after the first (default)
+)
+```
+
+Only `429`, `502` and `503` are retried, honouring the server's `Retry-After`
+with jitter. beliq refunds the document's quota unit on a `503`, so a retry never
+costs you a second document.
+
+`504` and a client-side timeout are deliberately **not** retried: both mean the
+work may still be running on beliq's side, so retrying risks producing a second
+document rather than recovering the first.
+
+The default deadline is generous because beliq runs the full Schematron rule set
+over each document, and a generate or validate can legitimately take tens of
+seconds. If you lower it, keep it above the latency you actually see: a deadline
+shorter than the server's own turns completed work into an unknown outcome. Pass
+`max_retries=0` to handle retrying yourself. If you supply your own
+`httpx.Client`, its timeout is used as-is and `timeout` is ignored.
+
 ## Async
 
 `AsyncBeliq` mirrors the sync client with `await`:
