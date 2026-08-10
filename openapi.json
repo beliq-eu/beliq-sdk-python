@@ -391,6 +391,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -404,6 +416,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -612,6 +672,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -625,6 +697,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -833,6 +953,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -846,6 +978,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -2344,6 +2524,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -2357,6 +2549,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -2565,6 +2805,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -2578,6 +2830,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -2786,6 +3086,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -2799,6 +3111,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -3007,6 +3367,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -3020,6 +3392,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -3228,6 +3648,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -3241,6 +3673,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -3840,6 +4320,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -3853,6 +4345,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -4061,6 +4601,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -4074,6 +4626,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -4282,6 +4882,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -4295,6 +4907,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -4503,6 +5163,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -4516,6 +5188,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -5540,6 +6260,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -5553,6 +6285,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -5761,6 +6541,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -5774,6 +6566,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -5982,6 +6822,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -5995,6 +6847,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -6374,6 +7274,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -6387,6 +7299,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -6595,6 +7555,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -6608,6 +7580,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -6816,6 +7836,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -6829,6 +7861,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -7037,6 +8117,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -7050,6 +8142,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
@@ -7506,6 +8646,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INBOX_UNKNOWN_PROVIDER"
                               ]
                             },
@@ -7519,6 +8671,54 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
                               ]
                             }
                           ]
