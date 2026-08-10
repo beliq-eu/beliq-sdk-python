@@ -64,9 +64,25 @@ API_ERROR_CODES: tuple[str, ...] = (
     "TRANSMISSION_NO_PROVIDER",
     "IDEMPOTENCY_KEY_REUSED",
     "INVALID_IDEMPOTENCY_KEY",
+    "SENDER_NOT_REGISTERED",
+    "CONTENT_ALREADY_SENT",
     "INBOX_UNKNOWN_PROVIDER",
     "INBOX_VERIFICATION_FAILED",
     "INBOX_SIGNATURE_EXPIRED",
+    # Peppol routing derivation at emit. A document travels inside an envelope
+    # the receiving Access Point routes on, and these are the ways one cannot be
+    # built: the recipient has no canonical Peppol form, the sending
+    # participant's registration records no country, the document names a
+    # different party than the envelope would carry, or the document itself
+    # withholds a value the envelope needs.
+    "RECIPIENT_NOT_ROUTABLE",
+    "SENDER_COUNTRY_MISSING",
+    "DOCUMENT_PARTY_MISMATCH",
+    "UNSUPPORTED_SYNTAX",
+    "MALFORMED_DOCUMENT",
+    "EMPTY_DOCUMENT",
+    "MISSING_CUSTOMIZATION_ID",
+    "MISSING_PROCESS_ID",
 )
 
 LIVE_GENERATE_STANDARDS: tuple[str, ...] = ("xrechnung", "zugferd", "facturx", "peppol-bis")
