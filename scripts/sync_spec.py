@@ -19,7 +19,11 @@ LIVE_URL = "https://api.beliq.eu/openapi.json"
 
 
 def normalize(text: str) -> str:
-    return json.dumps(json.loads(text), indent=2) + "\n"
+    # ensure_ascii=False, or every non-ASCII character in a description is
+    # escaped (`·` becomes `·`) and this copy can never be byte-identical to
+    # the one beliq-api generates or the one the Node SDK vendors, no matter how
+    # often it is re-synced.
+    return json.dumps(json.loads(text), indent=2, ensure_ascii=False) + "\n"
 
 
 def main() -> None:
