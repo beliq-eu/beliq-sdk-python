@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, PDP, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "components": {
     "securitySchemes": {
@@ -92,6 +92,20 @@
         "responses": {
           "200": {
             "description": "Default Response",
+            "headers": {
+              "x-beliq-livemode": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "\"true\" for a live key, \"false\" for a test key. Test-mode documents are watermarked and do not draw on the live monthly quota."
+              },
+              "x-request-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Correlation id for this request. Quote it in a support request; it is the key the API, the engine, and error tracking all record."
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -2308,7 +2322,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "One-line verdict, e.g. \"pass \u00b7 0 err \u00b7 1 warn\"."
+                "description": "One-line verdict, e.g. \"pass · 0 err · 1 warn\"."
               },
               "x-version-block": {
                 "schema": {
@@ -2396,6 +2410,11 @@
                           ],
                           "properties": {
                             "valid": {
+                              "description": "Whether the document was verified as valid. Read together with `verified`: `valid: false` with `verified: false` means no ruleset ran, not that the document failed.",
+                              "type": "boolean"
+                            },
+                            "verified": {
+                              "description": "Whether a ruleset actually executed. `false` only when `verify: false` skipped validation, in which case `errors` and `warnings` are empty because nothing looked at the document.",
                               "type": "boolean"
                             },
                             "format": {
@@ -4953,7 +4972,7 @@
         "tags": [
           "Documents"
         ],
-        "description": "The JSON response carries two verifiability hashes so you can check the result yourself. `sha256` is the lowercase-hex SHA-256 of the exact bytes you posted; run `sha256sum` on your file to reproduce it and confirm round-trip integrity. `rulesetSha256` fingerprints the rule artifacts the engine ran to judge the document (the compiled Schematron XSLT(s) for the EN 16931 family and its CIUS/national overlays, or the authority root XSD for XSD-only national formats), so you can confirm the ruleset that judged you is the one beliq publicly pins (see GET /v1/rulesets). `rulesetSha256` is present whenever a ruleset ran. `rulesetArtifacts` lists the component rows it is built from (`{ key, version, fileSha256 }` each): sort the `\"<key>@<version>=<fileSha256>\"` lines, join with newlines, and SHA-256 to reproduce `rulesetSha256` from these published values alone. That reproduction works for every result; the separate step of matching each component against the GET /v1/rulesets catalog covers publicly-supported formats only \u2014 a provisional national format (e.g. Italy FatturaPA) returns real, pinned components that are intentionally kept off the public catalog, so they will not appear there. `driftCheckedAt` is an ISO 8601 UTC instant reporting when those pinned artifacts were last confirmed to still match their upstream authority sources (the nightly drift check): where `rulesetSha256` proves the artifact we ran is the one we pin, `driftCheckedAt` says when we last confirmed that pin still matches what the authority publishes. It is a conservative lower bound (\"verified at least as recently as\"), present alongside `rulesetSha256` only when every pinned artifact cleared that check.",
+        "description": "The JSON response carries two verifiability hashes so you can check the result yourself. `sha256` is the lowercase-hex SHA-256 of the exact bytes you posted; run `sha256sum` on your file to reproduce it and confirm round-trip integrity. `rulesetSha256` fingerprints the rule artifacts the engine ran to judge the document (the compiled Schematron XSLT(s) for the EN 16931 family and its CIUS/national overlays, or the authority root XSD for XSD-only national formats), so you can confirm the ruleset that judged you is the one beliq publicly pins (see GET /v1/rulesets). `rulesetSha256` is present whenever a ruleset ran. `rulesetArtifacts` lists the component rows it is built from (`{ key, version, fileSha256 }` each): sort the `\"<key>@<version>=<fileSha256>\"` lines, join with newlines, and SHA-256 to reproduce `rulesetSha256` from these published values alone. That reproduction works for every result; the separate step of matching each component against the GET /v1/rulesets catalog covers publicly-supported formats only — a provisional national format (e.g. Italy FatturaPA) returns real, pinned components that are intentionally kept off the public catalog, so they will not appear there. `driftCheckedAt` is an ISO 8601 UTC instant reporting when those pinned artifacts were last confirmed to still match their upstream authority sources (the nightly drift check): where `rulesetSha256` proves the artifact we ran is the one we pin, `driftCheckedAt` says when we last confirmed that pin still matches what the authority publishes. It is a conservative lower bound (\"verified at least as recently as\"), present alongside `rulesetSha256` only when every pinned artifact cleared that check.",
         "requestBody": {
           "required": true,
           "content": {
@@ -5038,7 +5057,7 @@
             "in": "header",
             "name": "Beliq-Ruleset",
             "required": false,
-            "description": "Pin the validation ruleset for this request. A channel (\"latest\" or \"previous\"), or a comma-separated list of exact per-format pins as \"<artifactKey>:<version>\" (e.g. \"xrechnung_schematron:2.4.0\"). The two forms are mutually exclusive. Default (no header) uses \"latest\". Effective on this route only \u2014 parse/generate/convert accept but ignore it. The applied ruleset is echoed in the Beliq-Ruleset-Resolved response header; see GET /v1/rulesets for selectable channels."
+            "description": "Pin the validation ruleset for this request. A channel (\"latest\" or \"previous\"), or a comma-separated list of exact per-format pins as \"<artifactKey>:<version>\" (e.g. \"xrechnung_schematron:2.4.0\"). The two forms are mutually exclusive. Default (no header) uses \"latest\". Effective on this route only — parse/generate/convert accept but ignore it. The applied ruleset is echoed in the Beliq-Ruleset-Resolved response header; see GET /v1/rulesets for selectable channels."
           }
         ],
         "responses": {
@@ -5073,13 +5092,13 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "One-line verdict, e.g. \"pass \u00b7 0 err \u00b7 1 warn\"."
+                "description": "One-line verdict, e.g. \"pass · 0 err · 1 warn\"."
               },
               "beliq-ruleset-resolved": {
                 "schema": {
                   "type": "string"
                 },
-                "description": "The ruleset selection that actually applied, echoed back when the request carried a Beliq-Ruleset header. Reveals a \"previous\"\u2192\"latest\" fallback."
+                "description": "The ruleset selection that actually applied, echoed back when the request carried a Beliq-Ruleset header. Reveals a \"previous\"→\"latest\" fallback."
               },
               "x-beliq-livemode": {
                 "schema": {
@@ -5115,6 +5134,11 @@
                       ],
                       "properties": {
                         "valid": {
+                          "description": "Whether the document was verified as valid. Read together with `verified`: `valid: false` with `verified: false` means no ruleset ran, not that the document failed.",
+                          "type": "boolean"
+                        },
+                        "verified": {
+                          "description": "Whether a ruleset actually executed. `false` only when `verify: false` skipped validation, in which case `errors` and `warnings` are empty because nothing looked at the document.",
                           "type": "boolean"
                         },
                         "format": {
@@ -7753,7 +7777,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "One-line verdict, e.g. \"pass \u00b7 0 err \u00b7 1 warn\"."
+                "description": "One-line verdict, e.g. \"pass · 0 err · 1 warn\"."
               },
               "x-beliq-livemode": {
                 "schema": {
@@ -13275,11 +13299,19 @@
         "tags": [
           "Reference"
         ],
-        "description": "Public reference for the ruleset versions and artifact hashes Beliq pins. `artifacts` is the ruleset-hash catalog: each rule artifact that can run for a publicly-supported format, with the SHA-256 of its exact file bytes. To verify a `POST /v1/validate` response for a publicly-supported format, confirm each of its `rulesetArtifacts` components appears here, then reproduce its `rulesetSha256` by sorting the components\u2019 `\"<key>@<version>=<fileSha256>\"` lines, joining with newlines, and taking the SHA-256. (The `rulesetSha256` reproduction needs only the response\u2019s own components, so it holds for any result; provisional national formats run real, pinned artifacts that are intentionally omitted here, so their components will not appear in this catalog.) For compiled-Schematron families the published hash proves the artifact Beliq ran is the one Beliq pins, not a value reproducible from the authority\u2019s raw source.",
+        "description": "Public reference for the ruleset versions and artifact hashes Beliq pins. `artifacts` is the ruleset-hash catalog: each rule artifact that can run for a publicly-supported format, with the SHA-256 of its exact file bytes. To verify a `POST /v1/validate` response for a publicly-supported format, confirm each of its `rulesetArtifacts` components appears here, then reproduce its `rulesetSha256` by sorting the components’ `\"<key>@<version>=<fileSha256>\"` lines, joining with newlines, and taking the SHA-256. (The `rulesetSha256` reproduction needs only the response’s own components, so it holds for any result; provisional national formats run real, pinned artifacts that are intentionally omitted here, so their components will not appear in this catalog.) For compiled-Schematron families the published hash proves the artifact Beliq ran is the one Beliq pins, not a value reproducible from the authority’s raw source.",
         "security": [],
         "responses": {
           "200": {
             "description": "Default Response",
+            "headers": {
+              "x-request-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Correlation id for this request. Quote it in a support request; it is the key the API, the engine, and error tracking all record."
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
