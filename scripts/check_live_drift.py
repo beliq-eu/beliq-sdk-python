@@ -53,6 +53,18 @@ def _is_covered(live: Any, vendored: Any) -> bool:
     return not probe
 
 
+#: Descriptive metadata, not client surface. ``info.version`` in particular is
+#: *replaced* on a bump rather than added to, and coverage cannot express a
+#: replacement — a vendored copy legitimately ahead of live reads as behind it,
+#: which is a red run for the one case this check is built to tolerate. The
+#: field is guarded by ``tests/test_spec_vendoring.py`` instead.
+DESCRIPTIVE = ("info",)
+
+
+def surface_only(spec: dict[str, Any]) -> dict[str, Any]:
+    return {k: v for k, v in spec.items() if k not in DESCRIPTIVE}
+
+
 def main() -> int:
     try:
         with urllib.request.urlopen(LIVE_URL) as resp:  # noqa: S310 (trusted URL)
@@ -62,7 +74,12 @@ def main() -> int:
         return 0
 
     missing: list[str] = []
-    covered_by(json.loads(live_text), json.loads(VENDORED.read_text()), "", missing)
+    covered_by(
+        surface_only(json.loads(live_text)),
+        surface_only(json.loads(VENDORED.read_text(encoding="utf-8"))),
+        "",
+        missing,
+    )
 
     if not missing:
         print("vendored openapi.json covers the live spec")
