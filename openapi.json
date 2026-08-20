@@ -2540,6 +2540,56 @@
                               "maxLength": 50,
                               "type": "string"
                             },
+                            "verificationTier": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "conformance-verified"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "builder-round-trip"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "reconstructed-rules"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "xsd-structural"
+                                  ]
+                                }
+                              ]
+                            },
+                            "verificationBadge": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "authority-verified"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "independently-rule-checked"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "structure-checked"
+                                  ]
+                                }
+                              ]
+                            },
                             "schematronVersion": {
                               "maxLength": 20,
                               "type": "string"
@@ -5316,6 +5366,56 @@
                         "profileDetected": {
                           "maxLength": 50,
                           "type": "string"
+                        },
+                        "verificationTier": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "conformance-verified"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "builder-round-trip"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "reconstructed-rules"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "xsd-structural"
+                              ]
+                            }
+                          ]
+                        },
+                        "verificationBadge": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "authority-verified"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "independently-rule-checked"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "structure-checked"
+                              ]
+                            }
+                          ]
                         },
                         "schematronVersion": {
                           "maxLength": 20,
