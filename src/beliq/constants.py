@@ -78,6 +78,10 @@ API_ERROR_CODES: tuple[str, ...] = (
     "RECIPIENT_NOT_ROUTABLE",
     "SENDER_COUNTRY_MISSING",
     "DOCUMENT_PARTY_MISMATCH",
+    # Not a routing failure but a regulatory one: a French sender to a French
+    # recipient is a domestic flow under the French B2B reform and must go
+    # through a plateforme agréée rather than over Peppol.
+    "FRENCH_DOMESTIC_FLOW",
     "UNSUPPORTED_SYNTAX",
     "MALFORMED_DOCUMENT",
     "EMPTY_DOCUMENT",
