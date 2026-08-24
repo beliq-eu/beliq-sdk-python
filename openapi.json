@@ -4228,6 +4228,293 @@
               }
             }
           },
+          "413": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "message"
+                      ],
+                      "properties": {
+                        "code": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "VALIDATION_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_INVOICE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_FORMAT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PROFILE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_TYPE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PARSE_FAILED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_XML"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "AUTHENTICATION_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RATE_LIMITED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ACCOUNT_THROTTLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INTERNAL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_UNSUPPORTED_PAIR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_LOSSY_FAILCLOSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_AUTH_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_NO_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
+                              ]
+                            }
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Default Response",
             "content": {
@@ -6461,6 +6748,293 @@
             }
           },
           "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "message"
+                      ],
+                      "properties": {
+                        "code": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "VALIDATION_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_INVOICE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_FORMAT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PROFILE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_TYPE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PARSE_FAILED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_XML"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "AUTHENTICATION_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RATE_LIMITED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ACCOUNT_THROTTLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INTERNAL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_UNSUPPORTED_PAIR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_LOSSY_FAILCLOSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_AUTH_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_NO_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
+                              ]
+                            }
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "413": {
             "description": "Default Response",
             "content": {
               "application/json": {
@@ -9912,6 +10486,293 @@
               }
             }
           },
+          "413": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "message"
+                      ],
+                      "properties": {
+                        "code": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "VALIDATION_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_INVOICE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_FORMAT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PROFILE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_TYPE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PARSE_FAILED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_XML"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "AUTHENTICATION_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RATE_LIMITED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ACCOUNT_THROTTLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INTERNAL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_UNSUPPORTED_PAIR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_LOSSY_FAILCLOSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_AUTH_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_NO_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
+                              ]
+                            }
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "415": {
             "description": "Default Response",
             "content": {
@@ -11894,6 +12755,293 @@
             }
           },
           "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "message"
+                      ],
+                      "properties": {
+                        "code": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "VALIDATION_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_INVOICE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_FORMAT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PROFILE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_TYPE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PARSE_FAILED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_XML"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "AUTHENTICATION_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RATE_LIMITED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ACCOUNT_THROTTLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INTERNAL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_UNSUPPORTED_PAIR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_LOSSY_FAILCLOSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_AUTH_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_NO_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
+                              ]
+                            }
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "413": {
             "description": "Default Response",
             "content": {
               "application/json": {
