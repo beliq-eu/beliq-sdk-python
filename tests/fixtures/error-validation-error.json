@@ -2,7 +2,7 @@
   "success": false,
   "error": {
     "code": "VALIDATION_ERROR",
-    "message": "The request body is not well-formed XML.",
-    "details": { "fields": [{ "path": "/invoice", "message": "must be object", "keyword": "type" }] }
+    "message": "querystring/franceCtc must be boolean",
+    "details": { "fields": [{ "path": "/franceCtc", "message": "must be boolean", "keyword": "type" }] }
   }
 }

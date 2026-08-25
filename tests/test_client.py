@@ -271,10 +271,10 @@ def test_raises_typed_error_on_4xx():
         return_value=httpx.Response(400, text=fixture("error-validation-error.json"))
     )
     with Beliq("blq_test") as beliq, pytest.raises(BeliqApiError) as ei:
-        beliq.validate("not xml")
+        beliq.validate("<x/>", france_ctc=True)
     assert ei.value.code == "VALIDATION_ERROR"
     assert ei.value.status == 400
-    assert "not well-formed" in ei.value.message
+    assert "must be boolean" in ei.value.message
     assert len(ei.value.details["fields"]) == 1
 
 
