@@ -1,8 +1,0 @@
-{
-  "success": false,
-  "error": {
-    "code": "INVALID_XML",
-    "message": "The request body is not well-formed XML.",
-    "details": { "line": 1 }
-  }
-}

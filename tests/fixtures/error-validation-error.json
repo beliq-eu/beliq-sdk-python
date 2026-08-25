@@ -1,0 +1,8 @@
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "The request body is not well-formed XML.",
+    "details": { "fields": [{ "path": "/invoice", "message": "must be object", "keyword": "type" }] }
+  }
+}
