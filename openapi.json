@@ -262,12 +262,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -281,12 +275,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -549,12 +537,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -568,12 +550,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -836,12 +812,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -855,12 +825,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -1123,12 +1087,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -1142,12 +1100,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -2834,12 +2786,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -2853,12 +2799,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -3121,12 +3061,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -3140,12 +3074,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -3408,12 +3336,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -3427,12 +3349,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -3695,12 +3611,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -3714,12 +3624,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -3982,12 +3886,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -4001,12 +3899,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -4269,12 +4161,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -4288,12 +4174,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -4556,12 +4436,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -4575,12 +4449,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -4843,12 +4711,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -4862,12 +4724,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -5130,12 +4986,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -5149,12 +4999,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -5927,12 +5771,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -5946,12 +5784,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -6214,12 +6046,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -6233,12 +6059,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -6501,12 +6321,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -6520,12 +6334,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -6788,12 +6596,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -6807,12 +6609,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -7075,12 +6871,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -7094,12 +6884,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -7362,12 +7146,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -7381,12 +7159,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -7649,12 +7421,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -7668,12 +7434,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -7936,12 +7696,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -7955,12 +7709,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -8223,12 +7971,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -8242,12 +7984,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -9379,12 +9115,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -9398,12 +9128,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -9666,12 +9390,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -9685,12 +9403,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -9953,12 +9665,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -9972,12 +9678,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -10240,12 +9940,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -10259,12 +9953,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -10527,12 +10215,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -10546,12 +10228,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -10814,12 +10490,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -10833,12 +10503,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -11101,12 +10765,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -11120,12 +10778,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -11388,12 +11040,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -11407,12 +11053,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -11675,12 +11315,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -11694,12 +11328,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -12221,12 +11849,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -12240,12 +11862,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -12508,12 +12124,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -12527,12 +12137,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -12795,12 +12399,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -12814,12 +12412,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -13082,12 +12674,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -13101,12 +12687,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -13369,12 +12949,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -13388,12 +12962,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -13656,12 +13224,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -13675,12 +13237,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -13943,12 +13499,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -13962,12 +13512,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -14230,12 +13774,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -14249,12 +13787,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -14517,12 +14049,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -14536,12 +14062,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -15119,12 +14639,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -15138,12 +14652,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {
@@ -15406,12 +14914,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "UNSUPPORTED_FORMAT"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "PROFILE_STANDARD_MISMATCH"
                               ]
                             },
@@ -15425,12 +14927,6 @@
                               "type": "string",
                               "enum": [
                                 "PARSE_FAILED"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "INVALID_XML"
                               ]
                             },
                             {

@@ -268,24 +268,26 @@ def test_convert_maps_metadata_headers():
 @respx.mock
 def test_raises_typed_error_on_4xx():
     respx.post("https://api.beliq.eu/v1/validate").mock(
-        return_value=httpx.Response(400, text=fixture("error-invalid-xml.json"))
+        return_value=httpx.Response(400, text=fixture("error-validation-error.json"))
     )
     with Beliq("blq_test") as beliq, pytest.raises(BeliqApiError) as ei:
-        beliq.validate("not xml")
-    assert ei.value.code == "INVALID_XML"
+        beliq.validate("<x/>", france_ctc=True)
+    assert ei.value.code == "VALIDATION_ERROR"
     assert ei.value.status == 400
-    assert "not well-formed" in ei.value.message
-    assert ei.value.details == {"line": 1}
+    assert "must be boolean" in ei.value.message
+    assert len(ei.value.details["fields"]) == 1
 
 
 @respx.mock
 def test_parses_error_envelope_on_binary_endpoint():
     respx.post("https://api.beliq.eu/v1/convert").mock(
-        return_value=httpx.Response(422, text=fixture("error-invalid-xml.json"))
+        return_value=httpx.Response(
+            422, text=fixture("error-conversion-unsupported-pair.json")
+        )
     )
     with Beliq("blq_test") as beliq, pytest.raises(BeliqApiError) as ei:
         beliq.convert("<x/>", target_format="ubl")
-    assert ei.value.code == "INVALID_XML"
+    assert ei.value.code == "CONVERSION_UNSUPPORTED_PAIR"
     assert ei.value.status == 422
 
 

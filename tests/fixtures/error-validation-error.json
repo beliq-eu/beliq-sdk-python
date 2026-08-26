@@ -1,0 +1,8 @@
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "querystring/franceCtc must be boolean",
+    "details": { "fields": [{ "path": "/franceCtc", "message": "must be boolean", "keyword": "type" }] }
+  }
+}

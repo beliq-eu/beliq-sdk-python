@@ -1,0 +1,8 @@
+{
+  "success": false,
+  "error": {
+    "code": "CONVERSION_UNSUPPORTED_PAIR",
+    "message": "No published converter for fatturapa -> ubl.",
+    "details": { "sourceFormat": "fatturapa", "targetFormat": "ubl" }
+  }
+}
