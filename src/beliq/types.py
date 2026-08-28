@@ -26,10 +26,19 @@ class _Model(BaseModel):
 class Org(_Model):
     id: str
     name: str
+    #: Default ruleset channel for ``/v1/validate`` when no ``Beliq-Ruleset``
+    #: header is sent.
+    ruleset_channel: str | None = None
 
 
 class Plan(_Model):
+    #: ``None`` when the organization references no plan record, which is every
+    #: organization on the free tier.
     id: int | None = None
+    #: The API stopped sending ``None`` here (a plan-less organization reads back
+    #: under the free tier's name), but this stays optional: a published client
+    #: has to parse whatever version of the API it is pointed at, and an older
+    #: deployment still answers ``null``.
     name: str | None = None
 
 
@@ -37,11 +46,20 @@ class Quota(_Model):
     limit: int
     used: int
     remaining: int
+    #: ISO 8601 UTC. End of the window ``limit`` and ``used`` were counted over:
+    #: on a live key a month anchored on the organization's billing day, on a
+    #: test key the turn of the UTC month.
+    resets_at: str | None = None
 
 
 class AccountInfo(_Model):
     key_id: str | None = None
     key_prefix: str | None = None
+    #: ``False`` for a ``blq_test_`` key. Selects which allowance ``quota``
+    #: describes: the plan quota on a live key, the flat sandbox allowance on a
+    #: test key. ``key_prefix`` cannot stand in for it, being ``None`` on the
+    #: dashboard-assertion path. Optional for the same reason as ``Plan.name``.
+    livemode: bool | None = None
     org: Org
     plan: Plan
     rate_limit_per_minute: int
