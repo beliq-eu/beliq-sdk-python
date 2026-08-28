@@ -1,14 +1,13 @@
 """Fail when the vendored openapi.json has fallen BEHIND the deployed live spec.
 
 tests/test_spec_contract.py only checks the hand-written contracts against the
-vendored spec; this catches the vendored spec itself going stale. Run on a
-schedule.
+vendored spec; this catches the vendored spec itself going stale. Runs on every
+change and weekly.
 
-The check is directional: it fails only when the live spec carries surface the
-vendored copy is missing (a new path, operation, field, or enum value). A
-vendored copy AHEAD of live (merged but not yet deployed) passes quietly, so
-manual deploys never turn this red. A network failure is a soft pass (warn,
-exit 0) so a hiccup never cries wolf.
+The comparison lives in ``_spec_surface.py``, which explains what counts as
+surface and why values are never compared; ``tests/test_spec_surface.py`` pins
+the behaviour in both directions. A network failure is a soft pass (warn, exit
+0) so a hiccup never cries wolf.
 """
 
 from __future__ import annotations
@@ -18,51 +17,13 @@ import sys
 import urllib.error
 import urllib.request
 from pathlib import Path
-from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from _spec_surface import surface_missing_from  # noqa: E402
 
 VENDORED = Path(__file__).resolve().parent.parent / "openapi.json"
 LIVE_URL = "https://api.beliq.eu/openapi.json"
-
-
-def covered_by(live: Any, vendored: Any, path: str, missing: list[str]) -> None:
-    """Record every value in ``live`` not present in ``vendored`` (objects by key,
-    arrays by element, scalars by equality)."""
-    if isinstance(live, list):
-        if not isinstance(vendored, list):
-            missing.append(path)
-            return
-        for item in live:
-            if not any(_is_covered(item, cand) for cand in vendored):
-                missing.append(f"{path}[{json.dumps(item, sort_keys=True)}]")
-        return
-    if isinstance(live, dict):
-        if not isinstance(vendored, dict):
-            missing.append(path)
-            return
-        for key, value in live.items():
-            covered_by(value, vendored.get(key), f"{path}.{key}" if path else key, missing)
-        return
-    if live != vendored:
-        missing.append(path)
-
-
-def _is_covered(live: Any, vendored: Any) -> bool:
-    """Boolean form used for array-element matching."""
-    probe: list[str] = []
-    covered_by(live, vendored, "", probe)
-    return not probe
-
-
-#: Descriptive metadata, not client surface. ``info.version`` in particular is
-#: *replaced* on a bump rather than added to, and coverage cannot express a
-#: replacement — a vendored copy legitimately ahead of live reads as behind it,
-#: which is a red run for the one case this check is built to tolerate. The
-#: field is guarded by ``tests/test_spec_vendoring.py`` instead.
-DESCRIPTIVE = ("info",)
-
-
-def surface_only(spec: dict[str, Any]) -> dict[str, Any]:
-    return {k: v for k, v in spec.items() if k not in DESCRIPTIVE}
 
 
 def main() -> int:
@@ -73,12 +34,9 @@ def main() -> int:
         print(f"could not reach {LIVE_URL} ({err}); skipping drift check")
         return 0
 
-    missing: list[str] = []
-    covered_by(
-        surface_only(json.loads(live_text)),
-        surface_only(json.loads(VENDORED.read_text(encoding="utf-8"))),
-        "",
-        missing,
+    missing = surface_missing_from(
+        json.loads(live_text),
+        json.loads(VENDORED.read_text(encoding="utf-8")),
     )
 
     if not missing:
