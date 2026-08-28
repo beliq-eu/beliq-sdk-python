@@ -15,6 +15,7 @@ from beliq.constants import (
     LIVE_GENERATE_PRESETS,
     LIVE_VALIDATE_FORMATS,
 )
+from beliq.types import AccountInfo
 
 SPEC = json.loads((Path(__file__).parent.parent / "openapi.json").read_text())
 
@@ -86,3 +87,25 @@ def test_generate_presets_are_subset_of_spec():
             assert preset.profile in profiles
         if preset.facturx_profile is not None:
             assert preset.facturx_profile in _enum_values(props["facturxProfile"])
+
+
+def test_account_info_declares_every_field_me_returns():
+    """`AccountInfo` is hand-written, so nothing made it follow the API.
+
+    It had fallen three fields behind (`livemode`, `org.rulesetChannel`,
+    `quota.resetsAt`) with a green suite, because `extra="allow"` keeps an
+    undeclared field on the object while hiding it from every type checker,
+    every IDE and every reader of the class. A user cannot reach what the model
+    does not name.
+
+    Membership, not equality: the model may legitimately declare a field the
+    spec does not require. Top-level keys of `data` only, matching the line the
+    Node SDK's gate and the beliq-docs one draw.
+    """
+    required = SPEC["paths"]["/v1/me"]["get"]["responses"]["200"]["content"]["application/json"]["schema"][
+        "properties"
+    ]["data"]["required"]
+    assert required, "the spec no longer marks any /v1/me field required"
+
+    declared = {field.alias or name for name, field in AccountInfo.model_fields.items()}
+    assert set(required) - declared == set()

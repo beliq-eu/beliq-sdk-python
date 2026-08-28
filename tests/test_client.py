@@ -58,6 +58,12 @@ def test_me_request_and_parse():
     assert "authorization" not in req.headers
     assert acct.org.name == "Acme GmbH"
     assert acct.quota.remaining == 9863
+    # Which allowance `quota` describes. A caller holding only the parsed body
+    # has no other way to tell: the x-beliq-livemode header is not in it, and
+    # key_prefix is None on the dashboard-assertion path.
+    assert acct.livemode is True
+    assert acct.quota.resets_at == "2026-09-14T09:00:00.000Z"
+    assert acct.org.ruleset_channel == "latest"
 
 
 @respx.mock

@@ -3,9 +3,15 @@
   "data": {
     "keyId": "key_123",
     "keyPrefix": "blq_live_ab",
-    "org": { "id": "org_42", "name": "Acme GmbH" },
+    "livemode": true,
+    "org": { "id": "org_42", "name": "Acme GmbH", "rulesetChannel": "latest" },
     "plan": { "id": 2, "name": "Growth" },
     "rateLimitPerMinute": 120,
-    "quota": { "limit": 10000, "used": 137, "remaining": 9863 }
+    "quota": {
+      "limit": 10000,
+      "used": 137,
+      "remaining": 9863,
+      "resetsAt": "2026-09-14T09:00:00.000Z"
+    }
   }
 }
