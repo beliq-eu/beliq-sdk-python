@@ -8,3 +8,8 @@ build
 .ruff_cache
 .pytest_cache
 .DS_Store
+
+# Local secrets
+.env
+.env.*
+!.env.example
