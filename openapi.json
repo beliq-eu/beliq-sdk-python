@@ -2569,6 +2569,17 @@
                               "maxLength": 20,
                               "type": "string"
                             },
+                            "franceExtendedCtcApplied": {
+                              "type": "boolean"
+                            },
+                            "franceCtcBlockingRuleIds": {
+                              "maxItems": 400,
+                              "type": "array",
+                              "items": {
+                                "maxLength": 100,
+                                "type": "string"
+                              }
+                            },
                             "italyFatturapaXsdBundle": {
                               "maxLength": 200,
                               "type": "string"
@@ -5574,6 +5585,17 @@
                         "franceCtcVersion": {
                           "maxLength": 20,
                           "type": "string"
+                        },
+                        "franceExtendedCtcApplied": {
+                          "type": "boolean"
+                        },
+                        "franceCtcBlockingRuleIds": {
+                          "maxItems": 400,
+                          "type": "array",
+                          "items": {
+                            "maxLength": 100,
+                            "type": "string"
+                          }
                         },
                         "italyFatturapaXsdBundle": {
                           "maxLength": 200,
