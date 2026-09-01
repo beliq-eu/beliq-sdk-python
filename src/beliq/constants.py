@@ -80,6 +80,16 @@ API_ERROR_CODES: tuple[str, ...] = (
     # recipient is a domestic flow under the French B2B reform and must go
     # through a plateforme agréée rather than over Peppol.
     "FRENCH_DOMESTIC_FLOW",
+    # The France CTC pre-flight on a plateforme-agréée lane, both 422. A PA
+    # refuses a document carrying any BR-FR-CTC Flux 2 finding at any severity
+    # and its refusal burns the invoice number, so Beliq refuses first.
+    # FRANCE_CTC_NOT_JUDGED means no France verdict exists for the document at
+    # all, usually a missing BT-23.
+    "FRANCE_CTC_BLOCKING_FINDINGS",
+    "FRANCE_CTC_NOT_JUDGED",
+    # 409: a PA already rejected these exact bytes, and a French invoice number
+    # must be reissued under a new one rather than sent again.
+    "FRANCE_INVOICE_NUMBER_BURNED",
     "UNSUPPORTED_SYNTAX",
     "MALFORMED_DOCUMENT",
     "EMPTY_DOCUMENT",
