@@ -448,6 +448,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -718,6 +736,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -998,6 +1034,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -1268,6 +1322,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -2983,6 +3055,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -3253,6 +3343,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -3533,6 +3641,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -3803,6 +3929,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -4083,6 +4227,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -4353,6 +4515,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -4633,6 +4813,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -4908,6 +5106,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -5178,6 +5394,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -5979,6 +6213,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -6249,6 +6501,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -6529,6 +6799,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -6799,6 +7087,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -7079,6 +7385,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -7349,6 +7673,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -7629,6 +7971,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -7904,6 +8264,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -8174,6 +8552,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -9323,6 +9719,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -9593,6 +10007,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -9873,6 +10305,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -10143,6 +10593,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -10423,6 +10891,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -10693,6 +11179,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -10973,6 +11477,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -11248,6 +11770,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -11518,6 +12058,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -12057,6 +12615,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -12327,6 +12903,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -12607,6 +13201,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -12877,6 +13489,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -13157,6 +13787,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -13427,6 +14075,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -13707,6 +14373,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -13982,6 +14666,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -14252,6 +14954,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
@@ -14847,6 +15567,24 @@
                             {
                               "type": "string",
                               "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -15117,6 +15855,24 @@
                               "type": "string",
                               "enum": [
                                 "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
                               ]
                             },
                             {
