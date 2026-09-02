@@ -27,6 +27,15 @@ DEFAULT_MAX_RETRIES = 3
 # so retrying risks producing a second document rather than recovering one.
 RETRYABLE_STATUSES = frozenset({429, 502, 503})
 
+# The one 429 waiting cannot clear. RATE_LIMITED frees up in seconds and
+# ACCOUNT_THROTTLED in minutes, but a spent monthly allowance only returns when the
+# billing window turns, and beliq's Retry-After states it honestly: the seconds left
+# in the window, which can be weeks. Retrying sleeps MAX_RETRY_AFTER_SECONDS per
+# attempt against a refusal that is already final, and whatever wraps the call
+# usually gives up first, so the caller is told the request hung rather than that
+# the allowance is gone.
+QUOTA_EXHAUSTED_CODE = "QUOTA_EXCEEDED"
+
 # Ceiling on a server-supplied Retry-After, so one header cannot hang a call.
 MAX_RETRY_AFTER_SECONDS = 30.0
 
