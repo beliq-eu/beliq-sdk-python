@@ -80,6 +80,11 @@ costs you a second document.
 work may still be running on beliq's side, so retrying risks producing a second
 document rather than recovering the first.
 
+A `429` carrying `QUOTA_EXCEEDED` is not retried either. `RATE_LIMITED` and
+`ACCOUNT_THROTTLED` clear on their own, but a spent monthly allowance only returns
+when your billing window turns, so the error is raised straight away and names the
+cause instead of sleeping against it.
+
 The default deadline is generous because beliq runs the full Schematron rule set
 over each document, and a generate or validate can legitimately take tens of
 seconds. If you lower it, keep it above the latency you actually see: a deadline

@@ -60,6 +60,53 @@ def test_retries_429_honouring_retry_after() -> None:
     assert route.call_count == 2
 
 
+# Seconds to the end of a monthly billing window, which is what beliq sends on a
+# spent quota. Retrying it clamps to MAX_RETRY_AFTER_SECONDS and sleeps that per
+# attempt, so the caller meets its own deadline instead of the quota message.
+WINDOW_REMAINING_SECONDS = str(29 * 24 * 60 * 60)
+
+
+@respx.mock
+def test_does_not_retry_spent_monthly_quota() -> None:
+    route = respx.get(ME_URL).mock(
+        return_value=_err(429, "QUOTA_EXCEEDED", retry_after=WINDOW_REMAINING_SECONDS)
+    )
+    with pytest.raises(BeliqApiError) as excinfo:
+        _client().me()
+    assert excinfo.value.status == 429
+    assert excinfo.value.code == "QUOTA_EXCEEDED"
+    assert route.call_count == 1
+
+
+@respx.mock
+@pytest.mark.parametrize("code", ["RATE_LIMITED", "ACCOUNT_THROTTLED"])
+def test_still_retries_the_429s_that_waiting_clears(code: str) -> None:
+    route = respx.get(ME_URL).mock(side_effect=[_err(429, code), _ok()])
+    _client().me()
+    assert route.call_count == 2
+
+
+@respx.mock
+def test_async_client_does_not_retry_spent_monthly_quota() -> None:
+    from beliq import AsyncBeliq
+
+    route = respx.get(ME_URL).mock(
+        return_value=_err(429, "QUOTA_EXCEEDED", retry_after=WINDOW_REMAINING_SECONDS)
+    )
+
+    async def go() -> object:
+        client = AsyncBeliq(API_KEY, max_retries=2)
+        try:
+            return await client.me()
+        finally:
+            await client.aclose()
+
+    with pytest.raises(BeliqApiError) as excinfo:
+        asyncio.run(go())
+    assert excinfo.value.code == "QUOTA_EXCEEDED"
+    assert route.call_count == 1
+
+
 @respx.mock
 def test_does_not_retry_504() -> None:
     # The one status where a retry can duplicate a document: the work may still

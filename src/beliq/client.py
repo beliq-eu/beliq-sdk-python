@@ -27,6 +27,7 @@ from .constants import (
     DEFAULT_MAX_RETRIES,
     DEFAULT_TIMEOUT_SECONDS,
     MAX_RETRY_AFTER_SECONDS,
+    QUOTA_EXHAUSTED_CODE,
     RETRYABLE_STATUSES,
 )
 from .errors import BeliqApiError, error_from_response, parse_envelope
@@ -68,8 +69,19 @@ def _retry_delay(response: httpx.Response | None, attempt: int) -> float:
     return backoff + random.random() * backoff
 
 
+def _is_quota_exhausted(response: httpx.Response) -> bool:
+    """True for the 429 that only the billing window can clear."""
+    if response.status_code != 429:
+        return False
+    envelope = parse_envelope(response.content) or {}
+    err = envelope.get("error")
+    return isinstance(err, dict) and err.get("code") == QUOTA_EXHAUSTED_CODE
+
+
 def _should_retry(response: httpx.Response, attempt: int, max_retries: int) -> bool:
-    return response.status_code in RETRYABLE_STATUSES and attempt < max_retries
+    if response.status_code not in RETRYABLE_STATUSES or attempt >= max_retries:
+        return False
+    return not _is_quota_exhausted(response)
 
 
 def _request_kwargs(base_url: str, api_key: str, auth: str, req: BuiltRequest) -> dict[str, Any]:
@@ -236,8 +248,9 @@ class Beliq:
         """Issue the request, retrying transient failures.
 
         Only 429/502/503 are retried and only up to ``max_retries``; anything
-        else, including a timeout, is surfaced immediately. A caller-supplied
-        ``client`` keeps its own timeout, which this does not override.
+        else, including a timeout and a 429 whose body says the monthly quota is
+        spent, is surfaced immediately. A caller-supplied ``client`` keeps its own
+        timeout, which this does not override.
         """
         kwargs = _request_kwargs(self._base_url, self._api_key, self._auth, req)
         for attempt in range(self._max_retries + 1):
