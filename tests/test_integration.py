@@ -5,7 +5,9 @@ optionally BELIQ_BASE_URL) to run it, otherwise the module is skipped.
 """
 
 import hashlib
+import json
 import os
+from pathlib import Path
 
 import pytest
 
@@ -15,38 +17,7 @@ pytestmark = pytest.mark.skipif(
     not os.environ.get("BELIQ_API_KEY"), reason="set BELIQ_API_KEY to run the live test"
 )
 
-INVOICE = {
-    "number": "IT-2026-001",
-    "issueDate": "2026-01-15",
-    "dueDate": "2026-02-14",
-    "currencyCode": "EUR",
-    "buyerReference": "LEITWEG-01",
-    "seller": {
-        "name": "Seller GmbH",
-        "vatId": "DE123456789",
-        "address": {"street": "Hauptstrasse 1", "city": "Berlin", "postalCode": "10115", "countryCode": "DE"},
-    },
-    "buyer": {
-        "name": "Buyer GmbH",
-        "vatId": "DE987654321",
-        "address": {"street": "Marktplatz 2", "city": "Munich", "postalCode": "80331", "countryCode": "DE"},
-    },
-    "lines": [
-        {
-            "description": "Consulting",
-            "quantity": 10,
-            "unitCode": "HUR",
-            "unitPrice": 100,
-            "lineTotal": 1000,
-            "vatRate": 19,
-            "vatCategoryCode": "S",
-        }
-    ],
-    "taxSummary": [{"vatCategoryCode": "S", "vatRate": 19, "taxableAmount": 1000, "taxAmount": 190}],
-    "totalNetAmount": 1000,
-    "totalTaxAmount": 190,
-    "totalGrossAmount": 1190,
-}
+INVOICE = json.loads((Path(__file__).resolve().parents[1] / "examples" / "invoice.json").read_text())
 
 
 def test_live_roundtrip():

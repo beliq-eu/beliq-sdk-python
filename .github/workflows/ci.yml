@@ -25,3 +25,73 @@ jobs:
       # Includes tests/test_spec_contract.py, which fails if the hand-written
       # contracts drift from the vendored openapi.json.
       - run: pytest
+
+  # tests/test_integration.py drives the SDK against the live beliq API, spending 5 documents (generate + sealed generate + validate + parse + convert).
+  # BELIQ_API_KEY is a `blq_test_` sandbox key: it runs the full rule stack but
+  # draws on the sandbox allowance instead of the plan quota, so a broad trigger
+  # stays affordable.
+  #
+  # Gating at job level rather than per step means a run that cannot be
+  # exercised reports as skipped, which no one can misread as verified.
+  preflight:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.decide.outputs.run }}
+    steps:
+      # GET /v1/me is quota-exempt, so asking what is left costs nothing. A key
+      # that is absent (forks) and an allowance that is spent are the same
+      # condition from the test's point of view: the contract could not be
+      # checked, which is not the same as the contract being broken.
+      - id: decide
+        env:
+          BELIQ_API_KEY: ${{ secrets.BELIQ_API_KEY }}
+        run: |
+          set -uo pipefail
+
+          # generate + sealed generate + validate + parse + convert
+          needed=5
+
+          if [ -z "${BELIQ_API_KEY:-}" ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "BELIQ_API_KEY is not set; skipping the live API smoke test."
+            exit 0
+          fi
+
+          body="$(curl -sS --max-time 30 \
+            -H "Authorization: Bearer $BELIQ_API_KEY" \
+            https://api.beliq.eu/v1/me)" || body=''
+          remaining="$(printf '%s' "$body" | jq -r '.data.quota.remaining // empty')" || remaining=''
+          resets="$(printf '%s' "$body" | jq -r '.data.quota.resetsAt // empty')" || resets='unknown'
+
+          # An unreadable answer is not a reason to skip: /v1/me is an
+          # optimisation, and a real API outage should surface as a red live job
+          # rather than a quiet one.
+          if ! printf '%s' "$remaining" | grep -qE '^[0-9]+$'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "could not read the remaining quota from /v1/me; running the live test anyway"
+            exit 0
+          fi
+
+          echo "quota remaining: $remaining, resets $resets"
+          if [ "$remaining" -lt "$needed" ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::beliq API allowance is spent ($remaining of $needed documents left, resets $resets), so the live contract was NOT verified by this run."
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  live:
+    needs: preflight
+    if: needs.preflight.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e ".[dev]"
+      - name: Live API smoke test
+        env:
+          BELIQ_API_KEY: ${{ secrets.BELIQ_API_KEY }}
+        run: pytest tests/test_integration.py
