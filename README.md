@@ -30,11 +30,32 @@ generated = beliq.generate(
         "number": "INV-2026-001",
         "issueDate": "2026-01-15",
         "currencyCode": "EUR",
-        "seller": {"name": "Seller GmbH", "address": {"city": "Berlin", "postalCode": "10115", "countryCode": "DE"}},
-        "buyer": {"name": "Buyer GmbH", "address": {"city": "Munich", "postalCode": "80331", "countryCode": "DE"}},
+        # The XRechnung CIUS asks for more than plain EN 16931: a seller contact
+        # (BR-DE-2), payment instructions (BR-DE-1), a VAT breakdown (BR-CO-18)
+        # and an electronic address per party. examples/invoice.json is this
+        # same shape.
+        "buyerReference": "04011000-12345-06",
+        "seller": {
+            "name": "Seller GmbH",
+            "vatId": "DE123456789",
+            "contactName": "Anna Muster",
+            "email": "billing@seller.example",
+            "phone": "+49 30 1234567",
+            "address": {"street": "Hauptstr. 1", "city": "Berlin", "postalCode": "10115", "countryCode": "DE"},
+            "peppol": {"schemeId": "9930", "id": "DE123456789"},
+        },
+        "buyer": {
+            "name": "Buyer GmbH",
+            "vatId": "DE987654321",
+            "email": "ap@buyer.example",
+            "address": {"street": "Marktweg 2", "city": "Munich", "postalCode": "80331", "countryCode": "DE"},
+            "peppol": {"schemeId": "9930", "id": "DE987654321"},
+        },
         "lines": [
             {"description": "Consulting", "quantity": 10, "unitCode": "HUR", "unitPrice": 100, "lineTotal": 1000, "vatRate": 19, "vatCategoryCode": "S"}
         ],
+        "taxSummary": [{"vatCategoryCode": "S", "vatRate": 19, "taxableAmount": 1000, "taxAmount": 190}],
+        "paymentMeans": {"typeCode": "58", "iban": "DE89370400440532013000"},
         "totalNetAmount": 1000,
         "totalTaxAmount": 190,
         "totalGrossAmount": 1190,
