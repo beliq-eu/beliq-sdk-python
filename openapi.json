@@ -15731,7 +15731,8 @@
                               "verificationBadge",
                               "releaseDate",
                               "repo",
-                              "tag"
+                              "tag",
+                              "retained"
                             ],
                             "properties": {
                               "format": {
@@ -15877,6 +15878,62 @@
                                     "type": "null"
                                   }
                                 ]
+                              },
+                              "retained": {
+                                "description": "Versions of this format's artefact still on disk but no longer served, oldest first. Empty for a format whose artefact has never had a breaking bump, and empty for one inside a notice period, where the outgoing release is still what `rulesetVersion` names.",
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "required": [
+                                    "version",
+                                    "releaseDate",
+                                    "servingFrom",
+                                    "retainedUntil",
+                                    "supersededMandatoryOn"
+                                  ],
+                                  "properties": {
+                                    "version": {
+                                      "type": "string"
+                                    },
+                                    "releaseDate": {
+                                      "description": "ISO 8601 date (YYYY-MM-DD) the authority released this version, or null when it publishes none.",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ]
+                                    },
+                                    "servingFrom": {
+                                      "description": "ISO 8601 date (YYYY-MM-DD) Beliq started serving this version as `latest`.",
+                                      "type": "string"
+                                    },
+                                    "retainedUntil": {
+                                      "description": "ISO 8601 date (YYYY-MM-DD) after which this version is no longer served at all, or null when nothing retires it. The last day an exact pin resolves; after it, the pin returns a 422.",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ]
+                                    },
+                                    "supersededMandatoryOn": {
+                                      "description": "ISO 8601 date (YYYY-MM-DD) the authority made this version's successor mandatory, or null when it published no date. Once it has passed, `Beliq-Ruleset: previous` no longer resolves to this version and sets `rulesetFellBack: true`, because a document built to it is rejected by the receiving corner. An exact version pin is unaffected and still reaches it until `retainedUntil`.",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
                               }
                             }
                           }
