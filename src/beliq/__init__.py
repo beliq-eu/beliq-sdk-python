@@ -18,8 +18,11 @@ from .constants import (
     LIVE_GENERATE_STANDARDS,
     LIVE_PARSE_FORMATS,
     LIVE_PROFILES,
+    LIVE_PROFILES_BY_STANDARD,
     LIVE_VALIDATE_FORMATS,
     GeneratePreset,
+    is_profile_allowed_for_standard,
+    profiles_for_standard,
 )
 from .errors import BeliqApiError
 from .types import (
@@ -66,5 +69,8 @@ __all__ = [
     "LIVE_GENERATE_STANDARDS",
     "LIVE_PARSE_FORMATS",
     "LIVE_PROFILES",
+    "LIVE_PROFILES_BY_STANDARD",
     "LIVE_VALIDATE_FORMATS",
+    "is_profile_allowed_for_standard",
+    "profiles_for_standard",
 ]
