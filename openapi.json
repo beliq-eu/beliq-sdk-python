@@ -424,6 +424,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -712,6 +724,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -1010,6 +1034,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -1298,6 +1334,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -2008,6 +2056,71 @@
                           }
                         }
                       },
+                      "delivery": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "maxLength": 200,
+                            "type": "string"
+                          },
+                          "locationId": {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "required": [
+                              "id"
+                            ],
+                            "properties": {
+                              "schemeId": {
+                                "maxLength": 10,
+                                "type": "string"
+                              },
+                              "id": {
+                                "maxLength": 200,
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "date": {
+                            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                            "type": "string"
+                          },
+                          "address": {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "required": [
+                              "countryCode"
+                            ],
+                            "properties": {
+                              "street": {
+                                "maxLength": 500,
+                                "type": "string"
+                              },
+                              "additionalStreet": {
+                                "maxLength": 500,
+                                "type": "string"
+                              },
+                              "city": {
+                                "maxLength": 200,
+                                "type": "string"
+                              },
+                              "postalCode": {
+                                "maxLength": 20,
+                                "type": "string"
+                              },
+                              "countryCode": {
+                                "minLength": 2,
+                                "maxLength": 2,
+                                "type": "string"
+                              },
+                              "countrySubentity": {
+                                "maxLength": 10,
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      },
                       "paymentMeans": {
                         "additionalProperties": false,
                         "type": "object",
@@ -2034,6 +2147,22 @@
                           },
                           "paymentReference": {
                             "maxLength": 200,
+                            "type": "string"
+                          },
+                          "information": {
+                            "maxLength": 200,
+                            "type": "string"
+                          },
+                          "mandateReference": {
+                            "maxLength": 200,
+                            "type": "string"
+                          },
+                          "creditorId": {
+                            "maxLength": 200,
+                            "type": "string"
+                          },
+                          "debitedAccountId": {
+                            "maxLength": 34,
                             "type": "string"
                           }
                         }
@@ -2709,11 +2838,12 @@
                               ]
                             },
                             "rulesetFellBack": {
+                              "description": "True when `previous` was requested and the format had nothing for the channel to reach, so the request ran what `latest` would have run. Either nothing is retained, or what is retained has been superseded by the authority making its successor mandatory. A superseded version is still reachable by an exact pin. Present only alongside `rulesetChannel`.",
                               "type": "boolean"
                             },
                             "rulesetSunsetsOn": {
                               "format": "date",
-                              "description": "ISO date the retained ruleset serving this request stops being served. Present only when a retained ruleset ran (never on a default request); the earliest date when several ran. After it, `previous` falls back to `latest` and an exact pin 422s.",
+                              "description": "ISO date the retained ruleset serving this request stops being served. Present only when a retained ruleset ran (never on a default request); the earliest date when several ran. After it an exact pin 422s. It bounds the pin, not the channel: `previous` stops reaching the version on this date or on the authority's mandatory date for the successor, whichever comes first.",
                               "type": "string"
                             },
                             "errors": {
@@ -3031,6 +3161,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -3319,6 +3461,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -3617,6 +3771,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -3905,6 +4071,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -4203,6 +4381,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -4491,6 +4681,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -4789,6 +4991,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -5082,6 +5296,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -5370,6 +5596,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -5888,11 +6126,12 @@
                           ]
                         },
                         "rulesetFellBack": {
+                          "description": "True when `previous` was requested and the format had nothing for the channel to reach, so the request ran what `latest` would have run. Either nothing is retained, or what is retained has been superseded by the authority making its successor mandatory. A superseded version is still reachable by an exact pin. Present only alongside `rulesetChannel`.",
                           "type": "boolean"
                         },
                         "rulesetSunsetsOn": {
                           "format": "date",
-                          "description": "ISO date the retained ruleset serving this request stops being served. Present only when a retained ruleset ran (never on a default request); the earliest date when several ran. After it, `previous` falls back to `latest` and an exact pin 422s.",
+                          "description": "ISO date the retained ruleset serving this request stops being served. Present only when a retained ruleset ran (never on a default request); the earliest date when several ran. After it an exact pin 422s. It bounds the pin, not the channel: `previous` stops reaching the version on this date or on the authority's mandatory date for the successor, whichever comes first.",
                           "type": "string"
                         },
                         "errors": {
@@ -6184,6 +6423,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -6482,6 +6733,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -6770,6 +7033,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -7068,6 +7343,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -7356,6 +7643,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -7654,6 +7953,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -7942,6 +8253,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -8240,6 +8563,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -8528,6 +8863,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -9195,6 +9542,71 @@
                                 }
                               }
                             },
+                            "delivery": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "maxLength": 200,
+                                  "type": "string"
+                                },
+                                "locationId": {
+                                  "additionalProperties": false,
+                                  "type": "object",
+                                  "required": [
+                                    "id"
+                                  ],
+                                  "properties": {
+                                    "schemeId": {
+                                      "maxLength": 10,
+                                      "type": "string"
+                                    },
+                                    "id": {
+                                      "maxLength": 200,
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "date": {
+                                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                                  "type": "string"
+                                },
+                                "address": {
+                                  "additionalProperties": false,
+                                  "type": "object",
+                                  "required": [
+                                    "countryCode"
+                                  ],
+                                  "properties": {
+                                    "street": {
+                                      "maxLength": 500,
+                                      "type": "string"
+                                    },
+                                    "additionalStreet": {
+                                      "maxLength": 500,
+                                      "type": "string"
+                                    },
+                                    "city": {
+                                      "maxLength": 200,
+                                      "type": "string"
+                                    },
+                                    "postalCode": {
+                                      "maxLength": 20,
+                                      "type": "string"
+                                    },
+                                    "countryCode": {
+                                      "minLength": 2,
+                                      "maxLength": 2,
+                                      "type": "string"
+                                    },
+                                    "countrySubentity": {
+                                      "maxLength": 10,
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            },
                             "paymentMeans": {
                               "additionalProperties": false,
                               "type": "object",
@@ -9221,6 +9633,22 @@
                                 },
                                 "paymentReference": {
                                   "maxLength": 200,
+                                  "type": "string"
+                                },
+                                "information": {
+                                  "maxLength": 200,
+                                  "type": "string"
+                                },
+                                "mandateReference": {
+                                  "maxLength": 200,
+                                  "type": "string"
+                                },
+                                "creditorId": {
+                                  "maxLength": 200,
+                                  "type": "string"
+                                },
+                                "debitedAccountId": {
+                                  "maxLength": 34,
                                   "type": "string"
                                 }
                               }
@@ -9695,6 +10123,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -9983,6 +10423,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -10281,6 +10733,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -10569,6 +11033,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -10867,6 +11343,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -11155,6 +11643,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -11453,6 +11953,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -11746,6 +12258,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -12034,6 +12558,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -12591,6 +13127,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -12879,6 +13427,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -13177,6 +13737,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -13465,6 +14037,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -13763,6 +14347,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -14051,6 +14647,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -14349,6 +14957,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -14642,6 +15262,18 @@
                             {
                               "type": "string",
                               "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RECIPIENT_NOT_ROUTABLE"
                               ]
                             },
@@ -14930,6 +15562,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -15324,7 +15968,7 @@
                                 ]
                               },
                               "retiredOn": {
-                                "description": "ISO 8601 date (YYYY-MM-DD) after which `from` is no longer served at all, or null when nothing retires it. Later than `effectiveOn`, and the date to act on: it is when a `Beliq-Ruleset: previous` pin stops resolving to `from` and an exact pin on it starts returning a 422.",
+                                "description": "ISO 8601 date (YYYY-MM-DD) after which `from` is no longer served at all, or null when nothing retires it. Later than `effectiveOn`, and the date to act on: it is when an exact pin on `from` starts returning a 422. It does not bound the `previous` channel, which stops resolving to `from` on this date or on the authority's mandatory date for `to`, whichever comes first.",
                                 "anyOf": [
                                   {
                                     "type": "string"
@@ -15545,6 +16189,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {
@@ -15838,6 +16494,18 @@
                               "type": "string",
                               "enum": [
                                 "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
                               ]
                             },
                             {

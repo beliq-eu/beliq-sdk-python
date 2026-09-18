@@ -76,6 +76,13 @@ API_ERROR_CODES: tuple[str, ...] = (
     "INBOX_UNKNOWN_PROVIDER",
     "INBOX_VERIFICATION_FAILED",
     "INBOX_SIGNATURE_EXPIRED",
+    # POST /v1/participants. ENROLLMENT_MODE_UNSUPPORTED (409): the network's
+    # authorization model is not self-service yet, so support registers the
+    # participant. ENROLLMENT_REFUSED (422): beliq's checks passed and the
+    # provider refused anyway, often because the identifier is already
+    # registered through another provider.
+    "ENROLLMENT_MODE_UNSUPPORTED",
+    "ENROLLMENT_REFUSED",
     # Peppol routing derivation at emit. A document travels inside an envelope
     # the receiving Access Point routes on, and these are the ways one cannot be
     # built: the recipient has no canonical Peppol form, the sending
