@@ -207,6 +207,7 @@ An unknown standard returns `()` and is allowed, so the API stays the authority 
 python -m venv .venv && . .venv/bin/activate
 pip install -e ".[dev]"
 ruff check src tests
+bash scripts/scrub-check.sh              # no em-dash in any tracked file
 mypy
 pytest                                   # unit tests (no network)
 BELIQ_API_KEY=blq_xxx pytest tests/test_integration.py   # hits the live API; draws quota
