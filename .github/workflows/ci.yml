@@ -21,6 +21,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install -e ".[dev]"
       - run: ruff check src tests
+      - run: bash scripts/scrub-check.sh
       - run: mypy
       # Includes tests/test_spec_contract.py, which fails if the hand-written
       # contracts drift from the vendored openapi.json.

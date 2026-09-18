@@ -1,7 +1,7 @@
 """The vendored openapi.json must be byte-identical to beliq-api's copy.
 
-Three copies of one contract exist — beliq-api's generated artifact, the Node
-SDK's vendored copy, and this one — and a client generated from a stale or
+Three copies of one contract exist (beliq-api's generated artifact, the Node
+SDK's vendored copy, and this one), and a client generated from a stale or
 differently-serialized copy types the API wrongly.
 
 Byte equality across three languages only holds if every copy is serialized the
