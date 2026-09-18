@@ -13,6 +13,7 @@ from beliq.constants import (
     API_ERROR_CODES,
     LIVE_CONVERT_TARGET_FORMATS,
     LIVE_GENERATE_PRESETS,
+    LIVE_PROFILES_BY_STANDARD,
     LIVE_VALIDATE_FORMATS,
 )
 from beliq.types import AccountInfo
@@ -88,6 +89,16 @@ def test_generate_presets_are_subset_of_spec():
         if preset.facturx_profile is not None:
             assert preset.facturx_profile in _enum_values(props["facturxProfile"])
 
+
+
+def test_profile_table_offers_only_profiles_the_spec_declares():
+    # The spec enum is flat (it carries no per-standard rule), so this catches a
+    # typo or a retired profile; the pairing itself is checked against the
+    # engine's table by scripts/check_profile_drift.py.
+    declared = _enum_values(_generate_body_props()["profile"])
+    for standard, profiles in LIVE_PROFILES_BY_STANDARD.items():
+        for profile in profiles:
+            assert profile in declared, f"{standard} -> {profile}"
 
 def test_account_info_declares_every_field_me_returns():
     """`AccountInfo` is hand-written, so nothing made it follow the API.

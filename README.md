@@ -188,6 +188,19 @@ nlcius = next(p for p in LIVE_GENERATE_PRESETS if p.id == "nlcius")
 beliq.generate(standard=nlcius.standard, profile=nlcius.profile, output=nlcius.output, invoice=invoice)
 ```
 
+## Which profiles a standard accepts
+
+`profile` is pinned per standard, and the API answers a pair outside its table with `422 PROFILE_STANDARD_MISMATCH`. `LIVE_PROFILES` is one flat list for the Factur-X family, so offering it for every standard offers values that cannot succeed: none of them is legal on XRechnung or Peppol BIS, and `extended-ctc-fr` is Factur-X only. Build a per-standard choice from `profiles_for_standard` instead:
+
+```python
+from beliq import is_profile_allowed_for_standard, profiles_for_standard
+
+profiles_for_standard("zugferd")                               # ('basicwl', 'en16931', 'extended')
+is_profile_allowed_for_standard("zugferd", "extended-ctc-fr")  # False
+```
+
+An unknown standard returns `()` and is allowed, so the API stays the authority on values this table does not carry.
+
 ## Development
 
 ```bash
@@ -199,7 +212,7 @@ pytest                                   # unit tests (no network)
 BELIQ_API_KEY=blq_xxx pytest tests/test_integration.py   # hits the live API; draws quota
 ```
 
-`tests/test_spec_contract.py` reads the vendored `openapi.json` and fails if the error-code set, the core validate/seal fields, or the public option lists drift from the spec. Refresh the vendored spec with `python scripts/sync_spec.py`. A weekly workflow (`scripts/check_live_drift.py`) flags when the vendored spec falls behind the deployed API.
+`tests/test_spec_contract.py` reads the vendored `openapi.json` and fails if the error-code set, the core validate/seal fields, or the public option lists drift from the spec. Refresh the vendored spec with `python scripts/sync_spec.py`. A weekly workflow (`scripts/check_live_drift.py`) flags when the vendored spec falls behind the deployed API. `python scripts/check_profile_drift.py` checks `LIVE_PROFILES_BY_STANDARD` against the engine's own table; it needs a `beliq-engine` checkout beside this repo (or `BELIQ_ENGINE_PATH`) and fails without one, so it is run by hand, not in CI.
 
 ## Publishing
 
