@@ -1682,6 +1682,14 @@
                         "maxLength": 3,
                         "type": "string"
                       },
+                      "taxCurrencyCode": {
+                        "minLength": 3,
+                        "maxLength": 3,
+                        "type": "string"
+                      },
+                      "taxTotalInAccountingCurrency": {
+                        "type": "number"
+                      },
                       "documentType": {
                         "anyOf": [
                           {
@@ -9167,6 +9175,14 @@
                               "minLength": 3,
                               "maxLength": 3,
                               "type": "string"
+                            },
+                            "taxCurrencyCode": {
+                              "minLength": 3,
+                              "maxLength": 3,
+                              "type": "string"
+                            },
+                            "taxTotalInAccountingCurrency": {
+                              "type": "number"
                             },
                             "documentType": {
                               "anyOf": [
