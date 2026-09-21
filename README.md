@@ -218,7 +218,7 @@ BELIQ_API_KEY=blq_xxx uv run pytest tests/test_integration.py   # hits the live 
 
 ## Publishing
 
-Released to PyPI as [`beliq`](https://pypi.org/project/beliq/). Releases run from `.github/workflows/release.yml` via PyPI Trusted Publishing (OIDC, with attestations): bump `version` in `pyproject.toml` and `__version__` in `src/beliq/__init__.py`, run `uv lock`, merge, then push a `v*.*.*` tag on the merge commit to publish. No token is stored in the repo.
+Released to PyPI as [`beliq`](https://pypi.org/project/beliq/). Releases run from `.github/workflows/release.yml` via PyPI Trusted Publishing (OIDC, with attestations): bump `version` in `pyproject.toml` and `__version__` in `src/beliq/__init__.py`, run `uv lock`, add the release's entry to [`CHANGELOG.md`](CHANGELOG.md), merge, then push a `v*.*.*` tag on the merge commit to publish. No token is stored in the repo.
 
 ## License
 
