@@ -2,8 +2,10 @@
 
 Prefers a sibling beliq-api checkout (../../beliq-api/openapi.json), falls back
 to fetching the live spec. The vendored copy is committed so builds stay
-reproducible; run this only when the API surface changes, then
-`python scripts/gen_models.py` and commit both.
+reproducible; run this only when the API surface changes, then commit it.
+Nothing is generated from it here: the models in src/beliq/types.py are
+hand-written, and the spec is what tests/test_spec_contract.py pins them
+against. The Node SDK does codegen from its copy (`npm run gen:types`).
 """
 
 from __future__ import annotations
