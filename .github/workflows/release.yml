@@ -35,6 +35,7 @@ jobs:
       # workflow_dispatch offers every branch, and a tag can point at any commit.
       # This stops a release from the wrong place by mistake. It is no defence
       # against an edit to this file: a tag runs the workflow as of its commit.
+      # The `pypi` environment on the publish job below is that defence.
       - name: Release only from a vX.Y.Z tag on main
         run: |
           if ! [[ "$GITHUB_REF" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -64,6 +65,9 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # The half an edit to this file cannot remove. GitHub refuses to start
+    # the job unless the ref matches this environment's `v*.*.*` tag policy,
+    # and PyPI only accepts a Trusted Publishing token from a run in it.
     environment: pypi
     permissions:
       id-token: write # required for PyPI Trusted Publishing (OIDC)
