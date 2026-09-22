@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "components": {
     "securitySchemes": {
@@ -15965,7 +15965,7 @@
         "tags": [
           "Reference"
         ],
-        "description": "Public reference for the ruleset versions and artifact hashes Beliq pins. `artifacts` is the ruleset-hash catalog: each rule artifact that can run for a publicly-supported format, with the SHA-256 of its exact file bytes. To verify a `POST /v1/validate` response for a publicly-supported format, confirm each of its `rulesetArtifacts` components appears here, then reproduce its `rulesetSha256` by sorting the components’ `\"<key>@<version>=<fileSha256>\"` lines, joining with newlines, and taking the SHA-256. (The `rulesetSha256` reproduction needs only the response’s own components, so it holds for any result. Formats beliq carries on no public surface run real, pinned artifacts that are intentionally omitted here, so their components will not appear in this catalog.) For compiled-Schematron families the published hash proves the artifact Beliq ran is the one Beliq pins, not a value reproducible from the authority’s raw source. `scheduledChanges` lists announced bumps that have not taken effect yet; each row names both the `formats` and the `capabilities` the changing artifact judges, and a bump can reach you through a capability alone.",
+        "description": "Public reference for the ruleset versions and artifact hashes Beliq pins. `artifacts` is the ruleset-hash catalog: each rule artifact that can run for a publicly-supported format, with the SHA-256 of its exact file bytes. To verify a `POST /v1/validate` response for a publicly-supported format, confirm each of its `rulesetArtifacts` components appears here, then reproduce its `rulesetSha256` by sorting the components’ `\"<key>@<version>=<fileSha256>\"` lines, joining with newlines, and taking the SHA-256. (The `rulesetSha256` reproduction needs only the response’s own components, so it holds for any result. Formats beliq carries on no public surface run real, pinned artifacts that are intentionally omitted here, so their components will not appear in this catalog.) For compiled-Schematron families the published hash proves the artifact Beliq ran is the one Beliq pins, not a value reproducible from the authority’s raw source. `scheduledChanges` lists announced bumps that have not taken effect yet; each row names both the `formats` and the `capabilities` the changing artifact judges, and a bump can reach you through a capability alone. Each entry’s `previousChannel` says what `Beliq-Ruleset: previous` resolves to for that format today, one row per rule artifact, so you do not have to derive it from the `retained[]` dates: a retained version can be pinnable and still not be what the channel chooses.",
         "security": [],
         "responses": {
           "200": {
@@ -16018,7 +16018,8 @@
                               "releaseDate",
                               "repo",
                               "tag",
-                              "retained"
+                              "retained",
+                              "previousChannel"
                             ],
                             "properties": {
                               "format": {
@@ -16212,6 +16213,66 @@
                                       "anyOf": [
                                         {
                                           "type": "string"
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              },
+                              "previousChannel": {
+                                "description": "What `Beliq-Ruleset: previous` reaches for this format, one row per rule artifact in its run set that retains a version. Empty for a format whose artifacts have never had a breaking bump. A `POST /v1/validate` request on `previous` sets `rulesetFellBack: true` only when EVERY artifact fell back, so this format falls back entirely exactly when no row here has a non-null `previousVersion`. Wider than `retained[]`, which covers only this format's own `versionKey`.",
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "required": [
+                                    "versionKey",
+                                    "servingVersion",
+                                    "previousVersion",
+                                    "fallbackReason"
+                                  ],
+                                  "properties": {
+                                    "versionKey": {
+                                      "description": "The `versions.json` artefact key this row is about. Often this format's own `versionKey`, but not always: an overlay or a severity table that runs under the format's profiles decides its `previous` too, and names no format of its own.",
+                                      "type": "string"
+                                    },
+                                    "servingVersion": {
+                                      "description": "The version `latest` serves for this artefact today. The other half of the pair to compare against `previousVersion`.",
+                                      "type": "string"
+                                    },
+                                    "previousVersion": {
+                                      "description": "The version `Beliq-Ruleset: previous` resolves to for this artefact today, or null when the channel falls back to `latest` for it. Pin it exactly as `Beliq-Ruleset: <versionKey>:<previousVersion>` to reach it regardless.",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ]
+                                    },
+                                    "fallbackReason": {
+                                      "description": "Why `previous` reaches nothing for this artefact; null exactly when `previousVersion` is set. `sunset` = every retained version is past its `retainedUntil`, so not even an exact pin resolves. `notice-period` = the only retained version is the one standing in for `latest` until a scheduled bump takes effect, so there is nothing behind it yet. `superseded` = the authority made the successor mandatory, so Beliq will not choose the older ruleset on your behalf; an exact pin still reaches it until `retainedUntil`.",
+                                      "anyOf": [
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "sunset"
+                                          ]
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "notice-period"
+                                          ]
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "superseded"
+                                          ]
                                         },
                                         {
                                           "type": "null"
