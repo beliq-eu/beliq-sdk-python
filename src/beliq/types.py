@@ -4,19 +4,66 @@ JSON responses are lenient Pydantic models (extra fields, like the per-country
 authority versions, are preserved via ``extra='allow'`` so a new field never
 breaks parsing). Binary responses (generate/convert) are dataclasses carrying
 the document bytes plus the response-header metadata the spec does not model.
+
+The invoice a caller builds for generate() stays a plain mapping, so the pieces
+of it with a closed shape are TypedDicts a caller can annotate with.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, TypedDict
 
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
 # An EN 16931 invoice for generate(): a plain mapping matching the documented
 # shape (see the OpenAPI spec / README). The API validates it server-side.
+# Its ``allowances`` and ``charges`` entries take DocumentAllowanceCharge, and
+# the same two keys on each entry of ``lines`` take LineAllowanceCharge.
 Invoice = dict[str, Any]
+
+
+class _DocumentAllowanceChargeRequired(TypedDict):
+    amount: float
+    vatCategoryCode: str
+
+
+class DocumentAllowanceCharge(_DocumentAllowanceChargeRequired, total=False):
+    """One entry of an invoice's document-level ``allowances`` or ``charges``.
+
+    Both keys carry the same shape; a charge adds to the total and an allowance
+    subtracts. Either ``percentage`` with ``baseAmount`` or a bare ``amount``
+    is a valid EN 16931 entry, so only ``amount`` and ``vatCategoryCode`` are
+    required here.
+
+    Not interchangeable with LineAllowanceCharge: a document-level entry states
+    its own VAT, a line-level one inherits the line's, and the API rejects an
+    unknown key rather than ignoring it.
+    """
+
+    baseAmount: float
+    percentage: float
+    reason: str
+    reasonCode: str
+    vatRate: float
+
+
+class _LineAllowanceChargeRequired(TypedDict):
+    amount: float
+
+
+class LineAllowanceCharge(_LineAllowanceChargeRequired, total=False):
+    """One entry of an invoice line's ``allowances`` or ``charges``.
+
+    The line's own ``vatRate`` and ``vatCategoryCode`` apply, so unlike
+    DocumentAllowanceCharge this shape carries no VAT fields of its own.
+    """
+
+    baseAmount: float
+    percentage: float
+    reason: str
+    reasonCode: str
 
 
 class _Model(BaseModel):

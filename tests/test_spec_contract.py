@@ -8,6 +8,7 @@ option lists are a real subset of what the API accepts.
 
 import json
 from pathlib import Path
+from typing import get_type_hints
 
 from beliq.constants import (
     API_ERROR_CODES,
@@ -16,7 +17,7 @@ from beliq.constants import (
     LIVE_PROFILES_BY_STANDARD,
     LIVE_VALIDATE_FORMATS,
 )
-from beliq.types import AccountInfo
+from beliq.types import AccountInfo, DocumentAllowanceCharge, LineAllowanceCharge
 
 SPEC = json.loads((Path(__file__).parent.parent / "openapi.json").read_text())
 
@@ -28,6 +29,30 @@ def _enum_values(schema: dict) -> set[str]:
 
 def _generate_body_props() -> dict:
     return SPEC["paths"]["/v1/generate"]["post"]["requestBody"]["content"]["application/json"]["schema"]["properties"]
+
+
+def _generate_invoice_schema() -> dict:
+    return _generate_body_props()["invoice"]
+
+
+def _parse_invoice_schema() -> dict:
+    return SPEC["paths"]["/v1/parse"]["post"]["responses"]["200"]["content"]["application/json"]["schema"][
+        "properties"
+    ]["data"]["properties"]["invoice"]
+
+
+def _allowance_and_charge_items(level: dict) -> dict:
+    """The item schema behind ``allowances`` and ``charges`` on one level."""
+    return {key: level["properties"][key]["items"] for key in ("allowances", "charges")}
+
+
+def _line_schema(invoice: dict) -> dict:
+    return invoice["properties"]["lines"]["items"]
+
+
+# The spec types these two as JSON numbers and strings; mypy accepts an int
+# where a float is declared, so `float` is the honest annotation for `number`.
+_JSON_TO_PYTHON = {"number": float, "string": str}
 
 
 def test_error_codes_match_spec():
@@ -120,3 +145,61 @@ def test_account_info_declares_every_field_me_returns():
 
     declared = {field.alias or name for name, field in AccountInfo.model_fields.items()}
     assert set(required) - declared == set()
+
+
+def _assert_model_matches(model: type, item: dict, label: str) -> None:
+    declared = get_type_hints(model)
+    assert set(declared) == set(item["properties"]), label
+    assert model.__required_keys__ == frozenset(item["required"]), label
+    for field, schema in item["properties"].items():
+        assert declared[field] is _JSON_TO_PYTHON[schema["type"]], f"{label}.{field}"
+
+
+def test_allowance_and_charge_models_declare_every_field_the_spec_accepts():
+    """The two models are hand-written, so nothing made them follow the API.
+
+    Same defect as `test_account_info_declares_every_field_me_returns`: an
+    undeclared field is invisible to mypy, to every IDE and to anyone reading
+    the class, so a user cannot reach it. `Invoice` is a bare `dict[str, Any]`,
+    which is why these two shapes are declared on their own rather than as
+    fields of an invoice model.
+
+    Equality, not membership, and in both directions. The spec sets
+    `additionalProperties: false` on both item schemas, so a field this SDK
+    declares but the API does not accept is a 400 waiting for the first caller
+    who believes the annotation. That is the opposite risk from `/v1/me`, where
+    a surplus declaration is harmless.
+    """
+    invoice = _generate_invoice_schema()
+    for key, item in _allowance_and_charge_items(invoice).items():
+        _assert_model_matches(DocumentAllowanceCharge, item, f"invoice.{key}")
+    for key, item in _allowance_and_charge_items(_line_schema(invoice)).items():
+        _assert_model_matches(LineAllowanceCharge, item, f"invoice.lines[].{key}")
+
+
+def test_line_allowances_carry_no_vat_of_their_own():
+    """Why there are two models and not one shared shape.
+
+    A document-level entry states its own VAT and a line-level one inherits the
+    line's. Collapsing them would put `vatRate` and `vatCategoryCode` within
+    reach on a line, where `additionalProperties: false` means the API rejects
+    the request rather than ignoring the key.
+    """
+    invoice = _generate_invoice_schema()
+    document = _allowance_and_charge_items(invoice)["allowances"]["properties"]
+    line = _allowance_and_charge_items(_line_schema(invoice))["allowances"]["properties"]
+    assert {"vatRate", "vatCategoryCode"} <= set(document)
+    assert {"vatRate", "vatCategoryCode"}.isdisjoint(line)
+
+
+def test_parsed_invoice_allowances_match_the_generated_shape():
+    """`parse()` hands back what `generate()` takes, so one pair of models covers both.
+
+    `ParseResult.invoice` is a plain dict, so the models are what a caller
+    annotates a parsed allowance with; if the two ends of the API ever diverge,
+    that annotation quietly becomes a lie.
+    """
+    sent = _generate_invoice_schema()
+    received = _parse_invoice_schema()
+    assert _allowance_and_charge_items(sent) == _allowance_and_charge_items(received)
+    assert _allowance_and_charge_items(_line_schema(sent)) == _allowance_and_charge_items(_line_schema(received))
