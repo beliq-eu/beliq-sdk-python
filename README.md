@@ -152,6 +152,37 @@ except BeliqApiError as err:
     print(err.code, err.status, err.message)
 ```
 
+## Allowances and charges
+
+A discount or surcharge sits either on the invoice or on a single line, and the two shapes differ: a document-level entry states its own VAT, a line-level one inherits the line's. The API rejects an unknown key rather than ignoring it, so the two are not interchangeable.
+
+```python
+from beliq import DocumentAllowanceCharge, LineAllowanceCharge
+
+document_discount: DocumentAllowanceCharge = {
+    "amount": 25,
+    "vatCategoryCode": "S",  # required at document level
+    "vatRate": 19,
+    "reason": "Volume discount",
+    "reasonCode": "95",  # UNTDID 5189
+}
+line_surcharge: LineAllowanceCharge = {"amount": 12.5, "reason": "Express handling"}
+
+invoice = {
+    # number, dates, parties and totals as in the quick start
+    "lines": [
+        {
+            "description": "Consulting", "quantity": 10, "unitCode": "HUR",
+            "unitPrice": 100, "lineTotal": 1000, "vatRate": 19, "vatCategoryCode": "S",
+            "charges": [line_surcharge],
+        },
+    ],
+    "allowances": [document_discount],
+}
+```
+
+The invoice itself stays a plain dict, so these two are annotations you opt into; they exist so a type checker and an IDE can see the fields. `tests/test_spec_contract.py` pins both shapes to the vendored `openapi.json`, including which fields are required.
+
 ## The seal: verify it yourself
 
 Pass `seal=True` to `generate` to get the document back as a JSON envelope: the decoded `content` (bytes) plus its `sha256` and the full `validation_result`. Hashing the returned bytes reproduces the returned hash, so you can prove which ruleset the document passed.
