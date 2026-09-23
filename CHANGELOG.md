@@ -9,6 +9,20 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.3.2 - 2026-09-23
+
+- `DocumentAllowanceCharge` and `LineAllowanceCharge` name the allowances and
+  charges an invoice carries at document level (BG-20, BG-21) and line level
+  (BG-27, BG-28), as `allowances` and `charges`. A document-level entry states
+  its own VAT (`vatCategoryCode` required, `vatRate` optional); a line-level
+  entry inherits the line's and accepts neither, so a line entry with
+  `vatRate` is a 400. `Invoice` stays `dict[str, Any]`; the two TypedDicts are
+  annotations a caller opts into. The README shows both.
+- The vendored spec carries those fields on `/v1/generate` and `/v1/parse`,
+  and `previousChannel` on `GET /v1/rulesets`: what `Beliq-Ruleset: previous`
+  reaches for each format, with `servingVersion`, `previousVersion` and a
+  `fallbackReason` of `sunset`, `notice-period` or `superseded`.
+
 ## 0.3.1 - 2026-09-21
 
 - The vendored spec carries item price detail and item identity on the invoice
