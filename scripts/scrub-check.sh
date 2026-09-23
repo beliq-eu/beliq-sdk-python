@@ -10,13 +10,9 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 emdash=$'\xe2\x80\x94'
-exclude=(
-  # A byte copy of beliq-api's generated spec; the text is authored there.
-  ":!openapi.json"
-)
 
 status=0
-git grep -n -I -F --untracked -e "$emdash" -- . "${exclude[@]}" || status=$?
+git grep -n -I -F --untracked -e "$emdash" -- . || status=$?
 case $status in
   0) echo "em-dash (U+2014) found in the files above; remove it before publishing."; exit 1 ;;
   1) echo "no em-dash found" ;;
