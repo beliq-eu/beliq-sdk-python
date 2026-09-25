@@ -16,6 +16,14 @@ read; it does not gate the caller.
   a test fails when the version classifiers drift from the CI matrix.
 - The README documents the keyword arguments `template`, `pdf_template_id`,
   `france_ctc`, `target_profile`, `drop_france_ctc_overlay` and `advanced`.
+- The vendored spec carries `payee` (BG-10), `taxRepresentative` (BG-11),
+  `paidAmount` (BT-113), `roundingAmount` (BT-114) and `typeCode` (BT-3) on
+  the invoice of `/v1/generate` and `/v1/parse`, and `precedingInvoiceReference`
+  (BG-3) on invoices as well as credit notes. The API derives the amount due
+  (BT-115) from the two amounts. `Invoice` stays `dict[str, Any]`, so the
+  fields need no code to send, and a `typeCode` sent with `fatturapa`,
+  `facturae` or `eslog` is a 422 `DOCUMENT_TYPE_STANDARD_MISMATCH`, a code
+  `API_ERROR_CODES` already lists.
 
 ## 0.3.2 - 2026-09-23
 
