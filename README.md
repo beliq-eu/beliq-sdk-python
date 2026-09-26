@@ -152,6 +152,28 @@ except BeliqApiError as err:
     print(err.code, err.status, err.message)
 ```
 
+## Method options
+
+Keyword arguments the examples on this page do not show. `Beliq` and `AsyncBeliq` take the same ones, and an argument left out (or `None`) is not sent.
+
+`generate`:
+
+- `template="standard"` renders the built-in invoice layout for `output="pdf"`. It is the only value. `xrechnung` and `peppol-bis` have no hybrid PDF, so they need it (or `pdf_template_id`) to return a PDF at all: a visualization PDF with no embedded XML (`meta.pdf_kind == "visualization"`), while the legal document stays the XML. `zugferd` and `facturx` render that same layout onto their hybrid PDF with or without it.
+- `pdf_template_id="k3d-9mp"` renders the PDF from one of your organization's own templates, designed in the dashboard. The value is the short ref shown next to the template there. It takes precedence over `template` and applies to any `output="pdf"`. An unknown ref raises `BeliqApiError` with code `PDF_TEMPLATE_NOT_FOUND`.
+
+`validate`:
+
+- `france_ctc=True` also runs the FNFE-MPE BR-FR-CTC Flux 2 rules of the French e-invoicing reform on a CII or UBL document. They run without it when the document's BT-24 is the EXTENDED-CTC-FR CustomizationID or its BT-23 carries a French *cadre de facturation* code, so `france_ctc=False` does not switch them off.
+
+`convert`:
+
+- `target_profile` picks the profile when `target_format` is `"zugferd"` or `"facturx"`, one of `LIVE_PROFILES` (`"basicwl"`, `"en16931"`, `"extended"`, `"extended-ctc-fr"`). The API uses `"en16931"` when it is left out. For any other `target_format` the SDK does not send it.
+- `drop_france_ctc_overlay=True` lets a CII source that carries a French *cadre de facturation* code (BT-23) convert to a UBL target (`"ubl"`, `"xrechnung"`, `"peppol-bis"`). UBL has no place for that code, so by default the API refuses with `CONVERSION_LOSSY_FAILCLOSED` (422). With this set, the code is dropped and counted in `meta.lost_elements_count`.
+
+`generate`, `validate`, `parse` and `convert`:
+
+- `advanced` is a dict deep-merged over what the SDK sends, and its values win over the named arguments: into the JSON body on `generate`, into the query string on the other three. It is there for a field the API accepts before this SDK has an argument for it.
+
 ## Allowances and charges
 
 A discount or surcharge sits either on the invoice or on a single line, and the two shapes differ: a document-level entry states its own VAT, a line-level one inherits the line's. The API rejects an unknown key rather than ignoring it, so the two are not interchangeable.
