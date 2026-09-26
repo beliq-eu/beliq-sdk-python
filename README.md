@@ -141,15 +141,20 @@ asyncio.run(main())
 
 `document` accepts a `str`, `bytes`, or `bytearray`. The content type is sniffed from the bytes (PDF vs XML) unless you pass `content_type=`. `generate` and `convert` return the raw document `content` (bytes) plus the response-header metadata: `meta.schematron_version`, `meta.pdf_kind`, `meta.source_format`/`meta.target_format`, `meta.lost_elements`, `meta.conversion_tools`, the ruleset fingerprint `meta.ruleset_sha256` / `meta.ruleset_artifacts`, and `meta.livemode`. For an XML output, `generate` also decodes `xml`.
 
-JSON responses are Pydantic models. Any field not explicitly typed (such as the per-country authority versions on a validation result) is preserved and accessible. Errors raise `BeliqApiError` with a typed `.code`, HTTP `.status`, and any `.details`:
+JSON responses are Pydantic models. Any field not explicitly typed (such as the per-country authority versions on a validation result) is preserved and accessible. An error answer from beliq raises `BeliqApiError` with a typed `.code`, HTTP `.status`, and any `.details`.
+
+A timeout or a failed connection is not an answer from beliq, so it is not a `BeliqApiError`. It raises httpx's own exception, a subclass of `httpx.TransportError` (such as `httpx.ReadTimeout` or `httpx.ConnectError`), and is not retried. Catch both to handle every failure:
 
 ```python
+import httpx
 from beliq import BeliqApiError
 
 try:
     beliq.validate("not xml")
 except BeliqApiError as err:
     print(err.code, err.status, err.message)
+except httpx.TransportError as err:
+    print("no answer from beliq:", err)
 ```
 
 ## Method options
