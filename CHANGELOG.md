@@ -9,7 +9,7 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
-## 0.3.3 - unreleased
+## 0.3.3 - 2026-09-26
 
 - The PyPI metadata names the supported Python versions, 3.10 to 3.14, and
   `Typing :: Typed`, since the wheel ships `py.typed`. CI tests 3.14 too, and
