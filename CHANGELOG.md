@@ -9,7 +9,7 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
-## 0.3.4 - unreleased
+## 0.3.4 - 2026-09-26
 
 - The README says that a timeout or a failed connection raises httpx's own
   exception, a subclass of `httpx.TransportError`, not `BeliqApiError`, and is
