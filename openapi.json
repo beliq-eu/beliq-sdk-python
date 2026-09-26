@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.4.0"
+    "version": "0.5.0"
   },
   "components": {
     "securitySchemes": {
@@ -454,6 +454,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -754,6 +760,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -1064,6 +1076,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -1364,6 +1382,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -3557,6 +3581,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -3857,6 +3887,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -4167,6 +4203,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -4467,6 +4509,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -4777,6 +4825,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -5077,6 +5131,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -5387,6 +5447,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -5692,6 +5758,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -5992,6 +6064,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -6824,6 +6902,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -7124,6 +7208,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -7434,6 +7524,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -7734,6 +7830,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -8044,6 +8146,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -8344,6 +8452,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -8654,6 +8768,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -8959,6 +9079,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -9259,6 +9385,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -10885,6 +11017,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -11185,6 +11323,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -11495,6 +11639,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -11795,6 +11945,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -12105,6 +12261,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -12405,6 +12567,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -12715,6 +12883,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -13020,6 +13194,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -13320,6 +13500,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -13889,6 +14075,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -14189,6 +14381,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -14499,6 +14697,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -14799,6 +15003,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -15109,6 +15319,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -15409,6 +15625,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -15719,6 +15941,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -16024,6 +16252,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -16324,6 +16558,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
@@ -17074,6 +17314,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "QUOTA_EXCEEDED"
                               ]
                             },
@@ -17374,6 +17620,12 @@
                               "type": "string",
                               "enum": [
                                 "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
                               ]
                             },
                             {
