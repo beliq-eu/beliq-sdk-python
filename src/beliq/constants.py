@@ -54,6 +54,10 @@ API_ERROR_CODES: tuple[str, ...] = (
     "PARSE_FAILED",
     "AUTHENTICATION_REQUIRED",
     "INVALID_API_KEY",
+    # 403: the credential is valid, but the member behind it holds a role
+    # without the capability the route needs. Distinct from INVALID_API_KEY
+    # because the remedy is an owner or admin changing a role, not a new key.
+    "INSUFFICIENT_ROLE",
     "QUOTA_EXCEEDED",
     "RATE_LIMITED",
     # Distinct from RATE_LIMITED: the burst limiter clears in seconds, this one
