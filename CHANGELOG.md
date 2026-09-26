@@ -9,6 +9,14 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.3.4 - unreleased
+
+- The README says that a timeout or a failed connection raises httpx's own
+  exception, a subclass of `httpx.TransportError`, not `BeliqApiError`, and is
+  not retried, and shows catching both. It had said every error raises
+  `BeliqApiError`. The behaviour is unchanged, and a test now pins it for a
+  connection error as the existing one did for a timeout.
+
 ## 0.3.3 - 2026-09-26
 
 - The PyPI metadata names the supported Python versions, 3.10 to 3.14, and

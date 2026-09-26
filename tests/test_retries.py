@@ -155,6 +155,16 @@ def test_timeout_is_not_retried() -> None:
 
 
 @respx.mock
+def test_connection_error_is_a_transport_error_and_is_not_retried() -> None:
+    # The README tells callers to catch httpx.TransportError beside BeliqApiError.
+    route = respx.get(ME_URL).mock(side_effect=httpx.ConnectError("connection refused"))
+    with pytest.raises(httpx.TransportError) as caught:
+        _client().me()
+    assert not isinstance(caught.value, BeliqApiError)
+    assert route.call_count == 1
+
+
+@respx.mock
 def test_malformed_retry_after_falls_back_to_backoff() -> None:
     # A non-numeric header must not raise or hang; it just means "use backoff".
     route = respx.get(ME_URL).mock(side_effect=[_err(503, "ENGINE_UNAVAILABLE", retry_after="soon"), _ok()])
