@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.5.0"
+    "version": "0.6.0"
   },
   "components": {
     "securitySchemes": {
@@ -1694,6 +1694,12 @@
                         "enum": [
                           "eslog"
                         ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "ksef"
+                        ]
                       }
                     ]
                   },
@@ -2998,6 +3004,140 @@
                         "additionalProperties": false,
                         "type": "object",
                         "properties": {}
+                      },
+                      "poland": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "properties": {
+                          "adnotacje": {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "properties": {
+                              "P_16": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "1"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "2"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "P_17": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "1"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "2"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "P_18": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "1"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "2"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "P_18A": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "1"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "2"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "P_23": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "1"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "2"
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          "dataWytworzenia": {
+                            "minLength": 1,
+                            "maxLength": 40,
+                            "type": "string"
+                          },
+                          "placeOfIssue": {
+                            "minLength": 1,
+                            "maxLength": 256,
+                            "type": "string"
+                          },
+                          "jst": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "1"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "2"
+                                ]
+                              }
+                            ]
+                          },
+                          "gv": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "1"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "2"
+                                ]
+                              }
+                            ]
+                          }
+                        }
                       }
                     }
                   },
@@ -3362,6 +3502,14 @@
                               "type": "string"
                             },
                             "sloveniaEslogRuntimeVersion": {
+                              "maxLength": 40,
+                              "type": "string"
+                            },
+                            "polandKsefFa3XsdBundle": {
+                              "maxLength": 200,
+                              "type": "string"
+                            },
+                            "polandKsefFa3RuntimeVersion": {
                               "maxLength": 40,
                               "type": "string"
                             },
@@ -6382,6 +6530,12 @@
                   "enum": [
                     "eslog"
                   ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "poland_ksef_fa3"
+                  ]
                 }
               ]
             },
@@ -6704,6 +6858,14 @@
                           "type": "string"
                         },
                         "sloveniaEslogRuntimeVersion": {
+                          "maxLength": 40,
+                          "type": "string"
+                        },
+                        "polandKsefFa3XsdBundle": {
+                          "maxLength": 200,
+                          "type": "string"
+                        },
+                        "polandKsefFa3RuntimeVersion": {
                           "maxLength": 40,
                           "type": "string"
                         },
@@ -9702,6 +9864,12 @@
                   "enum": [
                     "eslog"
                   ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "poland_ksef_fa3"
+                  ]
                 }
               ]
             },
@@ -10958,6 +11126,140 @@
                               "additionalProperties": false,
                               "type": "object",
                               "properties": {}
+                            },
+                            "poland": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "properties": {
+                                "adnotacje": {
+                                  "additionalProperties": false,
+                                  "type": "object",
+                                  "properties": {
+                                    "P_16": {
+                                      "anyOf": [
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "1"
+                                          ]
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "2"
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    "P_17": {
+                                      "anyOf": [
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "1"
+                                          ]
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "2"
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    "P_18": {
+                                      "anyOf": [
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "1"
+                                          ]
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "2"
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    "P_18A": {
+                                      "anyOf": [
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "1"
+                                          ]
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "2"
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    "P_23": {
+                                      "anyOf": [
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "1"
+                                          ]
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "2"
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  }
+                                },
+                                "dataWytworzenia": {
+                                  "minLength": 1,
+                                  "maxLength": 40,
+                                  "type": "string"
+                                },
+                                "placeOfIssue": {
+                                  "minLength": 1,
+                                  "maxLength": 256,
+                                  "type": "string"
+                                },
+                                "jst": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "1"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "2"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "gv": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "1"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "2"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
                             }
                           }
                         }
