@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.6.0"
+    "version": "0.7.0"
   },
   "components": {
     "securitySchemes": {
@@ -229,6 +229,21 @@
                   "maxLength": 10,
                   "type": "string"
                 }
+              }
+            }
+          },
+          "invoicingPeriod": {
+            "additionalProperties": false,
+            "minProperties": 1,
+            "type": "object",
+            "properties": {
+              "startDate": {
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                "type": "string"
+              },
+              "endDate": {
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                "type": "string"
               }
             }
           },
@@ -1869,6 +1884,47 @@
                         "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
                         "type": "string"
                       },
+                      "vatPointDate": {
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                        "type": "string"
+                      },
+                      "vatPointDateCode": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "3"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "35"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "432"
+                            ]
+                          }
+                        ]
+                      },
+                      "invoicingPeriod": {
+                        "additionalProperties": false,
+                        "minProperties": 1,
+                        "type": "object",
+                        "properties": {
+                          "startDate": {
+                            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                            "type": "string"
+                          },
+                          "endDate": {
+                            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                            "type": "string"
+                          }
+                        }
+                      },
                       "currencyCode": {
                         "minLength": 3,
                         "maxLength": 3,
@@ -1925,6 +1981,60 @@
                         "type": "string"
                       },
                       "orderReference": {
+                        "maxLength": 200,
+                        "type": "string"
+                      },
+                      "salesOrderReference": {
+                        "minLength": 1,
+                        "maxLength": 200,
+                        "type": "string"
+                      },
+                      "contractReference": {
+                        "minLength": 1,
+                        "maxLength": 200,
+                        "type": "string"
+                      },
+                      "projectReference": {
+                        "minLength": 1,
+                        "maxLength": 200,
+                        "type": "string"
+                      },
+                      "receivingAdviceReference": {
+                        "minLength": 1,
+                        "maxLength": 200,
+                        "type": "string"
+                      },
+                      "despatchAdviceReference": {
+                        "minLength": 1,
+                        "maxLength": 200,
+                        "type": "string"
+                      },
+                      "tenderReference": {
+                        "minLength": 1,
+                        "maxLength": 200,
+                        "type": "string"
+                      },
+                      "invoicedObjectIdentifier": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "id"
+                        ],
+                        "properties": {
+                          "id": {
+                            "minLength": 1,
+                            "maxLength": 200,
+                            "type": "string"
+                          },
+                          "schemeId": {
+                            "minLength": 1,
+                            "maxLength": 10,
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "buyerAccountingReference": {
+                        "minLength": 1,
                         "maxLength": 200,
                         "type": "string"
                       },
@@ -2461,6 +2571,21 @@
                                     "maxLength": 10,
                                     "type": "string"
                                   }
+                                }
+                              }
+                            },
+                            "invoicingPeriod": {
+                              "additionalProperties": false,
+                              "minProperties": 1,
+                              "type": "object",
+                              "properties": {
+                                "startDate": {
+                                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                                  "type": "string"
+                                },
+                                "endDate": {
+                                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                                  "type": "string"
                                 }
                               }
                             },
@@ -9991,6 +10116,47 @@
                               "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
                               "type": "string"
                             },
+                            "vatPointDate": {
+                              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                              "type": "string"
+                            },
+                            "vatPointDateCode": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "3"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "35"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "432"
+                                  ]
+                                }
+                              ]
+                            },
+                            "invoicingPeriod": {
+                              "additionalProperties": false,
+                              "minProperties": 1,
+                              "type": "object",
+                              "properties": {
+                                "startDate": {
+                                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                                  "type": "string"
+                                },
+                                "endDate": {
+                                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                                  "type": "string"
+                                }
+                              }
+                            },
                             "currencyCode": {
                               "minLength": 3,
                               "maxLength": 3,
@@ -10047,6 +10213,60 @@
                               "type": "string"
                             },
                             "orderReference": {
+                              "maxLength": 200,
+                              "type": "string"
+                            },
+                            "salesOrderReference": {
+                              "minLength": 1,
+                              "maxLength": 200,
+                              "type": "string"
+                            },
+                            "contractReference": {
+                              "minLength": 1,
+                              "maxLength": 200,
+                              "type": "string"
+                            },
+                            "projectReference": {
+                              "minLength": 1,
+                              "maxLength": 200,
+                              "type": "string"
+                            },
+                            "receivingAdviceReference": {
+                              "minLength": 1,
+                              "maxLength": 200,
+                              "type": "string"
+                            },
+                            "despatchAdviceReference": {
+                              "minLength": 1,
+                              "maxLength": 200,
+                              "type": "string"
+                            },
+                            "tenderReference": {
+                              "minLength": 1,
+                              "maxLength": 200,
+                              "type": "string"
+                            },
+                            "invoicedObjectIdentifier": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "required": [
+                                "id"
+                              ],
+                              "properties": {
+                                "id": {
+                                  "minLength": 1,
+                                  "maxLength": 200,
+                                  "type": "string"
+                                },
+                                "schemeId": {
+                                  "minLength": 1,
+                                  "maxLength": 10,
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "buyerAccountingReference": {
+                              "minLength": 1,
                               "maxLength": 200,
                               "type": "string"
                             },
@@ -10583,6 +10803,21 @@
                                           "maxLength": 10,
                                           "type": "string"
                                         }
+                                      }
+                                    }
+                                  },
+                                  "invoicingPeriod": {
+                                    "additionalProperties": false,
+                                    "minProperties": 1,
+                                    "type": "object",
+                                    "properties": {
+                                      "startDate": {
+                                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                                        "type": "string"
+                                      },
+                                      "endDate": {
+                                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                                        "type": "string"
                                       }
                                     }
                                   },
