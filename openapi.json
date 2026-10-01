@@ -10000,7 +10000,8 @@
             },
             "in": "query",
             "name": "format",
-            "required": false
+            "required": false,
+            "description": "Checked against the allowed values, otherwise ignored. Detection is always automatic: the syntax is read from the document itself."
           }
         ],
         "responses": {
