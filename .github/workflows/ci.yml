@@ -111,3 +111,6 @@ jobs:
         env:
           BELIQ_API_KEY: ${{ secrets.BELIQ_API_KEY }}
         run: pytest tests/test_integration.py
+
+  public-scrub:
+    uses: beliq-eu/.github/.github/workflows/public-scrub.yml@main
