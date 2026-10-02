@@ -272,7 +272,7 @@ BELIQ_API_KEY=blq_xxx uv run pytest tests/test_integration.py   # hits the live 
 
 `uv.lock` pins the development and CI tree, not what `pip install beliq` resolves for users. It records the package's own version too, so a change to `pyproject.toml` (a dependency or the version) needs `uv lock` in the same commit. CI installs with `--locked` and fails on a stale lock.
 
-`tests/test_spec_contract.py` reads the vendored `openapi.json` and fails if the error-code set, the core validate/seal fields, or the public option lists drift from the spec. Refresh the vendored spec with `python scripts/sync_spec.py`. A weekly workflow (`scripts/check_live_drift.py`) flags when the vendored spec falls behind the deployed API. `python scripts/check_profile_drift.py` checks `LIVE_PROFILES_BY_STANDARD` against the engine's own table; it needs a `beliq-engine` checkout beside this repo (or `BELIQ_ENGINE_PATH`) and fails without one, so it is run by hand, not in CI.
+`tests/test_spec_contract.py` reads the vendored `openapi.json` and fails if the error-code set, the core validate/seal fields, or the public option lists drift from the spec. Refresh the vendored spec with `python scripts/sync_spec.py`. A weekly workflow (`scripts/check_live_drift.py`) flags when the vendored spec falls behind the deployed API. `python scripts/check_profile_drift.py` checks `LIVE_PROFILES_BY_STANDARD` against the engine's own table; it needs a checkout of the engine's source, which is not public, named by `BELIQ_ENGINE_PATH`, and fails without one, so it is run by hand, not in CI.
 
 ## Publishing
 

@@ -40,6 +40,11 @@ dev = [
 [tool.hatch.build.targets.wheel]
 packages = ["src/beliq"]
 
+# An allowlist: without one hatchling puts every tracked file of the repo into
+# the sdist. hatchling adds pyproject.toml, PKG-INFO and .gitignore itself.
+[tool.hatch.build.targets.sdist]
+include = ["/src/beliq", "/README.md", "/LICENSE", "/CHANGELOG.md"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
