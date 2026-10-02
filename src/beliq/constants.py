@@ -158,7 +158,7 @@ LIVE_PROFILES: tuple[str, ...] = ("basicwl", "en16931", "extended", "extended-ct
 #
 # ``profile`` is not a free enum: the engine pins it per standard and answers a
 # pair outside the table with ``422 PROFILE_STANDARD_MISMATCH``
-# (beliq-engine ``app/routes/generate.py``, ALLOWED_PROFILES_FOR_STANDARD). A
+# (the engine's ALLOWED_PROFILES_FOR_STANDARD table). A
 # surface that offers one flat profile list therefore offers values that cannot
 # succeed: none of the Factur-X granularity values is legal for ``xrechnung`` or
 # ``peppol-bis``, and ``extended-ctc-fr`` is the AFNOR XP Z12-012 France CTC
@@ -166,7 +166,7 @@ LIVE_PROFILES: tuple[str, ...] = ("basicwl", "en16931", "extended", "extended-ct
 #
 # Narrower than the engine's own table in two places, both deliberate: the
 # ``minimum`` and ``basic`` Factur-X profiles are engine-supported but withheld
-# (FNFE-MPE source gating, mirroring beliq-types SUPPORTED_FACTURX_PROFILE_IDS),
+# (FNFE-MPE source gating),
 # and the standards outside LIVE_GENERATE_STANDARDS are absent entirely.
 #
 # Mirrors ``LIVE_PROFILES_BY_STANDARD`` in the Node SDK.

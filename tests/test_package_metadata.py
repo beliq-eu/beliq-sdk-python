@@ -9,7 +9,9 @@ Releases up to 0.3.2 shipped with neither the per-version rows nor
 
 import ast
 import re
+import subprocess
 import sys
+import tarfile
 from pathlib import Path
 
 if sys.version_info >= (3, 11):
@@ -50,3 +52,26 @@ def test_requires_python_floor_is_the_oldest_version_ci_tests() -> None:
 def test_typed_classifier_matches_the_shipped_marker() -> None:
     assert (ROOT / "src" / "beliq" / "py.typed").is_file()
     assert "Typing :: Typed" in CLASSIFIERS
+
+
+def test_sdist_holds_the_package_and_nothing_else_from_the_repo(tmp_path: Path) -> None:
+    """The sdist is an allowlist ([tool.hatch.build.targets.sdist] in pyproject.toml).
+
+    Releases up to 0.3.4 had no allowlist, so hatchling shipped the whole repo
+    root: .github/, scripts/, uv.lock, renovate.json. A file added to the root
+    later (an agent instruction file, a workflow) would have gone to PyPI too.
+    """
+    subprocess.run(["uv", "build", "--sdist", "--out-dir", str(tmp_path)], cwd=ROOT, check=True)
+    (archive,) = tmp_path.glob("*.tar.gz")
+    with tarfile.open(archive) as tar:
+        members = [name.split("/", 1)[1] for name in tar.getnames() if "/" in name]
+
+    assert "src/beliq/__init__.py" in members
+    assert "src/beliq/py.typed" in members
+    outside = sorted(
+        m
+        for m in members
+        if not m.startswith("src/beliq/")
+        and m not in {"README.md", "LICENSE", "CHANGELOG.md", "pyproject.toml", "PKG-INFO", ".gitignore"}
+    )
+    assert outside == []

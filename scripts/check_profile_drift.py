@@ -6,10 +6,10 @@ silently: nothing in the vendored spec expresses the pairing (the OpenAPI
 PROFILE_STANDARD_MISMATCH in a user's code rather than as a red build. This
 reads the engine's own table.
 
-It needs a beliq-engine checkout beside this repo and EXITS NON-ZERO without
-one, rather than passing quietly: a check that reports success when it did not
-run is worse than no check. That also means it does not belong in CI, where no
-sibling exists. Run it whenever the table or the engine's table changes. The
+It needs a checkout of the engine's source, named by BELIQ_ENGINE_PATH, and
+EXITS NON-ZERO without one, rather than passing quietly: a check that reports
+success when it did not run is worse than no check. The engine's source is not
+public, so this does not belong in CI. Run it whenever the table or the engine's table changes. The
 Node SDK's ``npm run check:profiles`` is the same check for its copy.
 """
 
@@ -26,9 +26,10 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from beliq.constants import LIVE_PROFILES_BY_STANDARD  # noqa: E402
 
-ENGINE = Path(os.environ.get("BELIQ_ENGINE_PATH", ROOT / "../../beliq-engine")).resolve()
-ROUTE = ENGINE / "app/routes/generate.py"
-VERSIONS = ENGINE / "third-party/versions.json"
+ENGINE_ENV = os.environ.get("BELIQ_ENGINE_PATH")
+ENGINE = Path(ENGINE_ENV).resolve() if ENGINE_ENV else None
+ROUTE = ENGINE / "app/routes/generate.py" if ENGINE else None
+VERSIONS = ENGINE / "third-party/versions.json" if ENGINE else None
 
 
 def engine_table() -> dict[str, set[str]]:
@@ -65,10 +66,10 @@ def engine_table() -> dict[str, set[str]]:
 
 
 def main() -> int:
-    if not ROUTE.is_file() or not VERSIONS.is_file():
+    if ROUTE is None or VERSIONS is None or not ROUTE.is_file() or not VERSIONS.is_file():
         print(
-            f"no beliq-engine checkout at {ENGINE}.\n"
-            "Set BELIQ_ENGINE_PATH to one. This check cannot run without the engine, "
+            (f"no engine checkout at {ENGINE}.\n" if ENGINE else "BELIQ_ENGINE_PATH is not set.\n")
+            + "Set BELIQ_ENGINE_PATH to a checkout of the engine source. This check cannot run without the engine, "
             "and does not pass without running.",
             file=sys.stderr,
         )

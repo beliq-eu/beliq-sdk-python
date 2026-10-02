@@ -136,7 +136,7 @@ def test_account_info_declares_every_field_me_returns():
 
     Membership, not equality: the model may legitimately declare a field the
     spec does not require. Top-level keys of `data` only, matching the line the
-    Node SDK's gate and the beliq-docs one draw.
+    Node SDK's gate and the API documentation's one draw.
     """
     required = SPEC["paths"]["/v1/me"]["get"]["responses"]["200"]["content"]["application/json"]["schema"][
         "properties"

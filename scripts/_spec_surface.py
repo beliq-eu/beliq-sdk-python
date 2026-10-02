@@ -16,7 +16,7 @@ check exists to tolerate. ``info`` had already been excluded wholesale for the
 same reason, one field at a time instead of at the mechanism.
 
 A changed type or a reworded description is a divergence rather than missing
-surface, and divergence from beliq-api's own copy is what
+surface, and divergence from the API's own copy is what
 ``tests/test_spec_vendoring.py`` asserts.
 
 Kept in step with ``beliq-sdk-node/scripts/lib/spec-surface.mjs``; the two are
@@ -32,7 +32,7 @@ from typing import Any
 def _enum_values(schema: Any, into: set[str] | None = None) -> set[str]:
     """Every enum value a schema can produce, including through union arms.
 
-    beliq-api models a closed string set as an ``anyOf`` of single-value enums,
+    The API models a closed string set as an ``anyOf`` of single-value enums,
     so a newly accepted format or standard reaches a client as a new arm rather
     than a new member of one ``enum``. Flattening both sides to a value set
     catches that addition, while a narrowing (dropping a ``null`` arm) is a

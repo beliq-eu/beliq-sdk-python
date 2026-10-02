@@ -138,7 +138,7 @@ def test_reports_a_newly_accepted_enum_value_arriving_as_a_union_arm():
 
 
 def test_silent_on_a_type_the_vendored_copy_narrowed():
-    # The case that turned main red: bq-api#262 narrowed plan.name and reworded
+    # The case that turned main red: an API change narrowed plan.name and reworded
     # a description, and both read as "behind" until this rewrite.
     def mutate(s):
         me_data(s)["properties"]["plan"]["properties"]["name"] = {
