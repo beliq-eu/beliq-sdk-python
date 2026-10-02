@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.7.0"
+    "version": "0.8.0"
   },
   "components": {
     "securitySchemes": {
@@ -2037,6 +2037,59 @@
                         "minLength": 1,
                         "maxLength": 200,
                         "type": "string"
+                      },
+                      "supportingDocuments": {
+                        "maxItems": 50,
+                        "type": "array",
+                        "items": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "id"
+                          ],
+                          "properties": {
+                            "id": {
+                              "minLength": 1,
+                              "maxLength": 200,
+                              "type": "string"
+                            },
+                            "description": {
+                              "minLength": 1,
+                              "maxLength": 1000,
+                              "type": "string"
+                            },
+                            "externalLocation": {
+                              "minLength": 1,
+                              "maxLength": 2048,
+                              "type": "string"
+                            },
+                            "attachment": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "required": [
+                                "content",
+                                "mimeCode",
+                                "filename"
+                              ],
+                              "properties": {
+                                "content": {
+                                  "minLength": 1,
+                                  "type": "string"
+                                },
+                                "mimeCode": {
+                                  "minLength": 1,
+                                  "maxLength": 100,
+                                  "type": "string"
+                                },
+                                "filename": {
+                                  "minLength": 1,
+                                  "maxLength": 255,
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
                       },
                       "note": {
                         "maxLength": 5000,
@@ -10270,6 +10323,59 @@
                               "minLength": 1,
                               "maxLength": 200,
                               "type": "string"
+                            },
+                            "supportingDocuments": {
+                              "maxItems": 50,
+                              "type": "array",
+                              "items": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "id"
+                                ],
+                                "properties": {
+                                  "id": {
+                                    "minLength": 1,
+                                    "maxLength": 200,
+                                    "type": "string"
+                                  },
+                                  "description": {
+                                    "minLength": 1,
+                                    "maxLength": 1000,
+                                    "type": "string"
+                                  },
+                                  "externalLocation": {
+                                    "minLength": 1,
+                                    "maxLength": 2048,
+                                    "type": "string"
+                                  },
+                                  "attachment": {
+                                    "additionalProperties": false,
+                                    "type": "object",
+                                    "required": [
+                                      "content",
+                                      "mimeCode",
+                                      "filename"
+                                    ],
+                                    "properties": {
+                                      "content": {
+                                        "minLength": 1,
+                                        "type": "string"
+                                      },
+                                      "mimeCode": {
+                                        "minLength": 1,
+                                        "maxLength": 100,
+                                        "type": "string"
+                                      },
+                                      "filename": {
+                                        "minLength": 1,
+                                        "maxLength": 255,
+                                        "type": "string"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
                             },
                             "note": {
                               "maxLength": 5000,
