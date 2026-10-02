@@ -9,6 +9,47 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.3.5 - 2026-10-02
+
+- `API_ERROR_CODES` carries `INSUFFICIENT_ROLE`: the 403 for a credential that
+  is valid while the member behind it holds a role without the capability the
+  route needs. Distinct from `INVALID_API_KEY` because the remedy is an owner
+  or admin changing a role, not a new key.
+- The sdist ships the package only: `src/beliq`, `README.md`, `LICENSE` and
+  `CHANGELOG.md`, plus the `pyproject.toml` and `PKG-INFO` hatchling adds
+  itself. Releases up to 0.3.4 had no allowlist, so hatchling put every tracked
+  file of the repo into the sdist, tests and scripts included. A test now pins
+  the allowlist.
+- The vendored spec carries Poland KSeF FA(3): `ksef` as a `standard`, with
+  profile `fa3`, and an optional `poland` object of FA(3) document fields:
+  `placeOfIssue` (emitted as `P_1M`), `dataWytworzenia`, the `Adnotacje`
+  markers `P_16`, `P_17`, `P_18`, `P_18A` and `P_23`, and the local-government
+  marker `JST` and VAT-group marker `GV`. Each of those seven markers takes a
+  `TWybor1_2` value, `"1"` or `"2"`. `GET /v1/rulesets` reports
+  `polandKsefFa3RuntimeVersion` and `polandKsefFa3XsdBundle`.
+- The vendored spec carries the invoice's billing period (BG-14) and an invoice
+  line's own period (BG-26) as `invoicingPeriod`, with `startDate` (BT-73 on
+  the invoice, BT-134 on a line) and `endDate` (BT-74, BT-135); the VAT point
+  date as `vatPointDate` (BT-7) or `vatPointDateCode` (BT-8, one of `3`, `35`
+  and `432`), which exclude each other under BR-CO-03; and the document
+  references BT-11 to BT-19 as `projectReference`, `contractReference`,
+  `salesOrderReference`, `receivingAdviceReference`, `despatchAdviceReference`,
+  `tenderReference`, `invoicedObjectIdentifier` and
+  `buyerAccountingReference`. The fatturapa, facturae, eslog and ksef targets
+  drop all of them.
+- The vendored spec carries additional supporting documents (BG-24) as
+  `supportingDocuments`, at most 50 of them: `id` (BT-122), which BR-52
+  requires, `description` (BT-123), `externalLocation` (BT-124) and
+  `attachment` (BT-125) with the file as base64 `content`, its `mimeCode` and
+  its `filename`. Written as a CII `ram:AdditionalReferencedDocument` with type
+  code 916, from the Factur-X EN16931 profile up, and as a UBL
+  `cac:AdditionalDocumentReference`. On XRechnung BR-DE-22 refuses two
+  attachments sharing a `filename`, and DE-R-022 does the same on Peppol BIS
+  between two German parties.
+- The `/v1/parse` `format` query parameter describes itself in the spec: it is
+  checked against the allowed values and otherwise ignored, because the syntax
+  is always read from the document itself.
+
 ## 0.3.4 - 2026-09-26
 
 - The README says that a timeout or a failed connection raises httpx's own
