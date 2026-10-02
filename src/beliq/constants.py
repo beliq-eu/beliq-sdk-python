@@ -2,8 +2,7 @@
 
 The LIVE_* lists are the authority-pinned public subset, intentionally narrower
 than what the API can technically accept: provisional formats (fatturapa,
-sdi_messaggio, facturae, eslog, ksef / poland_ksef_fa3) are withheld from public option lists
-per LPD-1.
+sdi_messaggio, facturae, eslog, ksef / poland_ksef_fa3) are withheld from public option lists.
 """
 
 from __future__ import annotations
