@@ -28,7 +28,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           activate-environment: true
       - run: uv sync --locked --extra dev
-      - run: ruff check src tests
+      - run: ruff check src tests scripts
       - run: bash scripts/scrub-check.sh
       - run: mypy
       # Includes tests/test_spec_contract.py, which fails if the hand-written
