@@ -9,6 +9,25 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.3.6 - 2026-10-03
+
+- `LIVE_GENERATE_STANDARDS` carries all eight standards `POST /v1/generate`
+  accepts, where it had carried four. The four added are the national XSD
+  formats: `fatturapa`, `facturae`, `eslog` and `ksef`. Each is Schema-checked,
+  meaning structure only and no business rules, because its authority publishes
+  no machine-readable rule pack, and `GET /v1/rulesets` carries the badge.
+  `LIVE_PROFILES_BY_STANDARD` gains the one profile each allows: `ordinaria`
+  for `fatturapa` and `facturae`, `eracun` for `eslog`, `fa3` for `ksef`. The
+  map stays narrower than the engine in one place, the Factur-X `minimum` and
+  `basic` profiles, for FNFE-MPE source gating. `LIVE_GENERATE_PRESETS` is
+  unchanged: it mirrors what beliq.eu's own generator offers.
+- The vendored `openapi.json` carries the corrected `/v1/validate` description.
+  It had said that matching a verdict's `rulesetArtifacts` rows against the
+  `GET /v1/rulesets` catalog covers publicly-supported formats only, and that a
+  national format's components are kept off the catalog. Both were false: the
+  catalog publishes every format beliq carries and the component rows each
+  ruleset is built from.
+
 ## 0.3.5 - 2026-10-02
 
 - `API_ERROR_CODES` carries `INSUFFICIENT_ROLE`: the 403 for a credential that
