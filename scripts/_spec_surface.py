@@ -15,9 +15,18 @@ moment a merged-but-undeployed change landed, which is precisely the case the
 check exists to tolerate. ``info`` had already been excluded wholesale for the
 same reason, one field at a time instead of at the mechanism.
 
-A changed type or a reworded description is a divergence rather than missing
-surface, and divergence from the API's own copy is what
-``tests/test_spec_vendoring.py`` asserts.
+A changed type is a divergence rather than missing surface, and nothing here
+reports it.
+
+``descriptions_diverging`` answers the second question, "does the vendored copy
+still say what the deployed API says", for description text only. That one was
+left to ``tests/test_spec_vendoring.py``, which does not ask it: that test
+re-serializes this file and compares it with itself, so it catches a
+serialization change and nothing about the API. Two of the five spec syncs this
+repo made between 2026-09-29 and 2026-10-03 changed nothing but description
+text, and a human found both of them:
+https://github.com/beliq-eu/beliq-sdk-python/pull/54 and
+https://github.com/beliq-eu/beliq-sdk-python/pull/63.
 
 Kept in step with ``beliq-sdk-node/scripts/lib/spec-surface.mjs``; the two are
 expected to report the same paths for the same pair of documents.
@@ -180,3 +189,53 @@ def surface_missing_from(live: dict[str, Any], vend: dict[str, Any]) -> list[str
             missing.append(f"components.securitySchemes.{name}")
 
     return missing
+
+
+def _descriptions(node: Any, path: str, into: dict[str, str]) -> dict[str, str]:
+    """Every ``description`` string in the document, by its path.
+
+    The path is the raw document path, not the collapsed one
+    ``surface_missing_from`` reports: this walk makes no distinction between a
+    schema, a response and the document's own ``info``, because every one of
+    them is text the SDK ships.
+    """
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if key == "description" and isinstance(value, str):
+                into[path] = value
+            else:
+                _descriptions(value, f"{path}.{key}" if path else key, into)
+    elif isinstance(node, list):
+        for index, value in enumerate(node):
+            _descriptions(value, f"{path}[{index}]", into)
+    return into
+
+
+def descriptions_diverging(live: dict[str, Any], vend: dict[str, Any]) -> list[str]:
+    """Every ``description`` the two documents do not spell identically.
+
+    Unlike ``surface_missing_from`` this is NOT directional, because prose
+    carries no direction: nothing in the pair says which side is newer. Both
+    directions are reported and both mean the same thing, that the vendored copy
+    and the deployed API disagree about what the API says. The remedy differs:
+    re-sync, or deploy the spec change the vendored copy was synced from.
+
+    A description is a contract, not decoration. It is where an operation
+    declares which field to branch on, and the vendored copy is published to
+    PyPI, so a description this SDK ships is a claim beliq makes. ``summary``
+    and ``title`` are deliberately not compared: they label, they do not
+    instruct, and comparing every string is the value-by-value walk this module
+    exists to replace.
+    """
+    live_text = _descriptions(live, "", {})
+    vend_text = _descriptions(vend, "", {})
+
+    diverging: list[str] = []
+    for path in sorted(set(live_text) | set(vend_text)):
+        if path not in vend_text:
+            diverging.append(f"{path}: only the live spec carries it")
+        elif path not in live_text:
+            diverging.append(f"{path}: only the vendored copy carries it")
+        elif live_text[path] != vend_text[path]:
+            diverging.append(f"{path}: the text differs")
+    return diverging
