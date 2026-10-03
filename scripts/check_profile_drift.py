@@ -16,10 +16,12 @@ Node SDK's ``npm run check:profiles`` is the same check for its copy.
 from __future__ import annotations
 
 import ast
-import json
+import importlib.util
 import os
 import sys
+from functools import cache
 from pathlib import Path
+from types import ModuleType
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
@@ -30,19 +32,60 @@ ENGINE_ENV = os.environ.get("BELIQ_ENGINE_PATH")
 ENGINE = Path(ENGINE_ENV).resolve() if ENGINE_ENV else None
 ROUTE = ENGINE / "app/routes/generate.py" if ENGINE else None
 VERSIONS = ENGINE / "third-party/versions.json" if ENGINE else None
+HELPERS = ENGINE / "app/versions.py" if ENGINE else None
+
+
+@cache
+def engine_helpers() -> ModuleType:
+    """The engine's own ``app/versions.py``, imported from the checkout.
+
+    Two rows of the table are calls (``"zugferd": zugferd_profile_keys()``):
+    the engine projects both profile sets from the pinned Factur-X artifact
+    rather than writing them out. Calling its own function is the only
+    resolution that cannot disagree with it, where re-deriving the set here
+    would add a third copy of the very rule this check compares. The module is
+    stdlib-only at import time and reads the checkout's own
+    ``third-party/versions.json``.
+    """
+    spec = importlib.util.spec_from_file_location("beliq_engine_versions", HELPERS)
+    if spec is None or spec.loader is None:
+        raise SystemExit(f"could not import {HELPERS}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def resolve(standard: str, value: ast.expr) -> set[str]:
+    """One row's profile set, from a literal or from the engine's own helper.
+
+    Anything else EXITS NON-ZERO instead of being skipped or crashing. A row
+    this script cannot read is a row it cannot compare, and a checker that
+    tracebacks on the engine's own table reads, from the repo, exactly like a
+    checker that works.
+    """
+    if isinstance(value, ast.Call):
+        if not isinstance(value.func, ast.Name) or value.args or value.keywords:
+            raise SystemExit(f"{standard}: cannot resolve {ast.unparse(value)}; teach this script about it")
+        resolver = getattr(engine_helpers(), value.func.id, None)
+        if resolver is None:
+            raise SystemExit(f"{standard}: {HELPERS} defines no {value.func.id}; teach this script about it")
+        profiles = resolver()
+    else:
+        try:
+            profiles = ast.literal_eval(value)
+        except ValueError:
+            raise SystemExit(
+                f"{standard}: cannot resolve {ast.unparse(value)}; teach this script about it"
+            ) from None
+
+    if not isinstance(profiles, (set, frozenset, list, tuple)) or not all(
+        isinstance(profile, str) for profile in profiles
+    ):
+        raise SystemExit(f"{standard}: resolved to {profiles!r}, which is not a set of profile keys")
+    return set(profiles)
 
 
 def engine_table() -> dict[str, set[str]]:
-    # The engine projects the Factur-X set from the pinned artifact rather than
-    # writing it out, and ZUGFeRD drops extended-ctc-fr from it. Resolve both
-    # the same way, from the same file, instead of keeping a third copy here.
-    urns = json.loads(VERSIONS.read_text(encoding="utf-8"))["facturx_schematron"]["profileUrns"]
-    facturx = {key.replace("_", "-") for key in urns}
-    named = {
-        "_FACTURX_PROFILES": facturx,
-        "_ZUGFERD_PROFILES": facturx - {"extended-ctc-fr"},
-    }
-
     tree = ast.parse(ROUTE.read_text(encoding="utf-8"))
     for node in tree.body:
         if (
@@ -55,18 +98,20 @@ def engine_table() -> dict[str, set[str]]:
                 standard = ast.literal_eval(key) if key is not None else None
                 if not isinstance(standard, str):
                     raise SystemExit(f"unexpected key in ALLOWED_PROFILES_FOR_STANDARD: {ast.dump(key)}")
-                if isinstance(value, ast.Name):
-                    if value.id not in named:
-                        raise SystemExit(f"{standard}: cannot resolve {value.id}; teach this script about it")
-                    table[standard] = named[value.id]
-                else:
-                    table[standard] = set(ast.literal_eval(value))
+                table[standard] = resolve(standard, value)
             return table
     raise SystemExit(f"could not find ALLOWED_PROFILES_FOR_STANDARD in {ROUTE}")
 
 
 def main() -> int:
-    if ROUTE is None or VERSIONS is None or not ROUTE.is_file() or not VERSIONS.is_file():
+    if (
+        ROUTE is None
+        or VERSIONS is None
+        or HELPERS is None
+        or not ROUTE.is_file()
+        or not VERSIONS.is_file()
+        or not HELPERS.is_file()
+    ):
         print(
             (f"no engine checkout at {ENGINE}.\n" if ENGINE else "BELIQ_ENGINE_PATH is not set.\n")
             + "Set BELIQ_ENGINE_PATH to a checkout of the engine source. This check cannot run without the engine, "
