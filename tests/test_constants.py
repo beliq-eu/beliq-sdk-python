@@ -73,9 +73,19 @@ def test_every_preset_profile_is_legal_for_the_standard_it_targets():
                 )
 
 
-def test_an_unknown_standard_defers_to_the_api():
-    assert profiles_for_standard("fatturapa") == ()
+def test_national_xsd_standards_carry_their_single_profile():
+    assert profiles_for_standard("fatturapa") == ("ordinaria",)
+    assert profiles_for_standard("facturae") == ("ordinaria",)
+    assert profiles_for_standard("eslog") == ("eracun",)
+    assert profiles_for_standard("ksef") == ("fa3",)
     assert is_profile_allowed_for_standard("fatturapa", "ordinaria")
+    # Each carries exactly one profile, so another standard's is not legal here.
+    assert not is_profile_allowed_for_standard("fatturapa", "fa3")
+
+
+def test_an_unknown_standard_defers_to_the_api():
+    assert profiles_for_standard("sdi_messaggio") == ()
+    assert is_profile_allowed_for_standard("sdi_messaggio", "ordinaria")
 
 
 def test_profile_table_cannot_be_mutated_by_a_caller():

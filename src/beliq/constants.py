@@ -1,8 +1,9 @@
 """Defaults, the closed error-code set, and curated public option lists.
 
-The LIVE_* lists are the authority-pinned public subset, intentionally narrower
-than what the API can technically accept: provisional formats (fatturapa,
-sdi_messaggio, facturae, eslog, ksef / poland_ksef_fa3) are withheld from public option lists.
+Each LIVE_* list carries every value the API accepts for its operation, which
+is also every format ``GET /v1/rulesets`` publishes, each wearing the badge
+that says how deep its check goes. A list narrower than the API's own enum
+states its reason beside it.
 """
 
 from __future__ import annotations
@@ -119,7 +120,20 @@ API_ERROR_CODES: tuple[str, ...] = (
     "MISSING_PROCESS_ID",
 )
 
-LIVE_GENERATE_STANDARDS: tuple[str, ...] = ("xrechnung", "zugferd", "facturx", "peppol-bis")
+# Every ``standard`` POST /v1/generate accepts, in the order its enum lists
+# them. The four national formats are Schema-checked: their authority publishes
+# a schema and no machine-readable business rules, so beliq checks structure and
+# says so. GET /v1/rulesets carries each one's badge.
+LIVE_GENERATE_STANDARDS: tuple[str, ...] = (
+    "xrechnung",
+    "zugferd",
+    "facturx",
+    "peppol-bis",
+    "fatturapa",
+    "facturae",
+    "eslog",
+    "ksef",
+)
 
 
 @dataclass(frozen=True)
@@ -164,10 +178,9 @@ LIVE_PROFILES: tuple[str, ...] = ("basicwl", "en16931", "extended", "extended-ct
 # ``peppol-bis``, and ``extended-ctc-fr`` is the AFNOR XP Z12-012 France CTC
 # overlay with no ZUGFeRD-branded counterpart.
 #
-# Narrower than the engine's own table in two places, both deliberate: the
-# ``minimum`` and ``basic`` Factur-X profiles are engine-supported but withheld
-# (FNFE-MPE source gating),
-# and the standards outside LIVE_GENERATE_STANDARDS are absent entirely.
+# It carries every standard the API accepts. It stays narrower than the
+# engine's table in one place: the ``minimum`` and ``basic`` Factur-X profiles
+# are engine-supported but not offered here (FNFE-MPE source gating).
 #
 # Mirrors ``LIVE_PROFILES_BY_STANDARD`` in the Node SDK.
 # ``scripts/check_profile_drift.py`` compares it against the engine's table.
@@ -177,6 +190,10 @@ LIVE_PROFILES_BY_STANDARD: Mapping[str, tuple[str, ...]] = MappingProxyType(
         "peppol-bis": ("peppol", "romania-ro-cius", "netherlands-nlcius"),
         "zugferd": ("basicwl", "en16931", "extended"),
         "facturx": ("basicwl", "en16931", "extended", "extended-ctc-fr"),
+        "fatturapa": ("ordinaria",),
+        "facturae": ("ordinaria",),
+        "eslog": ("eracun",),
+        "ksef": ("fa3",),
     }
 )
 
