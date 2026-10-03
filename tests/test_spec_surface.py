@@ -22,7 +22,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
-from _spec_surface import surface_missing_from  # noqa: E402
+from _spec_surface import descriptions_diverging, surface_missing_from  # noqa: E402
 
 VENDORED: dict[str, Any] = json.loads(
     (Path(__file__).resolve().parent.parent / "openapi.json").read_text(encoding="utf-8")
@@ -33,6 +33,9 @@ def live(mutate: Callable[[dict[str, Any]], None]) -> dict[str, Any]:
     clone = copy.deepcopy(VENDORED)
     mutate(clone)
     return clone
+
+
+ME_DATA_PATH = "paths./v1/me.get.responses.200.content.application/json.schema.properties.data"
 
 
 def me_data(spec: dict[str, Any]) -> dict[str, Any]:
@@ -207,3 +210,71 @@ def test_terminates_on_the_self_referential_schema():
     assert surface_missing_from(live(mutate), VENDORED) == [
         "components.schemas.InvoiceLine.subLines[].$ref -> #/components/schemas/Other"
     ]
+
+
+# --- descriptions, the second question -------------------------------------
+#
+# surface_missing_from is silent on description text by design, and nothing else
+# compared it: the vendoring test re-serializes the vendored copy and compares it
+# with itself. These cases are that half of the contract.
+
+
+def test_identical_documents_carry_no_diverging_description():
+    assert descriptions_diverging(copy.deepcopy(VENDORED), VENDORED) == []
+
+
+def test_reports_a_reworded_description_the_surface_check_ignores():
+    def mutate(s):
+        me_data(s)["properties"]["quota"]["properties"]["resetsAt"]["description"] = "something else"
+
+    pair = (live(mutate), VENDORED)
+    assert surface_missing_from(*pair) == []
+    assert descriptions_diverging(*pair) == [
+        f"{ME_DATA_PATH}.properties.quota.properties.resetsAt: the text differs"
+    ]
+
+
+def test_reports_a_description_only_the_live_spec_carries():
+    def mutate(s):
+        me_data(s)["properties"]["plan"]["description"] = "the plan this key draws on"
+
+    assert descriptions_diverging(live(mutate), VENDORED) == [
+        f"{ME_DATA_PATH}.properties.plan: only the live spec carries it"
+    ]
+
+
+def test_reports_a_description_only_the_vendored_copy_carries():
+    # Which is also what a vendored copy synced ahead of the deploy looks like.
+    # Prose carries no direction, so this is reported and the message says both
+    # readings; the surface check stays directional.
+    def mutate(s):
+        del me_data(s)["properties"]["livemode"]["description"]
+
+    pair = (live(mutate), VENDORED)
+    assert surface_missing_from(*pair) == []
+    assert descriptions_diverging(*pair) == [
+        f"{ME_DATA_PATH}.properties.livemode: only the vendored copy carries it"
+    ]
+
+
+def test_reports_the_documents_own_description_and_a_tag_description():
+    # `info` is excluded from the surface walk wholesale, and this SDK publishes
+    # the document, so its own blurb is a claim nothing else compares.
+    def mutate(s):
+        s["info"]["description"] = "a different blurb"
+        s["tags"][0]["description"] = "a different tag line"
+
+    assert descriptions_diverging(live(mutate), VENDORED) == [
+        "info: the text differs",
+        "tags[0]: the text differs",
+    ]
+
+
+def test_silent_on_a_reworded_summary():
+    # Only `description` is compared. A summary labels an operation, it does not
+    # instruct a caller, and comparing every string is the value-by-value walk
+    # surface_missing_from exists to replace.
+    def mutate(s):
+        s["paths"]["/v1/me"]["get"]["summary"] = "a different summary"
+
+    assert descriptions_diverging(live(mutate), VENDORED) == []

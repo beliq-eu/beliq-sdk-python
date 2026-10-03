@@ -1,7 +1,11 @@
 name: Spec drift
 
-# Catches the vendored openapi.json falling behind the deployed API. A red run
+# Catches the vendored openapi.json falling behind the deployed API, and its
+# descriptions disagreeing with the deployed ones in either direction. A red run
 # means: run `python scripts/sync_spec.py` and open a PR.
+# The one red this does not fix by itself: a description the vendored copy
+# carries and the API has not deployed yet. Deploy it, or sync from live and
+# re-sync after the deploy.
 # Runs on every change as well as weekly: a schedule alone leaves the vendored
 # copy up to seven days behind a deployed surface it does not describe, and a
 # PR that touches the SDK is exactly when that gap costs something.
