@@ -85,8 +85,8 @@ def resolve(standard: str, value: ast.expr) -> set[str]:
     return set(profiles)
 
 
-def engine_table() -> dict[str, set[str]]:
-    tree = ast.parse(ROUTE.read_text(encoding="utf-8"))
+def engine_table(route: Path) -> dict[str, set[str]]:
+    tree = ast.parse(route.read_text(encoding="utf-8"))
     for node in tree.body:
         if (
             isinstance(node, ast.Assign)
@@ -95,12 +95,14 @@ def engine_table() -> dict[str, set[str]]:
         ):
             table: dict[str, set[str]] = {}
             for key, value in zip(node.value.keys, node.value.values, strict=True):
-                standard = ast.literal_eval(key) if key is not None else None
+                if key is None:
+                    raise SystemExit("unexpected ** entry in ALLOWED_PROFILES_FOR_STANDARD")
+                standard = ast.literal_eval(key)
                 if not isinstance(standard, str):
                     raise SystemExit(f"unexpected key in ALLOWED_PROFILES_FOR_STANDARD: {ast.dump(key)}")
                 table[standard] = resolve(standard, value)
             return table
-    raise SystemExit(f"could not find ALLOWED_PROFILES_FOR_STANDARD in {ROUTE}")
+    raise SystemExit(f"could not find ALLOWED_PROFILES_FOR_STANDARD in {route}")
 
 
 def main() -> int:
@@ -120,7 +122,7 @@ def main() -> int:
         )
         return 1
 
-    table = engine_table()
+    table = engine_table(ROUTE)
     drift: list[str] = []
     for standard, profiles in LIVE_PROFILES_BY_STANDARD.items():
         allowed = table.get(standard)
