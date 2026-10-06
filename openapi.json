@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.9.0"
+    "version": "0.10.0"
   },
   "components": {
     "securitySchemes": {
@@ -307,24 +307,12 @@
                       ],
                       "properties": {
                         "keyId": {
-                          "anyOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
+                          "type": "string",
+                          "nullable": true
                         },
                         "keyPrefix": {
-                          "anyOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
+                          "type": "string",
+                          "nullable": true
                         },
                         "livemode": {
                           "description": "False for a blq_test_ key, true otherwise. Selects which allowance the quota block below describes: a live key spends the plan quota over a window anchored on the organization billing day, a test key the flat sandbox allowance over the UTC calendar month. Mirrors the x-beliq-livemode response header, for callers that only see a parsed body.",
@@ -371,14 +359,8 @@
                           "properties": {
                             "id": {
                               "description": "The subscription_plans row the organization references, or null when it references none, which is every organization on the free tier.",
-                              "anyOf": [
-                                {
-                                  "type": "integer"
-                                },
-                                {
-                                  "type": "null"
-                                }
-                              ]
+                              "type": "integer",
+                              "nullable": true
                             },
                             "name": {
                               "description": "Never null. An organization that references no plan row is on the free tier and reads back under the free tier name.",
@@ -17636,7 +17618,11 @@
                                     ]
                                   },
                                   {
-                                    "type": "null"
+                                    "type": "object",
+                                    "nullable": true,
+                                    "enum": [
+                                      null
+                                    ]
                                   }
                                 ]
                               },
@@ -17697,34 +17683,16 @@
                                 ]
                               },
                               "releaseDate": {
-                                "anyOf": [
-                                  {
-                                    "type": "string"
-                                  },
-                                  {
-                                    "type": "null"
-                                  }
-                                ]
+                                "type": "string",
+                                "nullable": true
                               },
                               "repo": {
-                                "anyOf": [
-                                  {
-                                    "type": "string"
-                                  },
-                                  {
-                                    "type": "null"
-                                  }
-                                ]
+                                "type": "string",
+                                "nullable": true
                               },
                               "tag": {
-                                "anyOf": [
-                                  {
-                                    "type": "string"
-                                  },
-                                  {
-                                    "type": "null"
-                                  }
-                                ]
+                                "type": "string",
+                                "nullable": true
                               },
                               "retained": {
                                 "description": "Versions of this format's artefact still on disk but no longer served, oldest first. Empty for a format whose artefact has never had a breaking bump, and empty for one inside a notice period, where the outgoing release is still what `rulesetVersion` names.",
@@ -17744,14 +17712,8 @@
                                     },
                                     "releaseDate": {
                                       "description": "ISO 8601 date (YYYY-MM-DD) the authority released this version, or null when it publishes none.",
-                                      "anyOf": [
-                                        {
-                                          "type": "string"
-                                        },
-                                        {
-                                          "type": "null"
-                                        }
-                                      ]
+                                      "type": "string",
+                                      "nullable": true
                                     },
                                     "servingFrom": {
                                       "description": "ISO 8601 date (YYYY-MM-DD) Beliq started serving this version as `latest`.",
@@ -17759,25 +17721,13 @@
                                     },
                                     "retainedUntil": {
                                       "description": "ISO 8601 date (YYYY-MM-DD) after which this version is no longer served at all, or null when nothing retires it. The last day an exact pin resolves; after it, the pin returns a 422.",
-                                      "anyOf": [
-                                        {
-                                          "type": "string"
-                                        },
-                                        {
-                                          "type": "null"
-                                        }
-                                      ]
+                                      "type": "string",
+                                      "nullable": true
                                     },
                                     "supersededMandatoryOn": {
                                       "description": "ISO 8601 date (YYYY-MM-DD) the authority made this version's successor mandatory, or null when it published no date. Once it has passed, `Beliq-Ruleset: previous` no longer resolves to this version and sets `rulesetFellBack: true`, because a document built to it is rejected by the receiving corner. An exact version pin is unaffected and still reaches it until `retainedUntil`.",
-                                      "anyOf": [
-                                        {
-                                          "type": "string"
-                                        },
-                                        {
-                                          "type": "null"
-                                        }
-                                      ]
+                                      "type": "string",
+                                      "nullable": true
                                     }
                                   }
                                 }
@@ -17804,14 +17754,8 @@
                                     },
                                     "previousVersion": {
                                       "description": "The version `Beliq-Ruleset: previous` resolves to for this artefact today, or null when the channel falls back to `latest` for it. Pin it exactly as `Beliq-Ruleset: <versionKey>:<previousVersion>` to reach it regardless.",
-                                      "anyOf": [
-                                        {
-                                          "type": "string"
-                                        },
-                                        {
-                                          "type": "null"
-                                        }
-                                      ]
+                                      "type": "string",
+                                      "nullable": true
                                     },
                                     "fallbackReason": {
                                       "description": "Why `previous` reaches nothing for this artefact; null exactly when `previousVersion` is set. `sunset` = every retained version is past its `retainedUntil`, so not even an exact pin resolves. `notice-period` = the only retained version is the one standing in for `latest` until a scheduled bump takes effect, so there is nothing behind it yet. `superseded` = the authority made the successor mandatory, so Beliq will not choose the older ruleset on your behalf; an exact pin still reaches it until `retainedUntil`.",
@@ -17835,7 +17779,11 @@
                                           ]
                                         },
                                         {
-                                          "type": "null"
+                                          "type": "object",
+                                          "nullable": true,
+                                          "enum": [
+                                            null
+                                          ]
                                         }
                                       ]
                                     }
@@ -17922,25 +17870,13 @@
                               },
                               "noticePublishedOn": {
                                 "description": "ISO 8601 date (YYYY-MM-DD) the change was announced in the public ruleset changelog, or null when it has not been recorded yet.",
-                                "anyOf": [
-                                  {
-                                    "type": "string"
-                                  },
-                                  {
-                                    "type": "null"
-                                  }
-                                ]
+                                "type": "string",
+                                "nullable": true
                               },
                               "retiredOn": {
                                 "description": "ISO 8601 date (YYYY-MM-DD) after which `from` is no longer served at all, or null when nothing retires it. Later than `effectiveOn`, and the date to act on: it is when an exact pin on `from` starts returning a 422. It does not bound the `previous` channel, which stops resolving to `from` on this date or on the authority's mandatory date for `to`, whichever comes first.",
-                                "anyOf": [
-                                  {
-                                    "type": "string"
-                                  },
-                                  {
-                                    "type": "null"
-                                  }
-                                ]
+                                "type": "string",
+                                "nullable": true
                               }
                             }
                           }
