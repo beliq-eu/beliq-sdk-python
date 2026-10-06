@@ -141,10 +141,50 @@ class ValidationResult(_Model):
     ruleset_artifacts: list[RulesetArtifact] | None = None
 
 
+class ParseElementCount(_Model):
+    """One document element the parser did not read, and how often it occurs."""
+
+    path: str
+    count: int
+
+
+class ParseWarning(_Model):
+    """One thing the document carries that the parsed ``invoice`` does not.
+
+    ``PARSE_NOT_RETURNED`` names an element the parser left behind,
+    ``PARSE_VALUE_NOT_FOUND`` a field it could not read a value for. The code
+    set is open here on purpose: a published client has to keep parsing an
+    answer from a newer API than it was built against.
+    """
+
+    code: str
+    message: str
+    #: The ``invoice`` field the warning is about, when it is about one.
+    field: str | None = None
+    #: EN 16931 business term or group ids, such as ``BT-110`` or ``BG-20``.
+    terms: list[str] | None = None
+    #: ``PARSE_NOT_RETURNED`` only: each element of the document that holds
+    #: something and was not read.
+    elements: list[ParseElementCount] | None = None
+
+
 class ParseResult(_Model):
     format: str
     profile_detected: str | None = None
+    #: BT-24 as the document carries it.
+    profile_urn: str | None = None
+    #: BT-23 as the document carries it. Not the ``businessProcessId`` of a
+    #: generate() invoice, which is an input limited to the three French Flux 2
+    #: codes.
+    business_process_id: str | None = None
+    #: True when BT-23 is one of the French cadre de facturation codes, or BT-24
+    #: is the EXTENDED-CTC-FR URN. ``None`` otherwise.
+    france_ctc_detected: bool | None = None
     invoice: dict[str, Any] = Field(default_factory=dict)
+    #: Empty when the parser read every element that holds something. The parsed
+    #: ``invoice`` is a subset of the document, and these warnings say what the
+    #: document holds beyond it.
+    warnings: list[ParseWarning] = Field(default_factory=list)
 
 
 @dataclass
