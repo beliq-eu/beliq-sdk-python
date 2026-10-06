@@ -9,6 +9,28 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.3.7 - 2026-10-06
+
+- The vendored `openapi.json` carries the four fields `POST /v1/parse` answers
+  with and the previous copy did not. `warnings` is always present, and empty
+  when the parser read every element that holds something: `PARSE_NOT_RETURNED`
+  lists what the document carries beyond the parsed `invoice`, by path and
+  count, and `PARSE_VALUE_NOT_FOUND` names a field no value could be read for.
+  `profileUrn` (BT-24) and `businessProcessId` (BT-23) carry what the document
+  states, and the latter is not the `businessProcessId` a `generate()` invoice
+  takes, which is an input limited to the three French Flux 2 codes.
+  `franceCtcDetected` is true when BT-23 is one of the French cadre de
+  facturation codes or BT-24 is the EXTENDED-CTC-FR URN, and absent otherwise.
+- `ParseResult` declares all four, as `profile_urn`, `business_process_id`,
+  `france_ctc_detected` and `warnings`. The models here are hand-written, so
+  the spec sync on its own would have left the four reachable only under their
+  wire names through `extra='allow'`. `ParseWarning` and `ParseElementCount`
+  carry the warning shape and are exported beside `ParseResult`. The warning
+  code stays a `str` rather than a closed set, because a published client has
+  to keep parsing an answer from a newer API than it was built against.
+- `tests/test_spec_contract.py` pins the seven fields of the `/v1/parse`
+  response to the vendored spec, the way it already pins the validate ones.
+
 ## 0.3.6 - 2026-10-03
 
 - `LIVE_GENERATE_STANDARDS` carries all eight standards `POST /v1/generate`
