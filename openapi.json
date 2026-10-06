@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.8.0"
+    "version": "0.9.0"
   },
   "components": {
     "securitySchemes": {
@@ -10119,7 +10119,8 @@
                       "type": "object",
                       "required": [
                         "format",
-                        "invoice"
+                        "invoice",
+                        "warnings"
                       ],
                       "properties": {
                         "format": {
@@ -10141,6 +10142,15 @@
                         "profileDetected": {
                           "maxLength": 50,
                           "type": "string"
+                        },
+                        "profileUrn": {
+                          "type": "string"
+                        },
+                        "businessProcessId": {
+                          "type": "string"
+                        },
+                        "franceCtcDetected": {
+                          "type": "boolean"
                         },
                         "invoice": {
                           "additionalProperties": false,
@@ -11600,6 +11610,64 @@
                                       ]
                                     }
                                   ]
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "warnings": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "code",
+                              "message"
+                            ],
+                            "properties": {
+                              "code": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "PARSE_NOT_RETURNED"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "PARSE_VALUE_NOT_FOUND"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "message": {
+                                "type": "string"
+                              },
+                              "field": {
+                                "type": "string"
+                              },
+                              "terms": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "elements": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "required": [
+                                    "path",
+                                    "count"
+                                  ],
+                                  "properties": {
+                                    "path": {
+                                      "type": "string"
+                                    },
+                                    "count": {
+                                      "type": "integer"
+                                    }
+                                  }
                                 }
                               }
                             }

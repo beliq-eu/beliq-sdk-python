@@ -123,6 +123,17 @@ def test_parse():
         result = beliq.parse("<x/>", format="auto")
     assert result.format == "cii"
     assert result.invoice["number"] == "IT-2026-001"
+    assert result.profile_urn == "urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0"
+    assert result.business_process_id == "urn:fdc:peppol.eu:2017:poacc:billing:01:1.0"
+    # Absent on a document that is not French, rather than False.
+    assert result.france_ctc_detected is None
+    # The parsed invoice is a subset of the document: these say what is left.
+    warning = result.warnings[0]
+    assert warning.code == "PARSE_NOT_RETURNED"
+    assert warning.elements is not None
+    assert warning.elements[0].path == "/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:IncludedNote"
+    assert warning.elements[0].count == 2
+    assert warning.terms is None
 
 
 @respx.mock

@@ -70,6 +70,22 @@ def test_validate_data_has_core_fields():
         assert field in data
 
 
+def test_parse_data_has_core_fields():
+    data = SPEC["paths"]["/v1/parse"]["post"]["responses"]["200"]["content"]["application/json"]["schema"][
+        "properties"
+    ]["data"]["properties"]
+    for field in (
+        "format",
+        "profileDetected",
+        "profileUrn",
+        "businessProcessId",
+        "franceCtcDetected",
+        "invoice",
+        "warnings",
+    ):
+        assert field in data
+
+
 def test_live_validate_formats_are_subset_of_spec():
     param = next(
         p for p in SPEC["paths"]["/v1/validate"]["post"]["parameters"] if p["name"] == "format"
