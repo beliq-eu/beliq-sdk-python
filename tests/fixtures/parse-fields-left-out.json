@@ -1,0 +1,54 @@
+{
+  "success": true,
+  "data": {
+    "format": "ubl",
+    "invoice": {
+      "lines": [
+        {
+          "description": "Control item",
+          "quantity": 2,
+          "unitPrice": 50,
+          "lineTotal": 100,
+          "vatRate": 19
+        }
+      ],
+      "number": "FILLS-CONTROL-1",
+      "issueDate": "2026-10-06",
+      "currencyCode": "EUR",
+      "documentType": "invoice",
+      "typeCode": "380",
+      "seller": {
+        "name": "Control Seller",
+        "address": {
+          "postalCode": "10115",
+          "countryCode": "DE"
+        }
+      },
+      "buyer": {
+        "name": "Control Buyer",
+        "address": {
+          "city": "Paris",
+          "postalCode": "75001",
+          "countryCode": "FR"
+        }
+      },
+      "totalNetAmount": 100,
+      "totalTaxAmount": 19
+    },
+    "warnings": [
+      {
+        "code": "PARSE_VALUE_NOT_FOUND",
+        "message": "The document holds text for totalGrossAmount that is not a decimal number (xs:decimal), so this response leaves that key out where it does. elements lists each such element by its path, with the number of times it occurs.",
+        "field": "totalGrossAmount",
+        "elements": [
+          {
+            "path": "/Invoice/cac:LegalMonetaryTotal/cbc:TaxInclusiveAmount",
+            "count": 1
+          }
+        ]
+      }
+    ],
+    "profileDetected": "en16931",
+    "profileUrn": "urn:cen.eu:en16931:2017"
+  }
+}

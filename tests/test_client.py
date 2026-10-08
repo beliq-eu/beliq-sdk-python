@@ -137,6 +137,33 @@ def test_parse():
 
 
 @respx.mock
+def test_parse_returns_a_field_only_when_the_answer_holds_it():
+    # What api.beliq.eu answered on 2026-10-08 for a UBL invoice that states no
+    # street or city for the seller, no unit code or VAT category on its line,
+    # and a total with VAT whose text, `1.190,00`, is not an xs:decimal.
+    respx.post("https://api.beliq.eu/v1/parse").mock(
+        return_value=httpx.Response(200, text=fixture("parse-fields-left-out.json"))
+    )
+    with Beliq("blq_test") as beliq:
+        result = beliq.parse("<x/>")
+    assert result.invoice["lines"] == [
+        {"description": "Control item", "quantity": 2, "unitPrice": 50, "lineTotal": 100, "vatRate": 19}
+    ]
+    assert result.invoice["seller"]["address"] == {"postalCode": "10115", "countryCode": "DE"}
+    assert result.invoice["totalNetAmount"] == 100
+    assert "totalGrossAmount" not in result.invoice
+    # The refused text draws a warning that names the field and the element.
+    (warning,) = result.warnings
+    assert warning.code == "PARSE_VALUE_NOT_FOUND"
+    assert warning.field == "totalGrossAmount"
+    assert warning.terms is None
+    assert warning.elements is not None
+    (element,) = warning.elements
+    assert element.path == "/Invoice/cac:LegalMonetaryTotal/cbc:TaxInclusiveAmount"
+    assert element.count == 1
+
+
+@respx.mock
 def test_generate_xml_with_header_metadata():
     route = respx.post("https://api.beliq.eu/v1/generate").mock(
         return_value=httpx.Response(

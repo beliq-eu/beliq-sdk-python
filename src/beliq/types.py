@@ -142,7 +142,7 @@ class ValidationResult(_Model):
 
 
 class ParseElementCount(_Model):
-    """One document element the parser did not read, and how often it occurs."""
+    """One document element a warning is about, and how often it occurs."""
 
     path: str
     count: int
@@ -159,12 +159,15 @@ class ParseWarning(_Model):
 
     code: str
     message: str
-    #: The ``invoice`` field the warning is about, when it is about one.
+    #: The ``invoice`` field the warning is about, when it is about one, as a
+    #: path from ``invoice``: ``totalGrossAmount``, ``delivery.date``. A field
+    #: of an invoice line is written ``lines[].unitPrice``, with no index.
     field: str | None = None
     #: EN 16931 business term or group ids, such as ``BT-110`` or ``BG-20``.
     terms: list[str] | None = None
-    #: ``PARSE_NOT_RETURNED`` only: each element of the document that holds
-    #: something and was not read.
+    #: The elements of the document the warning is about. ``PARSE_NOT_RETURNED``:
+    #: those the response does not return. ``PARSE_VALUE_NOT_FOUND``: those whose
+    #: text was not read as a value.
     elements: list[ParseElementCount] | None = None
 
 
@@ -180,6 +183,10 @@ class ParseResult(_Model):
     #: True when BT-23 is one of the French cadre de facturation codes, or BT-24
     #: is the EXTENDED-CTC-FR URN. ``None`` otherwise.
     france_ctc_detected: bool | None = None
+    #: The API always sends ``lines`` and no other key. Each of the rest is left
+    #: out when the answer holds no value for it, so test for a key or use
+    #: ``.get()`` before reading it. https://docs.beliq.eu/api-reference/parse/
+    #: says what an absent field means.
     invoice: dict[str, Any] = Field(default_factory=dict)
     #: Empty when the parser read every element that holds something. The parsed
     #: ``invoice`` is a subset of the document, and these warnings say what the
