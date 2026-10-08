@@ -9,6 +9,39 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.3.8 - 2026-10-08
+
+A patch: no field, type, method or exported name changes.
+
+- The vendored `openapi.json` is document `0.12.0` of the API, up from
+  `0.9.0`. In it `POST /v1/parse` declares the invoice it returns, where it
+  reused the invoice `POST /v1/generate` takes. The parsed invoice lists the
+  13 fields the parser returns, and only `lines` is always present. One other
+  thing differs: the 14 nullable fields of `GET /v1/me` and `GET /v1/rulesets`
+  are spelled with `nullable: true`, which is what OpenAPI 3.0 has for a
+  nullable field, where each had an `anyOf` with a `"type": "null"` arm.
+- `ParseResult.invoice` stays a `dict[str, Any]`, so nothing here is typed
+  against the parsed invoice. Since 2026-10-07 the API returns a field only
+  when the parser has a value for it, and puts nothing in the place of an
+  absent one. `result.invoice["number"]` therefore raises a `KeyError` for a
+  document that does not state a number, on 0.3.7 as on this release. Test for
+  a key or use `.get()` before reading it. https://beliq.eu/changelog/ has the
+  API change under that date. https://docs.beliq.eu/api-reference/parse/ says
+  what an absent field means, and when a `PARSE_VALUE_NOT_FOUND` warning in
+  `result.warnings` names it.
+- The comments on the warning models are corrected, and the docstring of
+  `ParseElementCount`. `elements` also comes with
+  a `PARSE_VALUE_NOT_FOUND` whose element holds text that was not read as a
+  value, so a `ParseElementCount` is an element a warning is about and not
+  only one the parser did not read. `field` is a path from `invoice`, written
+  `lines[].unitPrice` for a field of a line.
+- `tests/test_spec_contract.py` holds the parsed invoice to two things. It
+  requires `lines` and nothing more, but for the `id` of a
+  `delivery.locationId`, which is optional itself. And it lists no
+  `allowances` and no `charges`, so `DocumentAllowanceCharge` and
+  `LineAllowanceCharge` annotate what `generate()` takes and nothing `parse()`
+  returns.
+
 ## 0.3.7 - 2026-10-06
 
 - The vendored `openapi.json` carries the four fields `POST /v1/parse` answers
