@@ -35,10 +35,14 @@ def _generate_invoice_schema() -> dict:
     return _generate_body_props()["invoice"]
 
 
-def _parse_invoice_schema() -> dict:
+def _parse_data_schema() -> dict:
     return SPEC["paths"]["/v1/parse"]["post"]["responses"]["200"]["content"]["application/json"]["schema"][
         "properties"
-    ]["data"]["properties"]["invoice"]
+    ]["data"]
+
+
+def _parse_invoice_schema() -> dict:
+    return _parse_data_schema()["properties"]["invoice"]
 
 
 def _allowance_and_charge_items(level: dict) -> dict:
@@ -208,14 +212,68 @@ def test_line_allowances_carry_no_vat_of_their_own():
     assert {"vatRate", "vatCategoryCode"}.isdisjoint(line)
 
 
-def test_parsed_invoice_allowances_match_the_generated_shape():
-    """`parse()` hands back what `generate()` takes, so one pair of models covers both.
+def test_parsed_invoice_lists_no_allowances_or_charges():
+    """`parse()` does not hand back what `generate()` takes.
 
-    `ParseResult.invoice` is a plain dict, so the models are what a caller
-    annotates a parsed allowance with; if the two ends of the API ever diverge,
-    that annotation quietly becomes a lie.
+    The parsed invoice is a shape of its own and lists no `allowances` and no
+    `charges`, on the document or on a line. So DocumentAllowanceCharge and
+    LineAllowanceCharge annotate what a caller sends to `generate()` and nothing
+    `parse()` returns.
     """
-    sent = _generate_invoice_schema()
     received = _parse_invoice_schema()
-    assert _allowance_and_charge_items(sent) == _allowance_and_charge_items(received)
-    assert _allowance_and_charge_items(_line_schema(sent)) == _allowance_and_charge_items(_line_schema(received))
+    assert {"allowances", "charges"}.isdisjoint(received["properties"])
+    assert {"allowances", "charges"}.isdisjoint(_line_schema(received)["properties"])
+
+
+def _required_paths(schema: dict, prefix: str = "") -> list[str]:
+    """Every key the schema requires, at every depth, as a path from its root.
+
+    Follows `properties`, `items` and the arms of `anyOf`, `oneOf` and `allOf`.
+    A `$ref` is not followed, so it fails instead of reading as "requires
+    nothing".
+    """
+    assert "$ref" not in schema, f"{prefix}$ref: _required_paths does not follow a reference"
+    paths = [prefix + key for key in schema.get("required", [])]
+    for arm in (*schema.get("anyOf", []), *schema.get("oneOf", []), *schema.get("allOf", [])):
+        paths += _required_paths(arm, prefix)
+    if "items" in schema:
+        paths += _required_paths(schema["items"], prefix.removesuffix(".") + "[].")
+    for key, child in schema.get("properties", {}).items():
+        paths += _required_paths(child, f"{prefix}{key}.")
+    return paths
+
+
+def _departures(value: object, schema: dict, path: str) -> list[str]:
+    """Where a value's keys depart from its schema: one it does not declare, or a required one left out."""
+    if isinstance(value, list):
+        return [d for i, item in enumerate(value) for d in _departures(item, schema.get("items", {}), f"{path}[{i}]")]
+    if not isinstance(value, dict):
+        return []
+    declared = schema.get("properties", {})
+    found = [f"{path}.{key} is not declared" for key in value if key not in declared]
+    found += [f"{path}.{key} is missing" for key in schema.get("required", []) if key not in value]
+    for key, item in value.items():
+        if key in declared:
+            found += _departures(item, declared[key], f"{path}.{key}")
+    return found
+
+
+def test_parsed_invoice_requires_only_lines():
+    """A caller may read `invoice["lines"]` unguarded and no other key of a parsed invoice.
+
+    The comment on `ParseResult.invoice` says so, and this holds it to the spec:
+    `locationId.id` is required only inside a `delivery.locationId` that is
+    itself optional.
+    """
+    assert sorted(_required_paths(_parse_invoice_schema())) == ["delivery.locationId.id", "lines"]
+
+
+def test_parse_fixture_with_fields_left_out_has_the_keys_the_spec_declares():
+    """`parse-fields-left-out.json` is what the parse test with absent fields reads.
+
+    A mock returns whatever the fixture says, so its keys are compared with the
+    spec here, at every depth: none that `/v1/parse` does not declare, and none
+    missing that it requires. Its values are not compared.
+    """
+    fixture_data = json.loads((Path(__file__).parent / "fixtures" / "parse-fields-left-out.json").read_text())["data"]
+    assert _departures(fixture_data, _parse_data_schema(), "data") == []

@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.10.0"
+    "version": "0.12.0"
   },
   "components": {
     "securitySchemes": {
@@ -10138,83 +10138,17 @@
                           "additionalProperties": false,
                           "type": "object",
                           "required": [
-                            "number",
-                            "issueDate",
-                            "currencyCode",
-                            "seller",
-                            "buyer",
-                            "lines",
-                            "totalNetAmount",
-                            "totalTaxAmount",
-                            "totalGrossAmount"
+                            "lines"
                           ],
                           "properties": {
                             "number": {
-                              "minLength": 1,
-                              "maxLength": 200,
                               "type": "string"
                             },
                             "issueDate": {
-                              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
                               "type": "string"
-                            },
-                            "dueDate": {
-                              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-                              "type": "string"
-                            },
-                            "vatPointDate": {
-                              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-                              "type": "string"
-                            },
-                            "vatPointDateCode": {
-                              "anyOf": [
-                                {
-                                  "type": "string",
-                                  "enum": [
-                                    "3"
-                                  ]
-                                },
-                                {
-                                  "type": "string",
-                                  "enum": [
-                                    "35"
-                                  ]
-                                },
-                                {
-                                  "type": "string",
-                                  "enum": [
-                                    "432"
-                                  ]
-                                }
-                              ]
-                            },
-                            "invoicingPeriod": {
-                              "additionalProperties": false,
-                              "minProperties": 1,
-                              "type": "object",
-                              "properties": {
-                                "startDate": {
-                                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-                                  "type": "string"
-                                },
-                                "endDate": {
-                                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-                                  "type": "string"
-                                }
-                              }
                             },
                             "currencyCode": {
-                              "minLength": 3,
-                              "maxLength": 3,
                               "type": "string"
-                            },
-                            "taxCurrencyCode": {
-                              "minLength": 3,
-                              "maxLength": 3,
-                              "type": "string"
-                            },
-                            "taxTotalInAccountingCurrency": {
-                              "type": "number"
                             },
                             "documentType": {
                               "anyOf": [
@@ -10233,251 +10167,41 @@
                               ]
                             },
                             "typeCode": {
-                              "pattern": "^[0-9]{2,3}$",
                               "type": "string"
-                            },
-                            "precedingInvoiceReference": {
-                              "additionalProperties": false,
-                              "type": "object",
-                              "required": [
-                                "id"
-                              ],
-                              "properties": {
-                                "id": {
-                                  "minLength": 1,
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "issueDate": {
-                                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-                                  "type": "string"
-                                }
-                              }
                             },
                             "buyerReference": {
-                              "maxLength": 200,
-                              "type": "string"
-                            },
-                            "orderReference": {
-                              "maxLength": 200,
-                              "type": "string"
-                            },
-                            "salesOrderReference": {
-                              "minLength": 1,
-                              "maxLength": 200,
-                              "type": "string"
-                            },
-                            "contractReference": {
-                              "minLength": 1,
-                              "maxLength": 200,
-                              "type": "string"
-                            },
-                            "projectReference": {
-                              "minLength": 1,
-                              "maxLength": 200,
-                              "type": "string"
-                            },
-                            "receivingAdviceReference": {
-                              "minLength": 1,
-                              "maxLength": 200,
-                              "type": "string"
-                            },
-                            "despatchAdviceReference": {
-                              "minLength": 1,
-                              "maxLength": 200,
-                              "type": "string"
-                            },
-                            "tenderReference": {
-                              "minLength": 1,
-                              "maxLength": 200,
-                              "type": "string"
-                            },
-                            "invoicedObjectIdentifier": {
-                              "additionalProperties": false,
-                              "type": "object",
-                              "required": [
-                                "id"
-                              ],
-                              "properties": {
-                                "id": {
-                                  "minLength": 1,
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "schemeId": {
-                                  "minLength": 1,
-                                  "maxLength": 10,
-                                  "type": "string"
-                                }
-                              }
-                            },
-                            "buyerAccountingReference": {
-                              "minLength": 1,
-                              "maxLength": 200,
-                              "type": "string"
-                            },
-                            "supportingDocuments": {
-                              "maxItems": 50,
-                              "type": "array",
-                              "items": {
-                                "additionalProperties": false,
-                                "type": "object",
-                                "required": [
-                                  "id"
-                                ],
-                                "properties": {
-                                  "id": {
-                                    "minLength": 1,
-                                    "maxLength": 200,
-                                    "type": "string"
-                                  },
-                                  "description": {
-                                    "minLength": 1,
-                                    "maxLength": 1000,
-                                    "type": "string"
-                                  },
-                                  "externalLocation": {
-                                    "minLength": 1,
-                                    "maxLength": 2048,
-                                    "type": "string"
-                                  },
-                                  "attachment": {
-                                    "additionalProperties": false,
-                                    "type": "object",
-                                    "required": [
-                                      "content",
-                                      "mimeCode",
-                                      "filename"
-                                    ],
-                                    "properties": {
-                                      "content": {
-                                        "minLength": 1,
-                                        "type": "string"
-                                      },
-                                      "mimeCode": {
-                                        "minLength": 1,
-                                        "maxLength": 100,
-                                        "type": "string"
-                                      },
-                                      "filename": {
-                                        "minLength": 1,
-                                        "maxLength": 255,
-                                        "type": "string"
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            },
-                            "note": {
-                              "maxLength": 5000,
                               "type": "string"
                             },
                             "seller": {
                               "additionalProperties": false,
                               "type": "object",
-                              "required": [
-                                "name",
-                                "address"
-                              ],
                               "properties": {
                                 "name": {
-                                  "minLength": 1,
-                                  "maxLength": 200,
                                   "type": "string"
                                 },
                                 "vatId": {
-                                  "maxLength": 20,
-                                  "pattern": "^[A-Z]{2}[A-Za-z0-9]{2,18}$",
                                   "type": "string"
                                 },
                                 "taxId": {
-                                  "maxLength": 30,
-                                  "type": "string"
-                                },
-                                "registrationId": {
-                                  "maxLength": 50,
-                                  "type": "string"
-                                },
-                                "email": {
-                                  "maxLength": 254,
-                                  "format": "email",
-                                  "type": "string"
-                                },
-                                "phone": {
-                                  "maxLength": 30,
                                   "type": "string"
                                 },
                                 "address": {
                                   "additionalProperties": false,
                                   "type": "object",
-                                  "required": [
-                                    "city",
-                                    "postalCode",
-                                    "countryCode"
-                                  ],
                                   "properties": {
                                     "street": {
-                                      "maxLength": 500,
                                       "type": "string"
                                     },
                                     "additionalStreet": {
-                                      "maxLength": 500,
                                       "type": "string"
                                     },
                                     "city": {
-                                      "maxLength": 200,
                                       "type": "string"
                                     },
                                     "postalCode": {
-                                      "maxLength": 20,
                                       "type": "string"
                                     },
                                     "countryCode": {
-                                      "minLength": 2,
-                                      "maxLength": 2,
-                                      "type": "string"
-                                    },
-                                    "state": {
-                                      "maxLength": 200,
-                                      "type": "string"
-                                    },
-                                    "region": {
-                                      "minLength": 2,
-                                      "maxLength": 3,
-                                      "type": "string"
-                                    },
-                                    "province": {
-                                      "minLength": 2,
-                                      "maxLength": 3,
-                                      "type": "string"
-                                    },
-                                    "countrySubentity": {
-                                      "maxLength": 10,
-                                      "type": "string"
-                                    }
-                                  }
-                                },
-                                "contactName": {
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "peppol": {
-                                  "additionalProperties": false,
-                                  "type": "object",
-                                  "required": [
-                                    "schemeId",
-                                    "id"
-                                  ],
-                                  "properties": {
-                                    "schemeId": {
-                                      "minLength": 4,
-                                      "maxLength": 4,
-                                      "type": "string"
-                                    },
-                                    "id": {
-                                      "minLength": 1,
-                                      "maxLength": 200,
                                       "type": "string"
                                     }
                                   }
@@ -10487,200 +10211,33 @@
                             "buyer": {
                               "additionalProperties": false,
                               "type": "object",
-                              "required": [
-                                "name",
-                                "address"
-                              ],
                               "properties": {
                                 "name": {
-                                  "minLength": 1,
-                                  "maxLength": 200,
                                   "type": "string"
                                 },
                                 "vatId": {
-                                  "maxLength": 20,
-                                  "pattern": "^[A-Z]{2}[A-Za-z0-9]{2,18}$",
                                   "type": "string"
                                 },
                                 "taxId": {
-                                  "maxLength": 30,
-                                  "type": "string"
-                                },
-                                "registrationId": {
-                                  "maxLength": 50,
-                                  "type": "string"
-                                },
-                                "email": {
-                                  "maxLength": 254,
-                                  "format": "email",
-                                  "type": "string"
-                                },
-                                "phone": {
-                                  "maxLength": 30,
                                   "type": "string"
                                 },
                                 "address": {
                                   "additionalProperties": false,
                                   "type": "object",
-                                  "required": [
-                                    "city",
-                                    "postalCode",
-                                    "countryCode"
-                                  ],
                                   "properties": {
                                     "street": {
-                                      "maxLength": 500,
                                       "type": "string"
                                     },
                                     "additionalStreet": {
-                                      "maxLength": 500,
                                       "type": "string"
                                     },
                                     "city": {
-                                      "maxLength": 200,
                                       "type": "string"
                                     },
                                     "postalCode": {
-                                      "maxLength": 20,
                                       "type": "string"
                                     },
                                     "countryCode": {
-                                      "minLength": 2,
-                                      "maxLength": 2,
-                                      "type": "string"
-                                    },
-                                    "state": {
-                                      "maxLength": 200,
-                                      "type": "string"
-                                    },
-                                    "region": {
-                                      "minLength": 2,
-                                      "maxLength": 3,
-                                      "type": "string"
-                                    },
-                                    "province": {
-                                      "minLength": 2,
-                                      "maxLength": 3,
-                                      "type": "string"
-                                    },
-                                    "countrySubentity": {
-                                      "maxLength": 10,
-                                      "type": "string"
-                                    }
-                                  }
-                                },
-                                "contactName": {
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "peppol": {
-                                  "additionalProperties": false,
-                                  "type": "object",
-                                  "required": [
-                                    "schemeId",
-                                    "id"
-                                  ],
-                                  "properties": {
-                                    "schemeId": {
-                                      "minLength": 4,
-                                      "maxLength": 4,
-                                      "type": "string"
-                                    },
-                                    "id": {
-                                      "minLength": 1,
-                                      "maxLength": 200,
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              }
-                            },
-                            "payee": {
-                              "additionalProperties": false,
-                              "type": "object",
-                              "required": [
-                                "name"
-                              ],
-                              "properties": {
-                                "name": {
-                                  "minLength": 1,
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "identifier": {
-                                  "additionalProperties": false,
-                                  "type": "object",
-                                  "required": [
-                                    "id"
-                                  ],
-                                  "properties": {
-                                    "id": {
-                                      "minLength": 1,
-                                      "maxLength": 200,
-                                      "type": "string"
-                                    },
-                                    "schemeId": {
-                                      "minLength": 1,
-                                      "maxLength": 10,
-                                      "type": "string"
-                                    }
-                                  }
-                                },
-                                "registrationId": {
-                                  "maxLength": 50,
-                                  "type": "string"
-                                }
-                              }
-                            },
-                            "taxRepresentative": {
-                              "additionalProperties": false,
-                              "type": "object",
-                              "required": [
-                                "name",
-                                "vatId",
-                                "address"
-                              ],
-                              "properties": {
-                                "name": {
-                                  "minLength": 1,
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "vatId": {
-                                  "maxLength": 20,
-                                  "pattern": "^[A-Z]{2}[A-Za-z0-9]{2,18}$",
-                                  "type": "string"
-                                },
-                                "address": {
-                                  "additionalProperties": false,
-                                  "type": "object",
-                                  "required": [
-                                    "countryCode"
-                                  ],
-                                  "properties": {
-                                    "street": {
-                                      "maxLength": 500,
-                                      "type": "string"
-                                    },
-                                    "additionalStreet": {
-                                      "maxLength": 500,
-                                      "type": "string"
-                                    },
-                                    "city": {
-                                      "maxLength": 200,
-                                      "type": "string"
-                                    },
-                                    "postalCode": {
-                                      "maxLength": 20,
-                                      "type": "string"
-                                    },
-                                    "countryCode": {
-                                      "minLength": 2,
-                                      "maxLength": 2,
-                                      "type": "string"
-                                    },
-                                    "countrySubentity": {
-                                      "maxLength": 10,
                                       "type": "string"
                                     }
                                   }
@@ -10688,283 +10245,30 @@
                               }
                             },
                             "lines": {
-                              "minItems": 1,
-                              "maxItems": 1000,
                               "type": "array",
                               "items": {
                                 "additionalProperties": false,
                                 "type": "object",
-                                "required": [
-                                  "description",
-                                  "quantity",
-                                  "unitCode",
-                                  "unitPrice",
-                                  "lineTotal",
-                                  "vatRate",
-                                  "vatCategoryCode"
-                                ],
                                 "properties": {
                                   "description": {
-                                    "minLength": 1,
-                                    "maxLength": 1000,
                                     "type": "string"
                                   },
                                   "quantity": {
-                                    "exclusiveMinimum": 0,
                                     "type": "number"
                                   },
                                   "unitCode": {
-                                    "minLength": 1,
-                                    "maxLength": 10,
                                     "type": "string"
                                   },
                                   "unitPrice": {
-                                    "minimum": 0,
                                     "type": "number"
                                   },
                                   "lineTotal": {
                                     "type": "number"
                                   },
                                   "vatRate": {
-                                    "minimum": 0,
-                                    "maximum": 100,
                                     "type": "number"
                                   },
                                   "vatCategoryCode": {
-                                    "minLength": 1,
-                                    "maxLength": 10,
-                                    "type": "string"
-                                  },
-                                  "itemId": {
-                                    "maxLength": 50,
-                                    "type": "string"
-                                  },
-                                  "buyerItemId": {
-                                    "maxLength": 50,
-                                    "type": "string"
-                                  },
-                                  "grossPrice": {
-                                    "minimum": 0,
-                                    "type": "number"
-                                  },
-                                  "priceDiscount": {
-                                    "minimum": 0,
-                                    "type": "number"
-                                  },
-                                  "priceBaseQuantity": {
-                                    "exclusiveMinimum": 0,
-                                    "type": "number"
-                                  },
-                                  "standardItemId": {
-                                    "additionalProperties": false,
-                                    "type": "object",
-                                    "required": [
-                                      "id",
-                                      "schemeId"
-                                    ],
-                                    "properties": {
-                                      "id": {
-                                        "minLength": 1,
-                                        "maxLength": 200,
-                                        "type": "string"
-                                      },
-                                      "schemeId": {
-                                        "minLength": 1,
-                                        "maxLength": 10,
-                                        "type": "string"
-                                      }
-                                    }
-                                  },
-                                  "classifications": {
-                                    "maxItems": 20,
-                                    "type": "array",
-                                    "items": {
-                                      "additionalProperties": false,
-                                      "type": "object",
-                                      "required": [
-                                        "code",
-                                        "listId"
-                                      ],
-                                      "properties": {
-                                        "code": {
-                                          "minLength": 1,
-                                          "maxLength": 200,
-                                          "type": "string"
-                                        },
-                                        "listId": {
-                                          "minLength": 1,
-                                          "maxLength": 10,
-                                          "type": "string"
-                                        },
-                                        "listVersionId": {
-                                          "minLength": 1,
-                                          "maxLength": 50,
-                                          "type": "string"
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "originCountryCode": {
-                                    "minLength": 2,
-                                    "maxLength": 2,
-                                    "type": "string"
-                                  },
-                                  "attributes": {
-                                    "maxItems": 50,
-                                    "type": "array",
-                                    "items": {
-                                      "additionalProperties": false,
-                                      "type": "object",
-                                      "required": [
-                                        "name",
-                                        "value"
-                                      ],
-                                      "properties": {
-                                        "name": {
-                                          "minLength": 1,
-                                          "maxLength": 200,
-                                          "type": "string"
-                                        },
-                                        "value": {
-                                          "minLength": 1,
-                                          "maxLength": 1000,
-                                          "type": "string"
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "allowances": {
-                                    "maxItems": 50,
-                                    "type": "array",
-                                    "items": {
-                                      "additionalProperties": false,
-                                      "type": "object",
-                                      "required": [
-                                        "amount"
-                                      ],
-                                      "properties": {
-                                        "amount": {
-                                          "minimum": 0,
-                                          "type": "number"
-                                        },
-                                        "baseAmount": {
-                                          "minimum": 0,
-                                          "type": "number"
-                                        },
-                                        "percentage": {
-                                          "minimum": 0,
-                                          "maximum": 100,
-                                          "type": "number"
-                                        },
-                                        "reason": {
-                                          "minLength": 1,
-                                          "maxLength": 1000,
-                                          "type": "string"
-                                        },
-                                        "reasonCode": {
-                                          "minLength": 1,
-                                          "maxLength": 10,
-                                          "type": "string"
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "charges": {
-                                    "maxItems": 50,
-                                    "type": "array",
-                                    "items": {
-                                      "additionalProperties": false,
-                                      "type": "object",
-                                      "required": [
-                                        "amount"
-                                      ],
-                                      "properties": {
-                                        "amount": {
-                                          "minimum": 0,
-                                          "type": "number"
-                                        },
-                                        "baseAmount": {
-                                          "minimum": 0,
-                                          "type": "number"
-                                        },
-                                        "percentage": {
-                                          "minimum": 0,
-                                          "maximum": 100,
-                                          "type": "number"
-                                        },
-                                        "reason": {
-                                          "minLength": 1,
-                                          "maxLength": 1000,
-                                          "type": "string"
-                                        },
-                                        "reasonCode": {
-                                          "minLength": 1,
-                                          "maxLength": 10,
-                                          "type": "string"
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "invoicingPeriod": {
-                                    "additionalProperties": false,
-                                    "minProperties": 1,
-                                    "type": "object",
-                                    "properties": {
-                                      "startDate": {
-                                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-                                        "type": "string"
-                                      },
-                                      "endDate": {
-                                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-                                        "type": "string"
-                                      }
-                                    }
-                                  },
-                                  "subLines": {
-                                    "maxItems": 200,
-                                    "type": "array",
-                                    "items": {
-                                      "$ref": "#/components/schemas/InvoiceLine"
-                                    }
-                                  }
-                                }
-                              }
-                            },
-                            "taxSummary": {
-                              "maxItems": 200,
-                              "type": "array",
-                              "items": {
-                                "additionalProperties": false,
-                                "type": "object",
-                                "required": [
-                                  "vatCategoryCode",
-                                  "vatRate",
-                                  "taxableAmount",
-                                  "taxAmount"
-                                ],
-                                "properties": {
-                                  "vatCategoryCode": {
-                                    "minLength": 1,
-                                    "maxLength": 10,
-                                    "type": "string"
-                                  },
-                                  "vatRate": {
-                                    "minimum": 0,
-                                    "maximum": 100,
-                                    "type": "number"
-                                  },
-                                  "taxableAmount": {
-                                    "type": "number"
-                                  },
-                                  "taxAmount": {
-                                    "type": "number"
-                                  },
-                                  "exemptionReasonText": {
-                                    "maxLength": 1000,
-                                    "type": "string"
-                                  },
-                                  "exemptionReasonCode": {
-                                    "maxLength": 100,
                                     "type": "string"
                                   }
                                 }
@@ -10975,7 +10279,6 @@
                               "type": "object",
                               "properties": {
                                 "name": {
-                                  "maxLength": 200,
                                   "type": "string"
                                 },
                                 "locationId": {
@@ -10986,195 +10289,38 @@
                                   ],
                                   "properties": {
                                     "schemeId": {
-                                      "maxLength": 10,
                                       "type": "string"
                                     },
                                     "id": {
-                                      "maxLength": 200,
                                       "type": "string"
                                     }
                                   }
                                 },
                                 "date": {
-                                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
                                   "type": "string"
                                 },
                                 "address": {
                                   "additionalProperties": false,
                                   "type": "object",
-                                  "required": [
-                                    "countryCode"
-                                  ],
                                   "properties": {
                                     "street": {
-                                      "maxLength": 500,
                                       "type": "string"
                                     },
                                     "additionalStreet": {
-                                      "maxLength": 500,
                                       "type": "string"
                                     },
                                     "city": {
-                                      "maxLength": 200,
                                       "type": "string"
                                     },
                                     "postalCode": {
-                                      "maxLength": 20,
-                                      "type": "string"
-                                    },
-                                    "countryCode": {
-                                      "minLength": 2,
-                                      "maxLength": 2,
                                       "type": "string"
                                     },
                                     "countrySubentity": {
-                                      "maxLength": 10,
+                                      "type": "string"
+                                    },
+                                    "countryCode": {
                                       "type": "string"
                                     }
-                                  }
-                                }
-                              }
-                            },
-                            "paymentMeans": {
-                              "additionalProperties": false,
-                              "type": "object",
-                              "required": [
-                                "typeCode"
-                              ],
-                              "properties": {
-                                "typeCode": {
-                                  "minLength": 1,
-                                  "maxLength": 10,
-                                  "type": "string"
-                                },
-                                "iban": {
-                                  "maxLength": 34,
-                                  "type": "string"
-                                },
-                                "bic": {
-                                  "maxLength": 11,
-                                  "type": "string"
-                                },
-                                "bankName": {
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "paymentReference": {
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "information": {
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "mandateReference": {
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "creditorId": {
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "debitedAccountId": {
-                                  "maxLength": 34,
-                                  "type": "string"
-                                }
-                              }
-                            },
-                            "paymentTerms": {
-                              "maxLength": 500,
-                              "type": "string"
-                            },
-                            "allowances": {
-                              "maxItems": 50,
-                              "type": "array",
-                              "items": {
-                                "additionalProperties": false,
-                                "type": "object",
-                                "required": [
-                                  "amount",
-                                  "vatCategoryCode"
-                                ],
-                                "properties": {
-                                  "amount": {
-                                    "minimum": 0,
-                                    "type": "number"
-                                  },
-                                  "baseAmount": {
-                                    "minimum": 0,
-                                    "type": "number"
-                                  },
-                                  "percentage": {
-                                    "minimum": 0,
-                                    "maximum": 100,
-                                    "type": "number"
-                                  },
-                                  "reason": {
-                                    "minLength": 1,
-                                    "maxLength": 1000,
-                                    "type": "string"
-                                  },
-                                  "reasonCode": {
-                                    "minLength": 1,
-                                    "maxLength": 10,
-                                    "type": "string"
-                                  },
-                                  "vatCategoryCode": {
-                                    "minLength": 1,
-                                    "maxLength": 10,
-                                    "type": "string"
-                                  },
-                                  "vatRate": {
-                                    "minimum": 0,
-                                    "maximum": 100,
-                                    "type": "number"
-                                  }
-                                }
-                              }
-                            },
-                            "charges": {
-                              "maxItems": 50,
-                              "type": "array",
-                              "items": {
-                                "additionalProperties": false,
-                                "type": "object",
-                                "required": [
-                                  "amount",
-                                  "vatCategoryCode"
-                                ],
-                                "properties": {
-                                  "amount": {
-                                    "minimum": 0,
-                                    "type": "number"
-                                  },
-                                  "baseAmount": {
-                                    "minimum": 0,
-                                    "type": "number"
-                                  },
-                                  "percentage": {
-                                    "minimum": 0,
-                                    "maximum": 100,
-                                    "type": "number"
-                                  },
-                                  "reason": {
-                                    "minLength": 1,
-                                    "maxLength": 1000,
-                                    "type": "string"
-                                  },
-                                  "reasonCode": {
-                                    "minLength": 1,
-                                    "maxLength": 10,
-                                    "type": "string"
-                                  },
-                                  "vatCategoryCode": {
-                                    "minLength": 1,
-                                    "maxLength": 10,
-                                    "type": "string"
-                                  },
-                                  "vatRate": {
-                                    "minimum": 0,
-                                    "maximum": 100,
-                                    "type": "number"
                                   }
                                 }
                               }
@@ -11187,413 +10333,6 @@
                             },
                             "totalGrossAmount": {
                               "type": "number"
-                            },
-                            "paidAmount": {
-                              "type": "number"
-                            },
-                            "roundingAmount": {
-                              "type": "number"
-                            },
-                            "franceCtc": {
-                              "type": "boolean"
-                            },
-                            "businessProcessId": {
-                              "anyOf": [
-                                {
-                                  "type": "string",
-                                  "enum": [
-                                    "S8"
-                                  ]
-                                },
-                                {
-                                  "type": "string",
-                                  "enum": [
-                                    "B8"
-                                  ]
-                                },
-                                {
-                                  "type": "string",
-                                  "enum": [
-                                    "M8"
-                                  ]
-                                }
-                              ]
-                            },
-                            "italy": {
-                              "additionalProperties": false,
-                              "type": "object",
-                              "properties": {
-                                "codiceDestinatario": {
-                                  "minLength": 7,
-                                  "maxLength": 7,
-                                  "pattern": "^[A-Za-z0-9]{7}$",
-                                  "type": "string"
-                                },
-                                "regimeFiscale": {
-                                  "minLength": 2,
-                                  "maxLength": 10,
-                                  "type": "string"
-                                },
-                                "progressivoInvio": {
-                                  "minLength": 1,
-                                  "maxLength": 10,
-                                  "type": "string"
-                                },
-                                "idTrasmittente": {
-                                  "additionalProperties": false,
-                                  "type": "object",
-                                  "required": [
-                                    "country",
-                                    "id"
-                                  ],
-                                  "properties": {
-                                    "country": {
-                                      "minLength": 2,
-                                      "maxLength": 2,
-                                      "type": "string"
-                                    },
-                                    "id": {
-                                      "minLength": 1,
-                                      "maxLength": 28,
-                                      "type": "string"
-                                    }
-                                  }
-                                },
-                                "tipoDocumento": {
-                                  "minLength": 2,
-                                  "maxLength": 10,
-                                  "type": "string"
-                                },
-                                "condizioniPagamento": {
-                                  "minLength": 2,
-                                  "maxLength": 10,
-                                  "type": "string"
-                                },
-                                "modalitaPagamento": {
-                                  "minLength": 2,
-                                  "maxLength": 10,
-                                  "type": "string"
-                                },
-                                "esigibilitaIVA": {
-                                  "minLength": 1,
-                                  "maxLength": 5,
-                                  "type": "string"
-                                },
-                                "causale": {
-                                  "maxItems": 20,
-                                  "type": "array",
-                                  "items": {
-                                    "maxLength": 200,
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
-                            "romania": {
-                              "additionalProperties": false,
-                              "type": "object",
-                              "properties": {}
-                            },
-                            "netherlands": {
-                              "additionalProperties": false,
-                              "type": "object",
-                              "properties": {}
-                            },
-                            "spain": {
-                              "additionalProperties": false,
-                              "type": "object",
-                              "properties": {
-                                "modality": {
-                                  "anyOf": [
-                                    {
-                                      "type": "string",
-                                      "enum": [
-                                        "I"
-                                      ]
-                                    },
-                                    {
-                                      "type": "string",
-                                      "enum": [
-                                        "L"
-                                      ]
-                                    }
-                                  ]
-                                },
-                                "invoiceIssuerType": {
-                                  "anyOf": [
-                                    {
-                                      "type": "string",
-                                      "enum": [
-                                        "EM"
-                                      ]
-                                    },
-                                    {
-                                      "type": "string",
-                                      "enum": [
-                                        "RE"
-                                      ]
-                                    },
-                                    {
-                                      "type": "string",
-                                      "enum": [
-                                        "TE"
-                                      ]
-                                    }
-                                  ]
-                                },
-                                "invoiceDocumentType": {
-                                  "minLength": 2,
-                                  "maxLength": 5,
-                                  "type": "string"
-                                },
-                                "invoiceClass": {
-                                  "minLength": 2,
-                                  "maxLength": 5,
-                                  "type": "string"
-                                },
-                                "taxTypeCode": {
-                                  "minLength": 1,
-                                  "maxLength": 5,
-                                  "type": "string"
-                                },
-                                "languageName": {
-                                  "minLength": 2,
-                                  "maxLength": 5,
-                                  "type": "string"
-                                },
-                                "batchIdentifier": {
-                                  "minLength": 1,
-                                  "maxLength": 200,
-                                  "type": "string"
-                                },
-                                "seller": {
-                                  "additionalProperties": false,
-                                  "type": "object",
-                                  "properties": {
-                                    "personTypeCode": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "J"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "F"
-                                          ]
-                                        }
-                                      ]
-                                    },
-                                    "residenceTypeCode": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "R"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "U"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "E"
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  }
-                                },
-                                "buyer": {
-                                  "additionalProperties": false,
-                                  "type": "object",
-                                  "properties": {
-                                    "personTypeCode": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "J"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "F"
-                                          ]
-                                        }
-                                      ]
-                                    },
-                                    "residenceTypeCode": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "R"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "U"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "E"
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  }
-                                }
-                              }
-                            },
-                            "slovenia": {
-                              "additionalProperties": false,
-                              "type": "object",
-                              "properties": {}
-                            },
-                            "poland": {
-                              "additionalProperties": false,
-                              "type": "object",
-                              "properties": {
-                                "adnotacje": {
-                                  "additionalProperties": false,
-                                  "type": "object",
-                                  "properties": {
-                                    "P_16": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "1"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "2"
-                                          ]
-                                        }
-                                      ]
-                                    },
-                                    "P_17": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "1"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "2"
-                                          ]
-                                        }
-                                      ]
-                                    },
-                                    "P_18": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "1"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "2"
-                                          ]
-                                        }
-                                      ]
-                                    },
-                                    "P_18A": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "1"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "2"
-                                          ]
-                                        }
-                                      ]
-                                    },
-                                    "P_23": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "1"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "2"
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  }
-                                },
-                                "dataWytworzenia": {
-                                  "minLength": 1,
-                                  "maxLength": 40,
-                                  "type": "string"
-                                },
-                                "placeOfIssue": {
-                                  "minLength": 1,
-                                  "maxLength": 256,
-                                  "type": "string"
-                                },
-                                "jst": {
-                                  "anyOf": [
-                                    {
-                                      "type": "string",
-                                      "enum": [
-                                        "1"
-                                      ]
-                                    },
-                                    {
-                                      "type": "string",
-                                      "enum": [
-                                        "2"
-                                      ]
-                                    }
-                                  ]
-                                },
-                                "gv": {
-                                  "anyOf": [
-                                    {
-                                      "type": "string",
-                                      "enum": [
-                                        "1"
-                                      ]
-                                    },
-                                    {
-                                      "type": "string",
-                                      "enum": [
-                                        "2"
-                                      ]
-                                    }
-                                  ]
-                                }
-                              }
                             }
                           }
                         },
@@ -17592,39 +16331,14 @@
                                 "type": "string"
                               },
                               "verificationTier": {
-                                "anyOf": [
-                                  {
-                                    "type": "string",
-                                    "enum": [
-                                      "conformance-verified"
-                                    ]
-                                  },
-                                  {
-                                    "type": "string",
-                                    "enum": [
-                                      "builder-round-trip"
-                                    ]
-                                  },
-                                  {
-                                    "type": "string",
-                                    "enum": [
-                                      "reconstructed-rules"
-                                    ]
-                                  },
-                                  {
-                                    "type": "string",
-                                    "enum": [
-                                      "xsd-structural"
-                                    ]
-                                  },
-                                  {
-                                    "type": "object",
-                                    "nullable": true,
-                                    "enum": [
-                                      null
-                                    ]
-                                  }
-                                ]
+                                "type": "string",
+                                "enum": [
+                                  "conformance-verified",
+                                  "builder-round-trip",
+                                  "reconstructed-rules",
+                                  "xsd-structural"
+                                ],
+                                "nullable": true
                               },
                               "rulesProvenance": {
                                 "anyOf": [
@@ -17759,33 +16473,13 @@
                                     },
                                     "fallbackReason": {
                                       "description": "Why `previous` reaches nothing for this artefact; null exactly when `previousVersion` is set. `sunset` = every retained version is past its `retainedUntil`, so not even an exact pin resolves. `notice-period` = the only retained version is the one standing in for `latest` until a scheduled bump takes effect, so there is nothing behind it yet. `superseded` = the authority made the successor mandatory, so Beliq will not choose the older ruleset on your behalf; an exact pin still reaches it until `retainedUntil`.",
-                                      "anyOf": [
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "sunset"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "notice-period"
-                                          ]
-                                        },
-                                        {
-                                          "type": "string",
-                                          "enum": [
-                                            "superseded"
-                                          ]
-                                        },
-                                        {
-                                          "type": "object",
-                                          "nullable": true,
-                                          "enum": [
-                                            null
-                                          ]
-                                        }
-                                      ]
+                                      "type": "string",
+                                      "enum": [
+                                        "sunset",
+                                        "notice-period",
+                                        "superseded"
+                                      ],
+                                      "nullable": true
                                     }
                                   }
                                 }
