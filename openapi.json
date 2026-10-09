@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.12.0"
+    "version": "0.13.1"
   },
   "components": {
     "securitySchemes": {
@@ -517,6 +517,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -823,6 +829,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -1139,6 +1151,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -1445,6 +1463,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -3357,7 +3381,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "Compact JSON naming the ruleset/artifact versions pinned for the produced format. Descriptive only; conversion runs no validation over its output."
+                "description": "Compact JSON naming the ruleset/artifact versions pinned for the produced format."
               },
               "x-ruleset-artifacts": {
                 "schema": {
@@ -3955,6 +3979,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -4261,6 +4291,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -4577,6 +4613,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -4883,6 +4925,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -5199,6 +5247,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -5505,6 +5559,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -5821,6 +5881,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -6132,6 +6198,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -6438,6 +6510,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -7290,6 +7368,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -7596,6 +7680,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -7912,6 +8002,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -8218,6 +8314,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -8534,6 +8636,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -8840,6 +8948,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -9156,6 +9270,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -9467,6 +9587,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -9773,6 +9899,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -10516,6 +10648,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -10822,6 +10960,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -11138,6 +11282,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -11444,6 +11594,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -11760,6 +11916,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -12066,6 +12228,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -12382,6 +12550,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -12688,6 +12862,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -13004,6 +13184,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -13188,7 +13374,7 @@
         "tags": [
           "Documents"
         ],
-        "description": "The `X-Version-Block` response header (compact JSON) names the ruleset/artifact versions this engine build pins for the produced target format. It is descriptive (convert runs no validation over its output) and mirrors the data published by `GET /v1/rulesets`.",
+        "description": "A 200 means the engine validated the converted XML before it returned it: the document carries the specification identifier of the target format and profile, and it passed the schemas and rule packs the engine runs for that identifier. For `facturx` and `zugferd` at profile `en16931` that is the plain EN 16931 identifier, so the document is checked as EN 16931 CII and against no Factur-X profile schema. A converted document that fails is a 422 `CONVERSION_OUTPUT_INVALID` with the verdict in `error.details.validationResult`, and is not returned. The 200 itself carries no verdict. When a PDF comes back, its embedded XML was checked and the PDF container was not. The converters between CII and UBL are not checked field by field, so a 200 does not say that every field of the source arrived.\n\nThe `X-Version-Block` response header (compact JSON) names the ruleset/artifact versions this engine build pins for the produced target format, the same data `GET /v1/rulesets` publishes. It names pins and is not a verdict on the converted document.",
         "requestBody": {
           "required": true,
           "content": {
@@ -13383,7 +13569,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "How many source elements had no target equivalent. \"0\" means the conversion was lossless at the element level."
+                "description": "How many source elements the engine recorded as having no target equivalent. \"0\" means it recorded none. A loss the engine does not detect is not counted: the converters between CII and UBL are not checked field by field."
               },
               "x-lost-elements": {
                 "schema": {
@@ -13407,7 +13593,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "Compact JSON naming the ruleset/artifact versions pinned for the produced format. Descriptive only; conversion runs no validation over its output."
+                "description": "Compact JSON naming the ruleset/artifact versions pinned for the produced format."
               },
               "x-beliq-livemode": {
                 "schema": {
@@ -13569,6 +13755,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -13885,6 +14077,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -14191,6 +14389,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -14507,6 +14711,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -14813,6 +15023,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -15129,6 +15345,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -15435,6 +15657,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -15751,6 +15979,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -16057,6 +16291,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {
@@ -16722,6 +16962,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "PDF_TEMPLATE_AUTH_REQUIRED"
                               ]
                             },
@@ -17028,6 +17274,12 @@
                               "type": "string",
                               "enum": [
                                 "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
                               ]
                             },
                             {

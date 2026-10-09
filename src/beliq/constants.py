@@ -71,6 +71,9 @@ API_ERROR_CODES: tuple[str, ...] = (
     "CONVERSION_LOSSY_FAILCLOSED",
     "CONVERSION_TOOL_UNAVAILABLE",
     "CONVERSION_TOOL_ERROR",
+    # 422 on convert: the converted document failed validation and is not
+    # returned. The verdict is in `details["validationResult"]`.
+    "CONVERSION_OUTPUT_INVALID",
     "PDF_TEMPLATE_AUTH_REQUIRED",
     "PDF_TEMPLATE_NOT_FOUND",
     "PDF_TEMPLATE_INVALID",

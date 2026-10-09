@@ -188,9 +188,10 @@ class ParseResult(_Model):
     #: ``.get()`` before reading it. https://docs.beliq.eu/api-reference/parse/
     #: says what an absent field means.
     invoice: dict[str, Any] = Field(default_factory=dict)
-    #: Empty when the parser read every element that holds something. The parsed
-    #: ``invoice`` is a subset of the document, and these warnings say what the
-    #: document holds beyond it.
+    #: Empty only when the parser read every element that holds something: an
+    #: element that was read can still draw a ``PARSE_VALUE_NOT_FOUND``. The
+    #: parsed ``invoice`` is a subset of the document, and ``PARSE_NOT_RETURNED``
+    #: warnings say what the document holds beyond it.
     warnings: list[ParseWarning] = Field(default_factory=list)
 
 
