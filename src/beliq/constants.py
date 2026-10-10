@@ -74,6 +74,10 @@ API_ERROR_CODES: tuple[str, ...] = (
     # 422 on convert: the converted document failed validation and is not
     # returned. The verdict is in `details["validationResult"]`.
     "CONVERSION_OUTPUT_INVALID",
+    # 422 on generate: veraPDF reported a violation of its PDF/A-3b profile in
+    # the hybrid PDF that was built, so the PDF is not returned. The failed
+    # rules are in `details["failedRules"]`.
+    "PDFA_VIOLATION",
     "PDF_TEMPLATE_AUTH_REQUIRED",
     "PDF_TEMPLATE_NOT_FOUND",
     "PDF_TEMPLATE_INVALID",
