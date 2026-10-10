@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from typing import get_type_hints
 
-from _spec import validate_data_props
+from _spec import SPEC, validate_data_props
 
 from beliq.constants import (
     API_ERROR_CODES,
@@ -20,8 +20,6 @@ from beliq.constants import (
     LIVE_VALIDATE_FORMATS,
 )
 from beliq.types import AccountInfo, DocumentAllowanceCharge, LineAllowanceCharge, PdfInput, ValidationResult
-
-SPEC = json.loads((Path(__file__).parent.parent / "openapi.json").read_text())
 
 
 def _enum_values(schema: dict) -> set[str]:

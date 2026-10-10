@@ -82,9 +82,10 @@ def _first_enum_value(schema: dict[str, Any]) -> str:
 @respx.mock
 def test_validate_types_the_fields_about_the_depth_of_the_check():
     # The ids come from the vendored spec, so this test holds no typed copy of
-    # them. The tier and the badge are the first value of two separate lists,
-    # so they are not a pair the API is known to send together. The label and
-    # the rule id are made up. The SDK hands all of them on and reads none.
+    # them. The tier and the badge are the first value of two separate lists:
+    # this test does not establish that the API sends the two together. The
+    # label and the rule id are made up. The SDK hands all of them on and
+    # reads none.
     props = validate_data_props()
     tier = _first_enum_value(props["verificationTier"])
     badge = _first_enum_value(props["verificationBadge"])

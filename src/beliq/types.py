@@ -169,7 +169,7 @@ class ValidationResult(_Model):
     ruleset_artifacts: list[RulesetArtifact] | None = None
     #: ISO 8601 UTC instant of the last drift check that confirmed the pinned
     #: artifacts behind ``ruleset_sha256`` against their sources. The API leaves
-    #: it out when that cannot be confirmed, and on a ``generate`` result.
+    #: it out when that cannot be confirmed.
     drift_checked_at: str | None = None
     #: How the rules that judged the document are backed. The API leaves it
     #: out, and does not guess, unless every rule set that judged the document
