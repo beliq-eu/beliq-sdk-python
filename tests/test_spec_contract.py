@@ -10,6 +10,8 @@ import json
 from pathlib import Path
 from typing import get_type_hints
 
+from _spec import SPEC, validate_data_props
+
 from beliq.constants import (
     API_ERROR_CODES,
     LIVE_CONVERT_TARGET_FORMATS,
@@ -17,9 +19,7 @@ from beliq.constants import (
     LIVE_PROFILES_BY_STANDARD,
     LIVE_VALIDATE_FORMATS,
 )
-from beliq.types import AccountInfo, DocumentAllowanceCharge, LineAllowanceCharge
-
-SPEC = json.loads((Path(__file__).parent.parent / "openapi.json").read_text())
+from beliq.types import AccountInfo, DocumentAllowanceCharge, LineAllowanceCharge, PdfInput, ValidationResult
 
 
 def _enum_values(schema: dict) -> set[str]:
@@ -165,6 +165,49 @@ def test_account_info_declares_every_field_me_returns():
 
     declared = {field.alias or name for name, field in AccountInfo.model_fields.items()}
     assert set(required) - declared == set()
+
+
+def _wire_names(model: type, *, required_only: bool = False) -> set[str]:
+    return {
+        field.alias or name
+        for name, field in model.model_fields.items()
+        if field.is_required() or not required_only
+    }
+
+
+def test_validation_result_declares_the_fields_about_the_depth_of_the_check():
+    """`ValidationResult` is hand-written, so nothing made it follow the API.
+
+    Same defect as `test_account_info_declares_every_field_me_returns`: with
+    `extra="allow"` an undeclared field stays on the object under its wire
+    name, where no type checker, IDE or reader of the class finds it. These
+    seven say what a verdict rests on and what it is about.
+
+    Both directions for these names: the model declares each, and the spec
+    still returns each. It holds these seven only: a field the spec gains
+    later, or one of those the model does not declare today, passes it.
+    """
+    names = {
+        "sha256",
+        "driftCheckedAt",
+        "verificationTier",
+        "verificationBadge",
+        "verificationBadgeLabel",
+        "franceCtcBlockingRuleIds",
+        "pdfInput",
+    }
+    assert names - set(validate_data_props()) == set()
+    assert names - _wire_names(ValidationResult) == set()
+
+
+def test_every_validation_result_field_is_one_the_spec_returns():
+    assert _wire_names(ValidationResult) - set(validate_data_props()) == set()
+
+
+def test_pdf_input_declares_every_field_the_spec_returns():
+    item = validate_data_props()["pdfInput"]
+    assert _wire_names(PdfInput) == set(item["properties"])
+    assert _wire_names(PdfInput, required_only=True) == set(item["required"])
 
 
 def _assert_model_matches(model: type, item: dict, label: str) -> None:

@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.14.0"
+    "version": "0.15.0"
   },
   "components": {
     "securitySchemes": {
@@ -3642,6 +3642,10 @@
                                   ]
                                 }
                               ]
+                            },
+                            "verificationBadgeLabel": {
+                              "description": "English display text for `verificationBadge`: the label the English coverage cards and the docs show for that badge. Print it as it is. Compare `verificationBadge`, not this string.",
+                              "type": "string"
                             },
                             "schematronVersion": {
                               "maxLength": 20,
@@ -7480,6 +7484,10 @@
                               ]
                             }
                           ]
+                        },
+                        "verificationBadgeLabel": {
+                          "description": "English display text for `verificationBadge`: the label the English coverage cards and the docs show for that badge. Print it as it is. Compare `verificationBadge`, not this string.",
+                          "type": "string"
                         },
                         "schematronVersion": {
                           "maxLength": 20,
@@ -17201,6 +17209,7 @@
                               "verificationTier",
                               "rulesProvenance",
                               "verificationBadge",
+                              "verificationBadgeLabel",
                               "releaseDate",
                               "repo",
                               "tag",
@@ -17300,6 +17309,10 @@
                                     ]
                                   }
                                 ]
+                              },
+                              "verificationBadgeLabel": {
+                                "description": "English display text for `verificationBadge`: the label the English coverage cards and the docs show for that badge. Print it as it is. Compare `verificationBadge`, not this string.",
+                                "type": "string"
                               },
                               "releaseDate": {
                                 "type": "string",

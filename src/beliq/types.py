@@ -128,9 +128,37 @@ class RulesetArtifact(_Model):
     file_sha256: str
 
 
+class PdfInput(_Model):
+    """Which embedded file of a PDF a validation result is about.
+
+    The API sets it only when the document sent to ``validate`` was a PDF. The
+    verdict is about the embedded XML: nothing checked the PDF around it.
+    """
+
+    #: Always ``False``. Not the PDF/A conformance, not the XMP metadata and
+    #: not how the invoice file is attached.
+    container_checked: bool
+    #: Name of the embedded file whose XML was read, as the PDF states it. The
+    #: API leaves it out for a name longer than 255 UTF-16 code units, or one
+    #: that holds U+0000 or half of a surrogate pair.
+    attachment_name: str | None = None
+    #: How that file was picked. The vendored ``openapi.json`` lists the values
+    #: under ``pdfInput.attachmentFoundBy``; the set is open here, as on
+    #: ``ParseWarning.code``.
+    attachment_found_by: str
+    #: How many embedded files that step accepts, the one that was read
+    #: included. Above 1, the PDF holds another file that could be taken for
+    #: the invoice, and nothing compared the two.
+    attachment_candidates: int
+
+
 class ValidationResult(_Model):
     valid: bool
     format: str
+    #: Lowercase-hex SHA-256 of the exact request body, on a ``validate``
+    #: result only. The ``validation_result`` of a sealed ``generate`` does not
+    #: carry it: the hash of the returned document is ``GenerateResult.sha256``.
+    sha256: str | None = None
     profile_detected: str | None = None
     schematron_version: str | None = None
     errors: list[ValidationIssue] = Field(default_factory=list)
@@ -139,6 +167,29 @@ class ValidationResult(_Model):
     # per-artifact rows behind it (the "check it yourself" seal).
     ruleset_sha256: str | None = None
     ruleset_artifacts: list[RulesetArtifact] | None = None
+    #: ISO 8601 UTC instant of the last drift check that confirmed the pinned
+    #: artifacts behind ``ruleset_sha256`` against their sources. The API leaves
+    #: it out when that cannot be confirmed.
+    drift_checked_at: str | None = None
+    #: How the rules that judged the document are backed. The API leaves it
+    #: out, and does not guess, unless every rule set that judged the document
+    #: has a tier on record. The vendored ``openapi.json`` lists the values;
+    #: the set is open here, as on ``ParseWarning.code``.
+    verification_tier: str | None = None
+    #: The badge for ``verification_tier``, as an id. Set only beside
+    #: ``verification_tier``. Compare this field in code. The vendored
+    #: ``openapi.json`` lists the ids, and ``GET /v1/rulesets`` gives the badge
+    #: of each format.
+    verification_badge: str | None = None
+    #: The English label of ``verification_badge``. Display text: print it as it
+    #: is, and compare ``verification_badge``, not this string. Set only beside
+    #: ``verification_badge``, so a result with no badge has no label either.
+    verification_badge_label: str | None = None
+    #: The BR-FR-CTC Flux 2 rule ids the document trips, at any severity. A
+    #: separate answer from ``valid``. Left out, and never an empty list, when
+    #: no such rule fired and when that rule pack did not run.
+    france_ctc_blocking_rule_ids: list[str] | None = None
+    pdf_input: PdfInput | None = None
 
 
 class ParseElementCount(_Model):
