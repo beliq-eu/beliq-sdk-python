@@ -155,7 +155,9 @@ class PdfInput(_Model):
 class ValidationResult(_Model):
     valid: bool
     format: str
-    #: Lowercase-hex SHA-256 of the exact request body that was validated.
+    #: Lowercase-hex SHA-256 of the exact request body, on a ``validate``
+    #: result only. The ``validation_result`` of a sealed ``generate`` does not
+    #: carry it: the hash of the returned document is ``GenerateResult.sha256``.
     sha256: str | None = None
     profile_detected: str | None = None
     schematron_version: str | None = None
@@ -167,7 +169,7 @@ class ValidationResult(_Model):
     ruleset_artifacts: list[RulesetArtifact] | None = None
     #: ISO 8601 UTC instant of the last drift check that confirmed the pinned
     #: artifacts behind ``ruleset_sha256`` against their sources. The API leaves
-    #: it out when that cannot be confirmed.
+    #: it out when that cannot be confirmed, and on a ``generate`` result.
     drift_checked_at: str | None = None
     #: How the rules that judged the document are backed. The API leaves it
     #: out, and does not guess, unless every rule set that judged the document

@@ -10,6 +10,8 @@ import json
 from pathlib import Path
 from typing import get_type_hints
 
+from _spec import validate_data_props
+
 from beliq.constants import (
     API_ERROR_CODES,
     LIVE_CONVERT_TARGET_FORMATS,
@@ -167,14 +169,12 @@ def test_account_info_declares_every_field_me_returns():
     assert set(required) - declared == set()
 
 
-def _validate_data_props() -> dict:
-    return SPEC["paths"]["/v1/validate"]["post"]["responses"]["200"]["content"]["application/json"]["schema"][
-        "properties"
-    ]["data"]["properties"]
-
-
-def _wire_names(model: type) -> set[str]:
-    return {field.alias or name for name, field in model.model_fields.items()}
+def _wire_names(model: type, *, required_only: bool = False) -> set[str]:
+    return {
+        field.alias or name
+        for name, field in model.model_fields.items()
+        if field.is_required() or not required_only
+    }
 
 
 def test_validation_result_declares_the_fields_about_the_depth_of_the_check():
@@ -186,8 +186,8 @@ def test_validation_result_declares_the_fields_about_the_depth_of_the_check():
     seven say what a verdict rests on and what it is about.
 
     Both directions for these names: the model declares each, and the spec
-    still returns each. The model as a whole is not held to the spec's full
-    property list.
+    still returns each. It holds these seven only: a field the spec gains
+    later, or one of those the model does not declare today, passes it.
     """
     names = {
         "sha256",
@@ -198,19 +198,18 @@ def test_validation_result_declares_the_fields_about_the_depth_of_the_check():
         "franceCtcBlockingRuleIds",
         "pdfInput",
     }
-    assert names - set(_validate_data_props()) == set()
+    assert names - set(validate_data_props()) == set()
     assert names - _wire_names(ValidationResult) == set()
 
 
 def test_every_validation_result_field_is_one_the_spec_returns():
-    assert _wire_names(ValidationResult) - set(_validate_data_props()) == set()
+    assert _wire_names(ValidationResult) - set(validate_data_props()) == set()
 
 
 def test_pdf_input_declares_every_field_the_spec_returns():
-    item = _validate_data_props()["pdfInput"]
+    item = validate_data_props()["pdfInput"]
     assert _wire_names(PdfInput) == set(item["properties"])
-    required = {field.alias or name for name, field in PdfInput.model_fields.items() if field.is_required()}
-    assert required == set(item["required"])
+    assert _wire_names(PdfInput, required_only=True) == set(item["required"])
 
 
 def _assert_model_matches(model: type, item: dict, label: str) -> None:

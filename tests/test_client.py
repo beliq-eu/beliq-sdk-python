@@ -8,6 +8,7 @@ from typing import Any
 import httpx
 import pytest
 import respx
+from _spec import validate_data_props
 
 from beliq import AsyncBeliq, Beliq, BeliqApiError
 
@@ -74,13 +75,6 @@ def test_custom_base_url_strips_slash():
     assert str(route.calls.last.request.url) == "https://staging.beliq.eu/v1/me"
 
 
-def _spec_validate_props() -> dict[str, Any]:
-    spec = json.loads((Path(__file__).parent.parent / "openapi.json").read_text())
-    return spec["paths"]["/v1/validate"]["post"]["responses"]["200"]["content"]["application/json"]["schema"][
-        "properties"
-    ]["data"]["properties"]
-
-
 def _first_enum_value(schema: dict[str, Any]) -> str:
     return schema["anyOf"][0]["enum"][0]
 
@@ -88,9 +82,10 @@ def _first_enum_value(schema: dict[str, Any]) -> str:
 @respx.mock
 def test_validate_types_the_fields_about_the_depth_of_the_check():
     # The ids come from the vendored spec, so this test holds no typed copy of
-    # them. The label and the rule id are made up: the SDK hands both on as
-    # they arrive and reads neither.
-    props = _spec_validate_props()
+    # them. The tier and the badge are the first value of two separate lists,
+    # so they are not a pair the API is known to send together. The label and
+    # the rule id are made up. The SDK hands all of them on and reads none.
+    props = validate_data_props()
     tier = _first_enum_value(props["verificationTier"])
     badge = _first_enum_value(props["verificationBadge"])
     found_by = _first_enum_value(props["pdfInput"]["properties"]["attachmentFoundBy"])
@@ -133,7 +128,7 @@ def test_validate_types_the_fields_about_the_depth_of_the_check():
 
 
 @respx.mock
-def test_validate_result_with_no_badge_has_no_label():
+def test_validate_result_that_names_none_of_the_fields_leaves_them_unset():
     respx.post("https://api.beliq.eu/v1/validate").mock(
         return_value=httpx.Response(200, text=fixture("validate-invalid.json"))
     )
