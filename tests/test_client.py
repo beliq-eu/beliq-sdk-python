@@ -74,6 +74,78 @@ def test_custom_base_url_strips_slash():
     assert str(route.calls.last.request.url) == "https://staging.beliq.eu/v1/me"
 
 
+def _spec_validate_props() -> dict[str, Any]:
+    spec = json.loads((Path(__file__).parent.parent / "openapi.json").read_text())
+    return spec["paths"]["/v1/validate"]["post"]["responses"]["200"]["content"]["application/json"]["schema"][
+        "properties"
+    ]["data"]["properties"]
+
+
+def _first_enum_value(schema: dict[str, Any]) -> str:
+    return schema["anyOf"][0]["enum"][0]
+
+
+@respx.mock
+def test_validate_types_the_fields_about_the_depth_of_the_check():
+    # The ids come from the vendored spec, so this test holds no typed copy of
+    # them. The label and the rule id are made up: the SDK hands both on as
+    # they arrive and reads neither.
+    props = _spec_validate_props()
+    tier = _first_enum_value(props["verificationTier"])
+    badge = _first_enum_value(props["verificationBadge"])
+    found_by = _first_enum_value(props["pdfInput"]["properties"]["attachmentFoundBy"])
+    data = {
+        "valid": True,
+        "format": "cii",
+        "errors": [],
+        "warnings": [],
+        "sha256": "ab" * 32,
+        "driftCheckedAt": "2026-01-01T00:00:00.000Z",
+        "verificationTier": tier,
+        "verificationBadge": badge,
+        "verificationBadgeLabel": "the label as the API sent it",
+        "franceCtcBlockingRuleIds": ["MADE-UP-RULE-ID"],
+        "pdfInput": {
+            "containerChecked": False,
+            "attachmentName": "invoice.xml",
+            "attachmentFoundBy": found_by,
+            "attachmentCandidates": 2,
+        },
+    }
+    respx.post("https://api.beliq.eu/v1/validate").mock(
+        return_value=httpx.Response(200, json={"success": True, "data": data})
+    )
+    with Beliq("blq_test") as beliq:
+        result = beliq.validate(b"%PDF-1.7")
+    assert result.sha256 == "ab" * 32
+    assert result.drift_checked_at == "2026-01-01T00:00:00.000Z"
+    assert result.verification_tier == tier
+    assert result.verification_badge == badge
+    assert result.verification_badge_label == "the label as the API sent it"
+    assert result.france_ctc_blocking_rule_ids == ["MADE-UP-RULE-ID"]
+    assert result.pdf_input is not None
+    assert result.pdf_input.container_checked is False
+    assert result.pdf_input.attachment_name == "invoice.xml"
+    assert result.pdf_input.attachment_found_by == found_by
+    assert result.pdf_input.attachment_candidates == 2
+    # Typed fields leave the wire-name copies of `extra="allow"` behind.
+    assert result.model_extra == {}
+
+
+@respx.mock
+def test_validate_result_with_no_badge_has_no_label():
+    respx.post("https://api.beliq.eu/v1/validate").mock(
+        return_value=httpx.Response(200, text=fixture("validate-invalid.json"))
+    )
+    with Beliq("blq_test") as beliq:
+        result = beliq.validate("<rsm:CrossIndustryInvoice/>", format="cii")
+    assert result.verification_tier is None
+    assert result.verification_badge is None
+    assert result.verification_badge_label is None
+    assert result.france_ctc_blocking_rule_ids is None
+    assert result.pdf_input is None
+
+
 @respx.mock
 def test_validate_request_and_parse():
     route = respx.post("https://api.beliq.eu/v1/validate").mock(

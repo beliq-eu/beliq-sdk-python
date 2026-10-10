@@ -17,7 +17,7 @@ from beliq.constants import (
     LIVE_PROFILES_BY_STANDARD,
     LIVE_VALIDATE_FORMATS,
 )
-from beliq.types import AccountInfo, DocumentAllowanceCharge, LineAllowanceCharge
+from beliq.types import AccountInfo, DocumentAllowanceCharge, LineAllowanceCharge, PdfInput, ValidationResult
 
 SPEC = json.loads((Path(__file__).parent.parent / "openapi.json").read_text())
 
@@ -165,6 +165,52 @@ def test_account_info_declares_every_field_me_returns():
 
     declared = {field.alias or name for name, field in AccountInfo.model_fields.items()}
     assert set(required) - declared == set()
+
+
+def _validate_data_props() -> dict:
+    return SPEC["paths"]["/v1/validate"]["post"]["responses"]["200"]["content"]["application/json"]["schema"][
+        "properties"
+    ]["data"]["properties"]
+
+
+def _wire_names(model: type) -> set[str]:
+    return {field.alias or name for name, field in model.model_fields.items()}
+
+
+def test_validation_result_declares_the_fields_about_the_depth_of_the_check():
+    """`ValidationResult` is hand-written, so nothing made it follow the API.
+
+    Same defect as `test_account_info_declares_every_field_me_returns`: with
+    `extra="allow"` an undeclared field stays on the object under its wire
+    name, where no type checker, IDE or reader of the class finds it. These
+    seven say what a verdict rests on and what it is about.
+
+    Both directions for these names: the model declares each, and the spec
+    still returns each. The model as a whole is not held to the spec's full
+    property list.
+    """
+    names = {
+        "sha256",
+        "driftCheckedAt",
+        "verificationTier",
+        "verificationBadge",
+        "verificationBadgeLabel",
+        "franceCtcBlockingRuleIds",
+        "pdfInput",
+    }
+    assert names - set(_validate_data_props()) == set()
+    assert names - _wire_names(ValidationResult) == set()
+
+
+def test_every_validation_result_field_is_one_the_spec_returns():
+    assert _wire_names(ValidationResult) - set(_validate_data_props()) == set()
+
+
+def test_pdf_input_declares_every_field_the_spec_returns():
+    item = _validate_data_props()["pdfInput"]
+    assert _wire_names(PdfInput) == set(item["properties"])
+    required = {field.alias or name for name, field in PdfInput.model_fields.items() if field.is_required()}
+    assert required == set(item["required"])
 
 
 def _assert_model_matches(model: type, item: dict, label: str) -> None:
