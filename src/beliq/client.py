@@ -263,7 +263,7 @@ class Beliq:
     def me(self) -> AccountInfo:
         return AccountInfo.model_validate(_data_from_json(self._send(build_me())))
 
-    def generate(
+    def generate(  # noqa: PLR0913  # size-cap baseline, 2026-10-13
         self,
         *,
         standard: str,
@@ -316,7 +316,7 @@ class Beliq:
         req = build_parse(raw_body=raw, content_type=ctype, format=format, advanced=advanced)
         return ParseResult.model_validate(_data_from_json(self._send(req)))
 
-    def convert(
+    def convert(  # noqa: PLR0913  # size-cap baseline, 2026-10-13
         self,
         document: DocumentInput,
         *,
@@ -394,7 +394,7 @@ class AsyncBeliq:
     async def me(self) -> AccountInfo:
         return AccountInfo.model_validate(_data_from_json(await self._send(build_me())))
 
-    async def generate(
+    async def generate(  # noqa: PLR0913  # size-cap baseline, 2026-10-13
         self,
         *,
         standard: str,
@@ -447,7 +447,7 @@ class AsyncBeliq:
         req = build_parse(raw_body=raw, content_type=ctype, format=format, advanced=advanced)
         return ParseResult.model_validate(_data_from_json(await self._send(req)))
 
-    async def convert(
+    async def convert(  # noqa: PLR0913  # size-cap baseline, 2026-10-13
         self,
         document: DocumentInput,
         *,

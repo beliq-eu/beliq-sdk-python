@@ -34,7 +34,7 @@ def main() -> None:
         DEST.write_text(normalize(Path(local).read_text()))
         print(f"synced from {local}")
     else:
-        with urllib.request.urlopen(LIVE_URL) as resp:  # noqa: S310 (trusted URL)
+        with urllib.request.urlopen(LIVE_URL) as resp:
             DEST.write_text(normalize(resp.read().decode("utf-8")))
         print(f"synced from {LIVE_URL}")
 
