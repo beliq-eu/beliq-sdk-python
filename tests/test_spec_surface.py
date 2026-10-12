@@ -22,7 +22,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
-from _spec_surface import descriptions_diverging, surface_missing_from  # noqa: E402
+from _spec_surface import descriptions_diverging, surface_missing_from
 
 VENDORED: dict[str, Any] = json.loads(
     (Path(__file__).resolve().parent.parent / "openapi.json").read_text(encoding="utf-8")

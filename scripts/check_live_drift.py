@@ -27,7 +27,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from _spec_surface import descriptions_diverging, surface_missing_from  # noqa: E402
+from _spec_surface import descriptions_diverging, surface_missing_from
 
 VENDORED = Path(__file__).resolve().parent.parent / "openapi.json"
 LIVE_URL = "https://api.beliq.eu/openapi.json"
@@ -43,7 +43,7 @@ def listing(entries: list[str]) -> str:
 
 def main() -> int:
     try:
-        with urllib.request.urlopen(LIVE_URL) as resp:  # noqa: S310 (trusted URL)
+        with urllib.request.urlopen(LIVE_URL) as resp:
             live_text = resp.read().decode("utf-8")
     except (urllib.error.URLError, TimeoutError) as err:
         print(f"could not reach {LIVE_URL} ({err}); skipping drift check")

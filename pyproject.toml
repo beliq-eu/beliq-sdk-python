@@ -53,7 +53,18 @@ line-length = 120
 target-version = "py310"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B"]
+# C901, PLR0913 and PLR0915 cap a function at complexity 25, 6 parameters and 50 statements.
+# A function that was over a cap when the caps came in carries a `# noqa` for it with that
+# date, and RUF100 fails the noqa once the function is back under the cap, so the list of
+# exceptions only shrinks.
+select = ["E", "F", "I", "UP", "B", "RUF100", "C901", "PLR0913", "PLR0915"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 25
+
+[tool.ruff.lint.pylint]
+max-args = 6
+max-statements = 50
 
 [tool.mypy]
 python_version = "3.10"

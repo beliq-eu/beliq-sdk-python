@@ -46,7 +46,7 @@ def build_me() -> BuiltRequest:
     return BuiltRequest(method="GET", path="/v1/me", output_kind="json")
 
 
-def build_generate(
+def build_generate(  # noqa: PLR0913  # size-cap baseline, 2026-10-13
     *,
     standard: str,
     invoice: dict[str, Any],
@@ -121,7 +121,7 @@ def build_parse(
     )
 
 
-def build_convert(
+def build_convert(  # noqa: PLR0913  # size-cap baseline, 2026-10-13
     *,
     raw_body: bytes,
     content_type: str,
