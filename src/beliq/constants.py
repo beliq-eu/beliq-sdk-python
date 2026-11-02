@@ -1,9 +1,9 @@
 """Defaults, the closed error-code set, and curated public option lists.
 
-Each LIVE_* list carries every value the API accepts for its operation, which
-is also every format ``GET /v1/rulesets`` publishes, each wearing the badge
-that says how deep its check goes. A list narrower than the API's own enum
-states its reason beside it.
+Each LIVE_* list carries every value the API accepts for its operation. A list
+narrower than the API's own enum states its reason beside it.
+``GET /v1/rulesets`` carries each format's badge, which says how deep its check
+goes.
 """
 
 from __future__ import annotations
@@ -222,8 +222,49 @@ def is_profile_allowed_for_standard(standard: str, profile: str) -> bool:
     return not allowed or profile in allowed
 
 
-LIVE_VALIDATE_FORMATS: tuple[str, ...] = ("auto", "cii", "ubl")
+# The ``format`` values POST /v1/validate accepts that are offered. A named
+# syntax makes the API validate the document as that syntax; "auto" reads it
+# from the document.
+LIVE_VALIDATE_FORMATS: tuple[str, ...] = (
+    "auto",
+    "cii",
+    "ubl",
+    "fatturapa",
+    "facturae",
+    "eslog",
+    "poland_ksef_fa3",
+)
+
+# The validate ``format`` values left out of LIVE_VALIDATE_FORMATS. "auto" still
+# recognises both.
+VALIDATE_FORMATS_LEFT_OUT: Mapping[str, str] = MappingProxyType(
+    {
+        "sdi_messaggio": "An SdI file message, not an invoice. GET /v1/rulesets has no entry for it.",
+        "poland_ksef_fa2": (
+            "The API answers every FA(2) document `valid: false`, led by a `POLAND_KSEF_FA2_SUPERSEDED` error. "
+            "GET /v1/rulesets has no entry for it."
+        ),
+    }
+)
+
 LIVE_PARSE_FORMATS: tuple[str, ...] = ("auto", "cii", "ubl")
+
+_PARSE_READS_CII_AND_UBL = (
+    "POST /v1/parse ignores `format` and reads CII and UBL documents only: "
+    "the `format` its response states is one of the two."
+)
+
+# The parse ``format`` values left out of LIVE_PARSE_FORMATS.
+PARSE_FORMATS_LEFT_OUT: Mapping[str, str] = MappingProxyType(
+    {
+        "fatturapa": _PARSE_READS_CII_AND_UBL,
+        "facturae": _PARSE_READS_CII_AND_UBL,
+        "eslog": _PARSE_READS_CII_AND_UBL,
+        "sdi_messaggio": _PARSE_READS_CII_AND_UBL,
+        "poland_ksef_fa2": _PARSE_READS_CII_AND_UBL,
+        "poland_ksef_fa3": _PARSE_READS_CII_AND_UBL,
+    }
+)
 LIVE_CONVERT_SOURCE_FORMATS: tuple[str, ...] = (
     "auto",
     "cii",

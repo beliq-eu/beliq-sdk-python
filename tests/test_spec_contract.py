@@ -2,22 +2,27 @@
 
 The Python SDK does not codegen from the OpenAPI (the spec inlines its schemas,
 which yields unusable model names), so this guards the parts that matter: the
-closed error-code set, the core validate-response fields, and that our public
-option lists are a real subset of what the API accepts.
+closed error-code set, the core validate-response fields, that our public
+option lists are a real subset of what the API accepts, and that the validate
+and parse lists give a reason for each value they leave out.
 """
 
 import json
 from pathlib import Path
 from typing import get_type_hints
 
+import pytest
 from _spec import SPEC, validate_data_props
 
 from beliq.constants import (
     API_ERROR_CODES,
     LIVE_CONVERT_TARGET_FORMATS,
     LIVE_GENERATE_PRESETS,
+    LIVE_PARSE_FORMATS,
     LIVE_PROFILES_BY_STANDARD,
     LIVE_VALIDATE_FORMATS,
+    PARSE_FORMATS_LEFT_OUT,
+    VALIDATE_FORMATS_LEFT_OUT,
 )
 from beliq.types import AccountInfo, DocumentAllowanceCharge, LineAllowanceCharge, PdfInput, ValidationResult
 
@@ -90,11 +95,19 @@ def test_parse_data_has_core_fields():
         assert field in data
 
 
-def test_live_validate_formats_are_subset_of_spec():
-    param = next(
-        p for p in SPEC["paths"]["/v1/validate"]["post"]["parameters"] if p["name"] == "format"
-    )
-    assert set(LIVE_VALIDATE_FORMATS) <= _enum_values(param["schema"])
+@pytest.mark.parametrize(
+    ("path", "offered", "left_out"),
+    [
+        ("/v1/validate", LIVE_VALIDATE_FORMATS, VALIDATE_FORMATS_LEFT_OUT),
+        ("/v1/parse", LIVE_PARSE_FORMATS, PARSE_FORMATS_LEFT_OUT),
+    ],
+)
+def test_each_format_enum_value_is_offered_or_left_out_with_a_reason_once(path, offered, left_out):
+    param = next(p for p in SPEC["paths"][path]["post"]["parameters"] if p["name"] == "format")
+    spec_values = [item["enum"][0] for item in param["schema"]["anyOf"]]
+    assert sorted([*offered, *left_out]) == sorted(spec_values)
+    for value, reason in left_out.items():
+        assert reason.strip(), value
 
 
 def test_live_convert_targets_are_subset_of_spec():
