@@ -177,7 +177,7 @@ Keyword arguments the examples on this page do not show. `Beliq` and `AsyncBeliq
 
 `generate`, `validate`, `parse` and `convert`:
 
-- `advanced` is a dict deep-merged over what the SDK sends, and its values win over the named arguments: into the JSON body on `generate`, into the query string on the other three. It is there for a field the API accepts before this SDK has an argument for it.
+- `advanced` is a dict deep-merged over what the SDK sends, and its values win over the named arguments: into the JSON body on `generate`, into the query string on the other three. It is there for a field the API accepts before this SDK has an argument for it. On `validate`, `parse` and `convert` the API answers 400 `VALIDATION_ERROR` to a query key the operation does not declare, and `err.details["fields"]` names it.
 
 ## Allowances and charges
 

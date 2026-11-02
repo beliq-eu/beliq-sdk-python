@@ -378,6 +378,20 @@ def test_convert_maps_metadata_headers():
 
 
 @respx.mock
+def test_convert_without_conversion_tools_header():
+    respx.post("https://api.beliq.eu/v1/convert").mock(
+        return_value=httpx.Response(
+            200,
+            content=b"<Invoice/>",
+            headers={"content-type": "application/xml", "x-source-format": "cii", "x-target-format": "ubl"},
+        )
+    )
+    with Beliq("blq_test") as beliq:
+        result = beliq.convert("<rsm:CrossIndustryInvoice/>", target_format="ubl")
+    assert result.meta.conversion_tools is None
+
+
+@respx.mock
 def test_raises_typed_error_on_4xx():
     respx.post("https://api.beliq.eu/v1/validate").mock(
         return_value=httpx.Response(400, text=fixture("error-validation-error.json"))

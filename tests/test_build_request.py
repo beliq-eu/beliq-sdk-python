@@ -80,9 +80,11 @@ def test_validate_omits_france_ctc():
     assert build_validate(raw_body=b"<x/>", content_type="application/xml", format="cii").query == {"format": "cii"}
 
 
-def test_validate_advanced_query():
-    r = build_validate(raw_body=b"<x/>", content_type="application/xml", format="auto", advanced={"strict": True})
-    assert r.query == {"format": "auto", "strict": True}
+def test_validate_advanced_query_wins():
+    r = build_validate(
+        raw_body=b"<x/>", content_type="application/xml", format="auto", france_ctc=False, advanced={"franceCtc": True}
+    )
+    assert r.query == {"format": "auto", "franceCtc": True}
 
 
 def test_parse():
