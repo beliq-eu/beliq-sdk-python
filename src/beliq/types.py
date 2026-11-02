@@ -128,6 +128,24 @@ class RulesetArtifact(_Model):
     file_sha256: str
 
 
+class LostElement(_Model):
+    """One loss a conversion recorded: https://docs.beliq.eu/api-reference/convert/#lostelement-schema"""
+
+    path: str
+    value: str | None
+    reason: str
+    severity: str
+    acceptable_loss: bool
+
+
+class LostElementsTruncated(_Model):
+    """The one entry ``lost_elements`` holds in place of the list when the list would
+    pass the API's 6 KB header cap. ``lost_elements_count`` stays the exact count."""
+
+    truncated: bool
+    reason: str | None = None
+
+
 class PdfInput(_Model):
     """Which embedded file of a PDF a validation result is about.
 
@@ -277,7 +295,7 @@ class ConvertMeta:
     target_format: str | None = None
     profile_detected: str | None = None
     lost_elements_count: int | None = None
-    lost_elements: list[str] | None = None
+    lost_elements: list[LostElement | LostElementsTruncated] | None = None
     conversion_tools: str | None = None
     # True for a live key, False for a blq_test_ sandbox key.
     livemode: bool | None = None
