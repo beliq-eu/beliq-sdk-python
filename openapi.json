@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.16.0"
+    "version": "0.23.0"
   },
   "components": {
     "securitySchemes": {
@@ -487,6 +487,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -805,6 +811,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -1133,6 +1145,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -1451,6 +1469,341 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INTERNAL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_UNSUPPORTED_PAIR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_LOSSY_FAILCLOSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_TOOL_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONVERSION_OUTPUT_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_AUTH_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_NOT_FOUND"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDF_TEMPLATE_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_DISABLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "TRANSMISSION_NO_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "IDEMPOTENCY_KEY_REUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_IDEMPOTENCY_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "CONTENT_ALREADY_SENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_UNKNOWN_PROVIDER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_VERIFICATION_FAILED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INBOX_SIGNATURE_EXPIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_MODE_UNSUPPORTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENROLLMENT_REFUSED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_NOT_ROUTABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SENDER_COUNTRY_MISSING"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PARTY_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRENCH_DOMESTIC_FLOW"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_BLOCKING_FINDINGS"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_CTC_NOT_JUDGED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "UNSUPPORTED_SYNTAX"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MALFORMED_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "EMPTY_DOCUMENT"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_CUSTOMIZATION_ID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "MISSING_PROCESS_ID"
+                              ]
+                            }
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "incidentId": {
+                          "maxLength": 20,
+                          "description": "Support correlation ID, present on 5xx responses only. Quote it when contacting support.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "message"
+                      ],
+                      "properties": {
+                        "code": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "VALIDATION_ERROR"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_INVOICE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PROFILE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_TYPE_STANDARD_MISMATCH"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PDFA_VIOLATION"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "PARSE_FAILED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "AUTHENTICATION_REQUIRED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INVALID_API_KEY"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "INSUFFICIENT_ROLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RATE_LIMITED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ACCOUNT_THROTTLED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -3056,57 +3409,34 @@
                         "type": "object",
                         "properties": {
                           "modality": {
-                            "anyOf": [
-                              {
-                                "type": "string",
-                                "enum": [
-                                  "I"
-                                ]
-                              },
-                              {
-                                "type": "string",
-                                "enum": [
-                                  "L"
-                                ]
-                              }
+                            "type": "string",
+                            "enum": [
+                              "I"
                             ]
                           },
                           "invoiceIssuerType": {
-                            "anyOf": [
-                              {
-                                "type": "string",
-                                "enum": [
-                                  "EM"
-                                ]
-                              },
-                              {
-                                "type": "string",
-                                "enum": [
-                                  "RE"
-                                ]
-                              },
-                              {
-                                "type": "string",
-                                "enum": [
-                                  "TE"
-                                ]
-                              }
+                            "type": "string",
+                            "enum": [
+                              "EM"
                             ]
                           },
                           "invoiceDocumentType": {
-                            "minLength": 2,
-                            "maxLength": 5,
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "FC"
+                            ]
                           },
                           "invoiceClass": {
-                            "minLength": 2,
-                            "maxLength": 5,
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "OO"
+                            ]
                           },
                           "taxTypeCode": {
-                            "minLength": 1,
-                            "maxLength": 5,
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "01"
+                            ]
                           },
                           "languageName": {
                             "minLength": 2,
@@ -3254,19 +3584,10 @@
                                 ]
                               },
                               "P_18": {
-                                "anyOf": [
-                                  {
-                                    "type": "string",
-                                    "enum": [
-                                      "1"
-                                    ]
-                                  },
-                                  {
-                                    "type": "string",
-                                    "enum": [
-                                      "2"
-                                    ]
-                                  }
+                                "description": "\"2\" only: beliq does not build the FA(3) structure a \"1\" here requires.",
+                                "type": "string",
+                                "enum": [
+                                  "2"
                                 ]
                               },
                               "P_18A": {
@@ -3286,19 +3607,10 @@
                                 ]
                               },
                               "P_23": {
-                                "anyOf": [
-                                  {
-                                    "type": "string",
-                                    "enum": [
-                                      "1"
-                                    ]
-                                  },
-                                  {
-                                    "type": "string",
-                                    "enum": [
-                                      "2"
-                                    ]
-                                  }
+                                "description": "\"2\" only: beliq does not build the FA(3) structure a \"1\" here requires.",
+                                "type": "string",
+                                "enum": [
+                                  "2"
                                 ]
                               }
                             }
@@ -3314,35 +3626,17 @@
                             "type": "string"
                           },
                           "jst": {
-                            "anyOf": [
-                              {
-                                "type": "string",
-                                "enum": [
-                                  "1"
-                                ]
-                              },
-                              {
-                                "type": "string",
-                                "enum": [
-                                  "2"
-                                ]
-                              }
+                            "description": "\"2\" only: beliq does not build the FA(3) structure a \"1\" here requires.",
+                            "type": "string",
+                            "enum": [
+                              "2"
                             ]
                           },
                           "gv": {
-                            "anyOf": [
-                              {
-                                "type": "string",
-                                "enum": [
-                                  "1"
-                                ]
-                              },
-                              {
-                                "type": "string",
-                                "enum": [
-                                  "2"
-                                ]
-                              }
+                            "description": "\"2\" only: beliq does not build the FA(3) structure a \"1\" here requires.",
+                            "type": "string",
+                            "enum": [
+                              "2"
                             ]
                           }
                         }
@@ -3375,7 +3669,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "Document syntax the engine detected: \"ubl\" or \"cii\"."
+                "description": "Format of the document: the one the engine detected, or with verify: false, the one the request asked for. One of \"cii\", \"ubl\", \"fatturapa\", \"facturae\", \"eslog\", \"sdi_messaggio\", \"poland_ksef_fa2\", \"poland_ksef_fa3\", \"unknown\"."
               },
               "x-profile-detected": {
                 "schema": {
@@ -3387,7 +3681,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "Version of the Schematron ruleset that produced the verdict."
+                "description": "Version of CEN's EN 16931 Schematron, present only where that pack judged the document. Absent for the Factur-X MINIMUM, BASIC WL, BASIC and EXTENDED profiles, whose own pack judges them in its place, and for formats checked against their XSD alone."
               },
               "x-ruleset-sha256": {
                 "schema": {
@@ -3399,7 +3693,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "One-line verdict, e.g. \"pass · 0 err · 1 warn\"."
+                "description": "One-line verdict, e.g. \"pass · 0 err · 1 warn\". \"skipped\" with verify: false, where no ruleset ran."
               },
               "x-version-block": {
                 "schema": {
@@ -3411,13 +3705,13 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "The component rows x-ruleset-sha256 is built from, as \"<key>@<version>=<fileSha256>\" entries. Sort, join with newlines, and SHA-256 to reproduce the seal from published values alone."
+                "description": "The component rows x-ruleset-sha256 is built from, as a compact JSON array of {key, version, fileSha256} objects. Write each row as a \"<key>@<version>=<fileSha256>\" line, sort the lines, join them with newlines, and SHA-256 the result to reproduce the seal from published values alone."
               },
               "x-pdf-kind": {
                 "schema": {
                   "type": "string"
                 },
-                "description": "How the returned PDF was built: \"hybrid\" (PDF/A-3 with the XML embedded) or \"visual\" (rendered pages only)."
+                "description": "How the returned PDF was built: \"hybrid\" (PDF/A-3 with the XML embedded) or \"visualization\" (rendered pages only, no XML embedded)."
               },
               "x-beliq-livemode": {
                 "schema": {
@@ -3487,11 +3781,11 @@
                           ],
                           "properties": {
                             "valid": {
-                              "description": "Whether the document was verified as valid. Read together with `verified`: `valid: false` with `verified: false` means no ruleset ran, not that the document failed.",
+                              "description": "`true` when the document passed the schemas and rule packs the engine ran for its format. `false` when it failed one, and also when none ran: such a result has no `rulesetSha256`, and on `POST /v1/generate` with `verify: false` it carries `verified: false` as well.",
                               "type": "boolean"
                             },
                             "verified": {
-                              "description": "Whether a ruleset actually executed. `false` only when `verify: false` skipped validation, in which case `errors` and `warnings` are empty because nothing looked at the document.",
+                              "description": "Whether a ruleset actually executed. Set on the verdict of a document beliq built (`POST /v1/generate`): `true` on its 200 and on its 422 `INVALID_INVOICE`, `false` when `verify: false` skipped validation, in which case `errors` and `warnings` are empty because nothing looked at the document.",
                               "type": "boolean"
                             },
                             "format": {
@@ -4028,6 +4322,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -4346,6 +4646,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -4674,6 +4980,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -4992,6 +5304,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -5320,6 +5638,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -5638,6 +5962,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -5966,6 +6296,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -6284,6 +6620,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -6612,6 +6954,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -6935,6 +7283,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -7161,7 +7515,7 @@
         "tags": [
           "Documents"
         ],
-        "description": "The JSON response carries two verifiability hashes so you can check the result yourself. `sha256` is the lowercase-hex SHA-256 of the exact bytes you posted; run `sha256sum` on your file to reproduce it and confirm round-trip integrity. `rulesetSha256` fingerprints the rule artifacts the engine ran to judge the document (the compiled Schematron XSLT(s) for the EN 16931 family and its CIUS/national overlays, or the authority root XSD for XSD-only national formats), so you can confirm the ruleset that judged you is the one beliq publicly pins (see GET /v1/rulesets). `rulesetSha256` is present whenever a ruleset ran. `rulesetArtifacts` lists the component rows it is built from (`{ key, version, fileSha256 }` each): sort the `\"<key>@<version>=<fileSha256>\"` lines, join with newlines, and SHA-256 to reproduce `rulesetSha256` from these published values alone. That reproduction works for every result, and so does the separate step of matching each component against the GET /v1/rulesets catalog: the catalog publishes every format beliq carries, the national XSD formats included, each with the component rows its ruleset is built from. `driftCheckedAt` is an ISO 8601 UTC instant reporting when those pinned artifacts were last confirmed to still match their upstream authority sources (the nightly drift check): where `rulesetSha256` proves the artifact we ran is the one we pin, `driftCheckedAt` says when we last confirmed that pin still matches what the authority publishes. It is a conservative lower bound (\"verified at least as recently as\"), present alongside `rulesetSha256` only when every pinned artifact cleared that check.",
+        "description": "The JSON response carries verifiability hashes so you can check the result yourself. `sha256` is the lowercase-hex SHA-256 of the exact bytes you posted; run `sha256sum` on your file to reproduce it and confirm round-trip integrity. `rulesetSha256` fingerprints the rule artifacts the engine ran to judge the document, so you can confirm the ruleset that judged you is the one beliq publicly pins (see GET /v1/rulesets). `rulesetSha256` is present whenever a ruleset ran, and absent when none did. `rulesetArtifacts` lists the component rows it is built from (`{ key, version, fileSha256 }` each): sort the `\"<key>@<version>=<fileSha256>\"` lines, join with newlines, and SHA-256 to reproduce `rulesetSha256` from these published values alone. That reproduction works for every result. Matching each component against the GET /v1/rulesets catalog works for the components it lists: some formats this route accepts run artifacts the catalog leaves out on purpose, so their components do not appear there. `driftCheckedAt` is an ISO 8601 UTC instant reporting when those pinned artifacts were last confirmed to still match their upstream authority sources (the nightly drift check): where `rulesetSha256` proves the artifact we ran is the one we pin, `driftCheckedAt` says when we last confirmed that pin still matches what the authority publishes. It is a conservative lower bound (\"verified at least as recently as\"), present alongside `rulesetSha256` only when every pinned artifact cleared that check. A query parameter this operation does not declare answers 400 `VALIDATION_ERROR`, and `error.details.fields` names it.",
         "requestBody": {
           "required": true,
           "content": {
@@ -7210,12 +7564,6 @@
                 {
                   "type": "string",
                   "enum": [
-                    "sdi_messaggio"
-                  ]
-                },
-                {
-                  "type": "string",
-                  "enum": [
                     "facturae"
                   ]
                 },
@@ -7223,6 +7571,18 @@
                   "type": "string",
                   "enum": [
                     "eslog"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "sdi_messaggio"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "poland_ksef_fa2"
                   ]
                 },
                 {
@@ -7252,7 +7612,7 @@
             "in": "header",
             "name": "Beliq-Ruleset",
             "required": false,
-            "description": "Pin the validation ruleset for this request. A channel (\"latest\" or \"previous\"), or a comma-separated list of exact per-format pins as \"<artifactKey>:<version>\" (e.g. \"xrechnung_schematron:2.4.0\"). The two forms are mutually exclusive. Default (no header) uses \"latest\". Effective on this route only: parse/generate/convert accept but ignore it. The applied ruleset is echoed in the Beliq-Ruleset-Resolved response header; see GET /v1/rulesets for selectable channels."
+            "description": "Pin the validation ruleset for this request. A channel (\"latest\" or \"previous\"), or a comma-separated list of exact pins as \"<artifactKey>:<version>\". GET /v1/rulesets lists artifact keys and their versions, though not for every format this route accepts. The two forms are mutually exclusive. With no header, an API key runs its organisation's default channel, which is \"latest\" unless the organisation set \"previous\" in the dashboard, and every other caller runs \"latest\". Effective on this route only: parse/generate/convert accept but ignore it. The applied selection is echoed in the Beliq-Ruleset-Resolved response header."
           }
         ],
         "responses": {
@@ -7263,7 +7623,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "Document syntax the engine detected: \"ubl\" or \"cii\"."
+                "description": "Format the engine detected: \"cii\", \"ubl\", \"fatturapa\", \"facturae\", \"eslog\", \"sdi_messaggio\", \"poland_ksef_fa2\", \"poland_ksef_fa3\", \"unknown\"."
               },
               "x-profile-detected": {
                 "schema": {
@@ -7275,7 +7635,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "Version of the Schematron ruleset that produced the verdict."
+                "description": "Version of CEN's EN 16931 Schematron, present only where that pack judged the document. Absent for the Factur-X MINIMUM, BASIC WL, BASIC and EXTENDED profiles, whose own pack judges them in its place, and for formats checked against their XSD alone."
               },
               "x-ruleset-sha256": {
                 "schema": {
@@ -7289,11 +7649,17 @@
                 },
                 "description": "One-line verdict, e.g. \"pass · 0 err · 1 warn\"."
               },
+              "x-ruleset-artifacts": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "The component rows x-ruleset-sha256 is built from, as a compact JSON array of {key, version, fileSha256} objects. Write each row as a \"<key>@<version>=<fileSha256>\" line, sort the lines, join them with newlines, and SHA-256 the result to reproduce the seal from published values alone."
+              },
               "beliq-ruleset-resolved": {
                 "schema": {
                   "type": "string"
                 },
-                "description": "The ruleset selection that actually applied, echoed back when the request carried a Beliq-Ruleset header. Reveals a \"previous\"→\"latest\" fallback."
+                "description": "The ruleset selection that actually applied. Set when the request carried a Beliq-Ruleset header, or carried none and the API key's organisation has \"previous\" as its default channel. Reveals a \"previous\"→\"latest\" fallback."
               },
               "x-beliq-livemode": {
                 "schema": {
@@ -7329,11 +7695,11 @@
                       ],
                       "properties": {
                         "valid": {
-                          "description": "Whether the document was verified as valid. Read together with `verified`: `valid: false` with `verified: false` means no ruleset ran, not that the document failed.",
+                          "description": "`true` when the document passed the schemas and rule packs the engine ran for its format. `false` when it failed one, and also when none ran: such a result has no `rulesetSha256`, and on `POST /v1/generate` with `verify: false` it carries `verified: false` as well.",
                           "type": "boolean"
                         },
                         "verified": {
-                          "description": "Whether a ruleset actually executed. `false` only when `verify: false` skipped validation, in which case `errors` and `warnings` are empty because nothing looked at the document.",
+                          "description": "Whether a ruleset actually executed. Set on the verdict of a document beliq built (`POST /v1/generate`): `true` on its 200 and on its 422 `INVALID_INVOICE`, `false` when `verify: false` skipped validation, in which case `errors` and `warnings` are empty because nothing looked at the document.",
                           "type": "boolean"
                         },
                         "format": {
@@ -7849,6 +8215,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -8167,6 +8539,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -8495,6 +8873,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -8813,6 +9197,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -9141,6 +9531,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -9459,6 +9855,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -9787,6 +10189,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -10105,6 +10513,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -10433,6 +10847,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -10659,6 +11079,7 @@
         "tags": [
           "Documents"
         ],
+        "description": "A query parameter this operation does not declare answers 400 `VALIDATION_ERROR`, and `error.details.fields` names it.",
         "requestBody": {
           "required": true,
           "content": {
@@ -10707,12 +11128,6 @@
                 {
                   "type": "string",
                   "enum": [
-                    "sdi_messaggio"
-                  ]
-                },
-                {
-                  "type": "string",
-                  "enum": [
                     "facturae"
                   ]
                 },
@@ -10720,6 +11135,18 @@
                   "type": "string",
                   "enum": [
                     "eslog"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "sdi_messaggio"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "poland_ksef_fa2"
                   ]
                 },
                 {
@@ -10744,7 +11171,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "Document syntax the engine detected: \"ubl\" or \"cii\"."
+                "description": "Syntax of the parsed document: \"cii\" or \"ubl\", the two parse reads."
               },
               "x-profile-detected": {
                 "schema": {
@@ -10756,7 +11183,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "Version of the Schematron ruleset that produced the verdict."
+                "description": "Version of CEN's EN 16931 Schematron, present only where that pack judged the document. Absent for the Factur-X MINIMUM, BASIC WL, BASIC and EXTENDED profiles, whose own pack judges them in its place, and for formats checked against their XSD alone."
               },
               "x-ruleset-sha256": {
                 "schema": {
@@ -11183,6 +11610,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -11501,6 +11934,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -11829,6 +12268,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -12147,6 +12592,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -12475,6 +12926,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -12793,6 +13250,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -13121,6 +13584,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -13439,6 +13908,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -13767,6 +14242,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -13993,7 +14474,7 @@
         "tags": [
           "Documents"
         ],
-        "description": "A 200 means the engine validated the converted XML before it returned it: the document carries the specification identifier of the target format and profile, and it passed the schemas and rule packs the engine runs for that identifier. For `facturx` and `zugferd` at profile `en16931` that is the plain EN 16931 identifier, so the document is checked as EN 16931 CII and against no Factur-X profile schema. A converted document that fails is a 422 `CONVERSION_OUTPUT_INVALID` with the verdict in `error.details.validationResult`, and is not returned. The 200 itself carries no verdict. A PDF sent for a `facturx` or `zugferd` target comes back as a PDF. When its embedded XML already is the target, the caller's own PDF comes back, with only its annotation flags normalised for PDF/A: that XML was checked and the PDF container was not. Otherwise the engine re-wraps it: the PDF's own invoice files come out, the converted XML goes in as its one invoice file, and the PDF is returned only when veraPDF's PDF/A-3b profile passes it. A PDF the engine cannot re-wrap is a 422 `CONVERSION_UNSUPPORTED_PAIR`, and `error.message` says why. With a test key the PDF is stamped as a sandbox specimen after those checks. The converters between CII and UBL are not checked field by field, so a 200 does not say that every field of the source arrived.\n\nThe `X-Version-Block` response header (compact JSON) names the ruleset/artifact versions this engine build pins for the produced target format, the same data `GET /v1/rulesets` publishes. It names pins and is not a verdict on the converted document.",
+        "description": "A 200 means the engine validated the converted XML before it returned it: the document carries the specification identifier of the target format and profile, and it passed the schemas and rule packs the engine runs for that identifier. For `facturx` and `zugferd` at profile `en16931` that is the plain EN 16931 identifier, so the document is checked as EN 16931 CII and against no Factur-X profile schema. A converted document that fails is a 422 `CONVERSION_OUTPUT_INVALID` with the verdict in `error.details.validationResult`, and is not returned. The 200 itself carries no verdict. A PDF sent for a `facturx` or `zugferd` target comes back as a PDF. When its embedded XML already is the target, the caller's own PDF comes back, with only its annotation flags normalised for PDF/A: that XML was checked and the PDF container was not. Otherwise the engine re-wraps it: the PDF's own invoice files come out, the converted XML goes in as its one invoice file, and the PDF is returned only when veraPDF's PDF/A-3b profile passes it. A PDF the engine cannot re-wrap is a 422 `CONVERSION_UNSUPPORTED_PAIR`, and `error.message` says why. With a test key the PDF is stamped as a sandbox specimen after those checks. The converters between CII and UBL are not checked field by field, so a 200 does not say that every field of the source arrived.\n\nThe `X-Version-Block` response header (compact JSON) names the ruleset/artifact versions this engine build pins for the produced target format, the same data `GET /v1/rulesets` publishes. It names pins and is not a verdict on the converted document. A query parameter this operation does not declare answers 400 `VALIDATION_ERROR`, and `error.details.fields` names it.",
         "requestBody": {
           "required": true,
           "content": {
@@ -14182,7 +14663,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "CIUS/profile the engine matched, e.g. \"xrechnung_3.0\"."
+                "description": "Profile the engine matched on the source, e.g. \"xrechnung\" or \"facturx:basic\". Absent when the source names none the engine knows."
               },
               "x-lost-elements-count": {
                 "schema": {
@@ -14194,7 +14675,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "JSON array naming the source elements that had no target equivalent, so a caller can decide whether the loss matters for their use."
+                "description": "JSON array naming the source elements that had no target equivalent, so a caller can decide whether the loss matters for their use. When the list would pass the engine's 6 KB header cap, it holds one {\"truncated\": true, \"reason\": ...} entry instead, and x-lost-elements-count stays the exact count."
               },
               "x-conversion-tools": {
                 "schema": {
@@ -14344,6 +14825,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -14672,6 +15159,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -14990,6 +15483,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -15318,6 +15817,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -15636,6 +16141,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -15964,6 +16475,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -16282,6 +16799,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {
@@ -16610,6 +17133,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -16933,6 +17462,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -17159,7 +17694,7 @@
         "tags": [
           "Reference"
         ],
-        "description": "Public reference for the ruleset versions and artifact hashes Beliq pins. `artifacts` is the ruleset-hash catalog: each rule artifact that can run for a publicly-supported format, with the SHA-256 of its exact file bytes. To verify a `POST /v1/validate` response for a publicly-supported format, confirm each of its `rulesetArtifacts` components appears here, then reproduce its `rulesetSha256` by sorting the components’ `\"<key>@<version>=<fileSha256>\"` lines, joining with newlines, and taking the SHA-256. (The `rulesetSha256` reproduction needs only the response’s own components, so it holds for any result. Formats beliq carries on no public surface run real, pinned artifacts that are intentionally omitted here, so their components will not appear in this catalog.) For compiled-Schematron families the published hash proves the artifact Beliq ran is the one Beliq pins, not a value reproducible from the authority’s raw source. `scheduledChanges` lists announced bumps that have not taken effect yet; each row names both the `formats` and the `capabilities` the changing artifact judges, and a bump can reach you through a capability alone. Each entry’s `previousChannel` says what `Beliq-Ruleset: previous` resolves to for that format today, one row per rule artifact, so you do not have to derive it from the `retained[]` dates: a retained version can be pinnable and still not be what the channel chooses. Each row also carries that artifact's own `retained[]`, which dates an overlay that has no entry of its own.",
+        "description": "Public reference for the ruleset versions and artifact hashes Beliq pins. `artifacts` is the ruleset-hash catalog: each rule artifact that can run for a publicly-supported format, with the SHA-256 of its exact file bytes. To verify a `POST /v1/validate` response for a publicly-supported format, confirm each of its `rulesetArtifacts` components appears here, then reproduce its `rulesetSha256` by sorting the components’ `\"<key>@<version>=<fileSha256>\"` lines, joining with newlines, and taking the SHA-256. (The `rulesetSha256` reproduction needs only the response’s own components, so it holds for any result. Some formats run real, pinned artifacts that are left out of this catalog on purpose, so their components will not appear here.) For compiled-Schematron families the published hash proves the artifact Beliq ran is the one Beliq pins, not a value reproducible from the authority’s raw source. `scheduledChanges` lists announced bumps that have not taken effect yet; each row names both the `formats` and the `capabilities` the changing artifact judges, and a bump can reach you through a capability alone. Each entry’s `previousChannel` says what `Beliq-Ruleset: previous` resolves to for that format today, one row per rule artifact, so you do not have to derive it from the `retained[]` dates: a retained version can be pinnable and still not be what the channel chooses. Each row also carries that artifact's own `retained[]`, which dates an overlay that has no entry of its own.",
         "security": [],
         "responses": {
           "200": {
@@ -17649,6 +18184,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DATABASE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "INTERNAL_ERROR"
                               ]
                             },
@@ -17967,6 +18508,12 @@
                               "type": "string",
                               "enum": [
                                 "ENGINE_UNAVAILABLE"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DATABASE_UNAVAILABLE"
                               ]
                             },
                             {

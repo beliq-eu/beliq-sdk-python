@@ -65,6 +65,7 @@ API_ERROR_CODES: tuple[str, ...] = (
     # blocks every /v1 route for minutes, so back off differently.
     "ACCOUNT_THROTTLED",
     "ENGINE_UNAVAILABLE",
+    "DATABASE_UNAVAILABLE",
     "INTERNAL_ERROR",
     "NOT_FOUND",
     "CONVERSION_UNSUPPORTED_PAIR",
