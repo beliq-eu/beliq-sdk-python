@@ -38,6 +38,8 @@ from .types import (
     GenerateMeta,
     GenerateResult,
     Invoice,
+    LostElement,
+    LostElementsTruncated,
     ParseResult,
     RulesetArtifact,
     ValidationResult,
@@ -144,6 +146,25 @@ def _ruleset_artifacts(headers: httpx.Headers) -> list[RulesetArtifact] | None:
     return [RulesetArtifact.model_validate(item) for item in parsed]
 
 
+def _lost_elements(headers: httpx.Headers) -> list[LostElement | LostElementsTruncated] | None:
+    """The x-lost-elements header is a JSON array of LostElement, or of one truncation entry."""
+    raw = headers.get("x-lost-elements")
+    if not raw:
+        return None
+    try:
+        parsed = json.loads(raw)
+    except ValueError:
+        return None
+    if not isinstance(parsed, list):
+        return None
+    return [
+        LostElementsTruncated.model_validate(item)
+        if item.get("truncated") is True
+        else LostElement.model_validate(item)
+        for item in parsed
+    ]
+
+
 def _generate_meta(headers: httpx.Headers) -> GenerateMeta:
     return GenerateMeta(
         schematron_version=headers.get("x-schematron-version"),
@@ -156,22 +177,13 @@ def _generate_meta(headers: httpx.Headers) -> GenerateMeta:
 
 
 def _convert_meta(headers: httpx.Headers) -> ConvertMeta:
-    lost_elements: list[str] | None = None
-    lost_raw = headers.get("x-lost-elements")
-    if lost_raw:
-        try:
-            parsed = json.loads(lost_raw)
-            if isinstance(parsed, list):
-                lost_elements = [str(x) for x in parsed]
-        except ValueError:
-            pass
     count = headers.get("x-lost-elements-count")
     return ConvertMeta(
         source_format=headers.get("x-source-format"),
         target_format=headers.get("x-target-format"),
         profile_detected=headers.get("x-profile-detected"),
         lost_elements_count=int(count) if count is not None else None,
-        lost_elements=lost_elements,
+        lost_elements=_lost_elements(headers),
         conversion_tools=headers.get("x-conversion-tools"),
         livemode=_livemode_header(headers),
     )

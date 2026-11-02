@@ -10,7 +10,7 @@ import pytest
 import respx
 from _spec import validate_data_props
 
-from beliq import AsyncBeliq, Beliq, BeliqApiError
+from beliq import AsyncBeliq, Beliq, BeliqApiError, LostElement, LostElementsTruncated
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -348,17 +348,28 @@ def test_generate_binary_surfaces_livemode_and_ruleset_headers():
 
 @respx.mock
 def test_convert_maps_metadata_headers():
+    cac = "{urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2}"
+    lost = [
+        {
+            "path": f"/Invoice/{cac}{party}/{cac}Party/cbc:EndpointID",
+            "value": None,
+            "reason": "Peppol endpoint stripped (target is not peppol-bis)",
+            "severity": "info",
+            "acceptableLoss": True,
+        }
+        for party in ("AccountingSupplierParty", "AccountingCustomerParty")
+    ]
     route = respx.post("https://api.beliq.eu/v1/convert").mock(
         return_value=httpx.Response(
             200,
             content=b"<Invoice/>",
             headers={
                 "content-type": "application/xml",
-                "x-source-format": "cii",
+                "x-source-format": "peppol-bis",
                 "x-target-format": "ubl",
-                "x-profile-detected": "en16931",
+                "x-profile-detected": "peppol-bis",
                 "x-lost-elements-count": "2",
-                "x-lost-elements": '["BT-22","BT-23"]',
+                "x-lost-elements": json.dumps(lost),
                 "x-conversion-tools": "beliq-engine@1.0",
                 "x-beliq-livemode": "false",
             },
@@ -371,10 +382,35 @@ def test_convert_maps_metadata_headers():
     assert req.headers["content-type"] == "application/xml"
     assert result.meta.target_format == "ubl"
     assert result.meta.lost_elements_count == 2
-    assert result.meta.lost_elements == ["BT-22", "BT-23"]
+    assert result.meta.lost_elements == [LostElement.model_validate(entry) for entry in lost]
+    assert isinstance(result.meta.lost_elements[0], LostElement)
+    assert result.meta.lost_elements[0].path == lost[0]["path"]
+    assert result.meta.lost_elements[0].value is None
+    assert result.meta.lost_elements[0].acceptable_loss is True
     assert result.meta.conversion_tools == "beliq-engine@1.0"
     assert result.meta.livemode is False
     assert result.content == b"<Invoice/>"
+
+
+@respx.mock
+def test_convert_keeps_the_truncation_entry():
+    respx.post("https://api.beliq.eu/v1/convert").mock(
+        return_value=httpx.Response(
+            200,
+            content=b"<Invoice/>",
+            headers={
+                "content-type": "application/xml",
+                "x-lost-elements-count": "412",
+                "x-lost-elements": '[{"truncated": true, "reason": "412 entries passed the header cap"}]',
+            },
+        )
+    )
+    with Beliq("blq_test") as beliq:
+        result = beliq.convert("<rsm:CrossIndustryInvoice/>", target_format="ubl")
+    assert result.meta.lost_elements_count == 412
+    assert result.meta.lost_elements == [
+        LostElementsTruncated(truncated=True, reason="412 entries passed the header cap")
+    ]
 
 
 @respx.mock
