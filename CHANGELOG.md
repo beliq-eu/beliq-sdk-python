@@ -9,6 +9,49 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.4.0 - 2026-11-03
+
+A minor: code that reads `meta.lost_elements` of a convert result, or seven
+fields of a `ValidationResult` by their wire names, breaks.
+
+- `ConvertMeta.lost_elements` holds the entries of `x-lost-elements` as the
+  API sends them. Each is a `LostElement` with `path`, `value`, `reason`,
+  `severity` and `acceptable_loss`, as
+  https://docs.beliq.eu/api-reference/convert/#lostelement-schema describes.
+  Past the API's 6 KB header cap the list holds one `LostElementsTruncated`
+  entry instead, and `meta.lost_elements_count` stays the exact count. The
+  field was `list[str]` and held the string form of a dict for every entry.
+  Both models are exported.
+- `ValidationResult` names seven more fields: `sha256`, `drift_checked_at`,
+  `verification_tier`, `verification_badge`, `verification_badge_label`,
+  `france_ctc_blocking_rule_ids` and `pdf_input`, the last with a new exported
+  model `PdfInput`. Before, each arrived under its wire name only
+  (`result.verificationBadge`), because the model keeps fields it does not
+  declare. That spelling no longer works for these seven.
+  `verification_badge_label` is the English label of the badge in
+  `verification_badge`: print it as it is, and compare `verification_badge` in
+  code. `pdf_input` is set when the document sent to `validate` was a PDF: the
+  embedded file the verdict is about, and that nothing checked the PDF around
+  it.
+- `API_ERROR_CODES` gains three codes. `convert` answers 422
+  `CONVERSION_OUTPUT_INVALID` when the converted document fails validation:
+  the document is not returned, and the verdict is in
+  `err.details["validationResult"]`. `generate` answers 422 `PDFA_VIOLATION`
+  when veraPDF reports a violation of its PDF/A-3b profile in a ZUGFeRD or
+  Factur-X PDF it built: the PDF is not returned, and the failed rules are in
+  `err.details["failedRules"]`. `DATABASE_UNAVAILABLE` is a 503 on every
+  route, which the client retries like any 503.
+- `LIVE_VALIDATE_FORMATS` gains `"fatturapa"`, `"facturae"`, `"eslog"` and
+  `"poland_ksef_fa3"`, the four national formats `GET /v1/rulesets` lists,
+  each Schema-checked. `LIVE_PARSE_FORMATS` stays `"auto"`, `"cii"` and
+  `"ubl"`, because `POST /v1/parse` reads CII and UBL only.
+- `advanced` on `validate`, `parse` and `convert` is merged into the query
+  string. The API answers 400 `VALIDATION_ERROR` to a query key the operation
+  does not declare, and `err.details["fields"]` names it.
+- The vendored `openapi.json` is document `0.23.0` of the API, up from
+  `0.12.0`.
+- Python 3.15 is tested in CI and declared in the package classifiers.
+
 ## 0.3.8 - 2026-10-08
 
 A patch: no field, type, method or exported name changes.

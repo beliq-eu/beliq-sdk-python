@@ -48,7 +48,7 @@ from .types import (
     ValidationResult,
 )
 
-__version__ = "0.3.8"
+__version__ = "0.4.0"
 
 __all__ = [
     "AsyncBeliq",
