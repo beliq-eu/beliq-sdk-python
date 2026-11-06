@@ -80,7 +80,7 @@ def test_ruleset_previous_sends_the_header(servers: list[Recorder]) -> None:
     """(1) ruleset="previous" sends Beliq-Ruleset: previous."""
     s = start(servers)
     with Beliq(API_KEY, base_url=s.base_url, max_retries=0) as beliq:
-        beliq.validate(DOCUMENT, ruleset="previous")  # type: ignore[call-arg]
+        beliq.validate(DOCUMENT, ruleset="previous")
     assert len(s.requests) == 1
     path, headers = s.requests[0]
     assert path.startswith("/v1/validate")
@@ -93,11 +93,19 @@ def test_ruleset_previous_sends_the_header_async(servers: list[Recorder]) -> Non
 
     async def go() -> None:
         async with AsyncBeliq(API_KEY, base_url=s.base_url, max_retries=0) as beliq:
-            await beliq.validate(DOCUMENT, ruleset="previous")  # type: ignore[call-arg]
+            await beliq.validate(DOCUMENT, ruleset="previous")
 
     asyncio.run(go())
     assert len(s.requests) == 1
     assert s.requests[0][1].get_all("beliq-ruleset") == ["previous"]
+
+
+def test_pin_list_is_sent_as_given(servers: list[Recorder]) -> None:
+    pins = "cii_xsd:D16B, en16931_cii_schematron:1.3.16"
+    s = start(servers)
+    with Beliq(API_KEY, base_url=s.base_url, max_retries=0) as beliq:
+        beliq.validate(DOCUMENT, ruleset=pins)
+    assert s.requests[0][1].get_all("beliq-ruleset") == [pins]
 
 
 def test_no_ruleset_sends_no_header(servers: list[Recorder]) -> None:

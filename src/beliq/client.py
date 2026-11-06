@@ -175,7 +175,8 @@ class _Retries:
 
 
 def _request_kwargs(base_url: str, api_key: str, auth: str, req: BuiltRequest) -> dict[str, Any]:
-    headers = {"Authorization": f"Bearer {api_key}"} if auth == "bearer" else {"X-API-Key": api_key}
+    auth_header = {"Authorization": f"Bearer {api_key}"} if auth == "bearer" else {"X-API-Key": api_key}
+    headers = {**req.headers, **auth_header}
     kwargs: dict[str, Any] = {"method": req.method, "url": f"{base_url}{req.path}", "headers": headers}
     if req.query:
         kwargs["params"] = req.query
@@ -410,9 +411,17 @@ class Beliq:
         france_ctc: bool | None = None,
         content_type: str | None = None,
         advanced: dict[str, Any] | None = None,
+        ruleset: str | None = None,
     ) -> ValidationResult:
         raw, ctype = _raw_params(document, content_type)
-        req = build_validate(raw_body=raw, content_type=ctype, format=format, france_ctc=france_ctc, advanced=advanced)
+        req = build_validate(
+            raw_body=raw,
+            content_type=ctype,
+            format=format,
+            france_ctc=france_ctc,
+            advanced=advanced,
+            ruleset=ruleset,
+        )
         return ValidationResult.model_validate(_data_from_json(self._send(req)))
 
     def parse(
@@ -550,9 +559,17 @@ class AsyncBeliq:
         france_ctc: bool | None = None,
         content_type: str | None = None,
         advanced: dict[str, Any] | None = None,
+        ruleset: str | None = None,
     ) -> ValidationResult:
         raw, ctype = _raw_params(document, content_type)
-        req = build_validate(raw_body=raw, content_type=ctype, format=format, france_ctc=france_ctc, advanced=advanced)
+        req = build_validate(
+            raw_body=raw,
+            content_type=ctype,
+            format=format,
+            france_ctc=france_ctc,
+            advanced=advanced,
+            ruleset=ruleset,
+        )
         return ValidationResult.model_validate(_data_from_json(await self._send(req)))
 
     async def parse(

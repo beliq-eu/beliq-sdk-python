@@ -31,6 +31,8 @@ class BuiltRequest:
     # Accept header; set when the caller wants a JSON envelope from an
     # otherwise-binary operation (the generate seal).
     accept: str | None = None
+    # Further request headers, such as Beliq-Ruleset on validate.
+    headers: dict[str, str] = field(default_factory=dict)
 
 
 def _is_facturx_family(value: str | None) -> bool:
@@ -90,16 +92,21 @@ def build_validate(
     format: str | None = None,
     france_ctc: bool | None = None,
     advanced: dict[str, Any] | None = None,
+    ruleset: str | None = None,
 ) -> BuiltRequest:
     query: dict[str, Any] = {"format": format}
     if france_ctc is not None:
         query["franceCtc"] = france_ctc
+    # No header unless the caller chose one: without it the API runs the
+    # organisation's default channel, which a sent "latest" would override.
+    headers = {"Beliq-Ruleset": ruleset} if ruleset is not None else {}
     return BuiltRequest(
         method="POST",
         path="/v1/validate",
         query=_with_advanced(query, advanced),
         raw_body=raw_body,
         content_type=content_type,
+        headers=headers,
         output_kind="json",
     )
 

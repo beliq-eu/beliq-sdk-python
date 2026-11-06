@@ -9,6 +9,17 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.5.1 - 2026-11-06
+
+- `validate` on `Beliq` and `AsyncBeliq` takes a `ruleset` keyword, sent as
+  the `Beliq-Ruleset` header: a channel (`"latest"` or `"previous"`) or
+  comma-separated `"<artifactKey>:<version>"` pins. Left out, no header is
+  sent, as before, so an organisation's default channel still applies.
+- `ValidationResult` types `ruleset_channel`, `ruleset_fell_back` and
+  `ruleset_sunsets_on`. Before, the API's `rulesetChannel`, `rulesetFellBack`
+  and `rulesetSunsetsOn` reached a result only as untyped extras under their
+  camelCase names.
+
 ## 0.5.0 - 2026-11-06
 
 A minor, because a call that meets an outage can now take up to 15 minutes to
