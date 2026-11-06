@@ -1,5 +1,7 @@
 [build-system]
-requires = ["hatchling"]
+# Pinned: uv.lock does not lock build dependencies, and the release job that runs this
+# build has `id-token: write`, which can publish to PyPI. release.yml pins `build` too.
+requires = ["hatchling==1.33.0"]
 build-backend = "hatchling.build"
 
 [project]
