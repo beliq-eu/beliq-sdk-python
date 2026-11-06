@@ -215,9 +215,9 @@ Keyword arguments the examples on this page do not show. `Beliq` and `AsyncBeliq
   print(result.ruleset_channel, result.ruleset_fell_back, result.ruleset_artifacts)
   ```
 
-  The result says what applied. `ruleset_channel` and `ruleset_fell_back` say which channel: `ruleset_fell_back` is `True` when the format had nothing for `previous` to reach, so the latest rules ran. `ruleset_artifacts` and the per-format version fields, such as `schematron_version`, say which rules ran, and `ruleset_sunsets_on` says until when a retained ruleset is served. `GET /v1/rulesets` gives each format's `previousChannel`: what `previous` reaches for it today.
+  The result says what applied. `ruleset_channel` and `ruleset_fell_back` say which channel: `ruleset_fell_back` is `True` when the format had nothing for `previous` to reach, so the latest rules ran. Under exact pins `ruleset_channel` reads `latest`, whatever version a pin ran. `ruleset_artifacts` and the per-format version fields, such as `schematron_version`, say which rules ran, and `ruleset_sunsets_on` says until when a retained ruleset is served. `GET /v1/rulesets` gives each format's `previousChannel`: what `previous` reaches for it today.
 
-  A malformed value raises `BeliqApiError` with code `VALIDATION_ERROR` and status 400, before any quota is used. A pin to a version the API no longer serves raises it with status 422, and that request uses up a document. The API's `Beliq-Ruleset-Resolved` response header is not returned: it is built from the request, so for pins it repeats the pins sent even when a pinned artifact did not run. `ruleset_artifacts` says what ran.
+  The API answers a malformed value with a 400 `VALIDATION_ERROR`, raised as `BeliqApiError`, before any quota is used. It answers a pin to a version it no longer serves with a 422 `VALIDATION_ERROR`, and that request uses up a document. The API's `Beliq-Ruleset-Resolved` response header is not returned: it is built from the request, so for pins it repeats the pins sent even when a pinned artifact did not run. `ruleset_artifacts` says what ran.
 
 `convert`:
 

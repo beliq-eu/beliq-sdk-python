@@ -210,7 +210,9 @@ class ValidationResult(_Model):
     pdf_input: PdfInput | None = None
     #: The ruleset channel the request ran under, ``latest`` or ``previous``.
     #: Left out on the default path, where neither the ``ruleset`` option nor
-    #: the organisation's default chose a ruleset.
+    #: the organisation's default chose a ruleset. Under exact pins it reads
+    #: ``latest``, whatever version a pin ran: ``ruleset_artifacts`` says
+    #: what ran.
     ruleset_channel: str | None = None
     #: True when ``previous`` was asked for and the format had nothing for the
     #: channel to reach, so the latest rules ran. Set only beside
