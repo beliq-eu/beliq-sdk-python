@@ -20,30 +20,46 @@ DEFAULT_BASE_URL = "https://api.beliq.eu"
 # finish, leaving the caller unable to tell whether the document was produced.
 DEFAULT_TIMEOUT_SECONDS = 90.0
 
-# Extra attempts after the first, for 429 / 502 / 503 only.
+# Extra attempts after the first for the failures retried by count: a 429 other
+# than QUOTA_EXCEEDED, and a 502 or 503 carrying any beliq error code but a 503
+# DATABASE_UNAVAILABLE.
 DEFAULT_MAX_RETRIES = 3
 
-# Statuses worth another attempt. All three arrive with Retry-After, and beliq
-# refunds the document's quota unit on a 503, so a retry costs nothing.
+# How long the client keeps retrying, in seconds from the start of the first
+# attempt: 15 minutes. A 503 DATABASE_UNAVAILABLE, a 502 or 503 with no beliq error
+# code, and a connection that could not be opened are retried until it is spent.
+# No standard sets the value: it is beliq's own, sized to outlast two of the three
+# database outages beliq has measured, of about 9 and 12 minutes. The third lasted
+# 33 minutes.
+DEFAULT_RETRY_BUDGET_SECONDS = 900.0
+
+# The statuses that can be retried. Which of their answers are, and how often,
+# is decided per error code in the client.
 #
 # 504 is excluded on purpose: it means the work may still be running server-side,
-# so retrying risks producing a second document rather than recovering one.
+# so a retry would run it, and charge it, a second time.
 RETRYABLE_STATUSES = frozenset({429, 502, 503})
 
 # The one 429 waiting cannot clear. RATE_LIMITED frees up in seconds and
 # ACCOUNT_THROTTLED in minutes, but a spent monthly allowance only returns when the
 # billing window turns, and beliq's Retry-After states it honestly: the seconds left
-# in the window, which can be weeks. Retrying sleeps MAX_RETRY_AFTER_SECONDS per
-# attempt against a refusal that is already final, and whatever wraps the call
-# usually gives up first, so the caller is told the request hung rather than that
-# the allowance is gone.
+# in the window, which can be weeks. Retrying it waits against a refusal that is
+# already final, so the caller is told the request hung rather than that the
+# allowance is gone.
 QUOTA_EXHAUSTED_CODE = "QUOTA_EXCEEDED"
 
-# Ceiling on a server-supplied Retry-After, so one header cannot hang a call.
-MAX_RETRY_AFTER_SECONDS = 30.0
+# The API's answer while its database is out; the outage it reports outlasts a few
+# quick retries.
+DATABASE_UNAVAILABLE_CODE = "DATABASE_UNAVAILABLE"
 
 # Base for exponential backoff when no Retry-After is given.
 BACKOFF_BASE_SECONDS = 0.5
+
+# No backoff wait reaches this, however many attempts came before.
+BACKOFF_CEILING_SECONDS = 30.0
+
+# Spread added to a server-supplied Retry-After.
+RETRY_AFTER_JITTER_SECONDS = 0.25
 
 # The closed set of error codes beliq returns in the { error: { code } } envelope.
 # Mirrored from openapi.json; tests/test_spec_contract.py fails if they drift.

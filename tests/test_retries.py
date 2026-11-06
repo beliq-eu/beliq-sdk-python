@@ -10,14 +10,17 @@ with a ``Retry-After`` saying exactly when.
 from __future__ import annotations
 
 import asyncio
+import socket
+import threading
 from pathlib import Path
 
 import httpx
 import pytest
 import respx
 
-from beliq import Beliq
-from beliq.constants import DEFAULT_MAX_RETRIES, DEFAULT_TIMEOUT_SECONDS
+import beliq.client
+from beliq import AsyncBeliq, Beliq
+from beliq.constants import DEFAULT_MAX_RETRIES, DEFAULT_RETRY_BUDGET_SECONDS, DEFAULT_TIMEOUT_SECONDS
 from beliq.errors import BeliqApiError
 
 API_KEY = "blq_test_key"
@@ -61,8 +64,7 @@ def test_retries_429_honouring_retry_after() -> None:
 
 
 # Seconds to the end of a monthly billing window, which is what beliq sends on a
-# spent quota. Retrying it clamps to MAX_RETRY_AFTER_SECONDS and sleeps that per
-# attempt, so the caller meets its own deadline instead of the quota message.
+# spent quota. No wait clears it sooner, so it is raised at once and names the cause.
 WINDOW_REMAINING_SECONDS = str(29 * 24 * 60 * 60)
 
 
@@ -155,12 +157,27 @@ def test_timeout_is_not_retried() -> None:
 
 
 @respx.mock
-def test_connection_error_is_a_transport_error_and_is_not_retried() -> None:
+@pytest.mark.usefixtures("fast_backoff")
+def test_refused_connection_raises_httpx_connect_error_once_retrying_ends() -> None:
     # The README tells callers to catch httpx.TransportError beside BeliqApiError.
     route = respx.get(ME_URL).mock(side_effect=httpx.ConnectError("connection refused"))
-    with pytest.raises(httpx.TransportError) as caught:
+    with pytest.raises(httpx.ConnectError) as caught:
         _client().me()
     assert not isinstance(caught.value, BeliqApiError)
+    assert route.call_count == DEFAULT_MAX_RETRIES + 1
+
+
+@respx.mock
+@pytest.mark.parametrize(
+    "error",
+    [httpx.ReadError("reset"), httpx.RemoteProtocolError("closed"), httpx.WriteTimeout("timed out")],
+)
+def test_transport_error_after_the_send_is_not_retried(error: httpx.TransportError) -> None:
+    # The request may have reached beliq and been charged, so a retry could charge
+    # it again.
+    route = respx.get(ME_URL).mock(side_effect=error)
+    with pytest.raises(type(error)):
+        Beliq(API_KEY).me()
     assert route.call_count == 1
 
 
@@ -188,3 +205,184 @@ def test_async_client_retries_too() -> None:
     result = asyncio.run(go())
     assert route.call_count == 2
     assert result.org.name == "Acme GmbH"
+
+
+@pytest.fixture
+def fast_backoff(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(beliq.client, "BACKOFF_BASE_SECONDS", 0.001)
+
+
+class FakeClock:
+    """Stands in for the time module in beliq.client: sleeping moves the clock."""
+
+    def __init__(self) -> None:
+        self.now = 0.0
+        self.sleeps: list[float] = []
+
+    def monotonic(self) -> float:
+        return self.now
+
+    def sleep(self, seconds: float) -> None:
+        self.sleeps.append(seconds)
+        self.now += seconds
+
+
+@pytest.fixture
+def clock(monkeypatch: pytest.MonkeyPatch) -> FakeClock:
+    fake = FakeClock()
+    monkeypatch.setattr(beliq.client, "time", fake)
+    return fake
+
+
+# More failures than the count allows, so only a class the count does not bound
+# gets through them.
+PAST_THE_COUNT = DEFAULT_MAX_RETRIES + 3
+
+
+@respx.mock
+def test_database_unavailable_is_retried_past_the_count() -> None:
+    route = respx.get(ME_URL).mock(side_effect=[_err(503, "DATABASE_UNAVAILABLE")] * PAST_THE_COUNT + [_ok()])
+    Beliq(API_KEY).me()
+    assert route.call_count == PAST_THE_COUNT + 1
+
+
+@respx.mock
+@pytest.mark.parametrize("status", [502, 503])
+def test_a_5xx_with_no_beliq_code_is_retried_past_the_count(status: int) -> None:
+    bare = httpx.Response(status, text="Bad Gateway", headers={"retry-after": "0"})
+    route = respx.get(ME_URL).mock(side_effect=[bare] * PAST_THE_COUNT + [_ok()])
+    Beliq(API_KEY).me()
+    assert route.call_count == PAST_THE_COUNT + 1
+
+
+@respx.mock
+@pytest.mark.usefixtures("fast_backoff")
+@pytest.mark.parametrize("error", [httpx.ConnectError("refused"), httpx.ConnectTimeout("timed out")])
+def test_a_connection_that_never_opened_is_retried_past_the_count(error: httpx.TransportError) -> None:
+    route = respx.get(ME_URL).mock(side_effect=[error] * PAST_THE_COUNT + [_ok()])
+    Beliq(API_KEY).me()
+    assert route.call_count == PAST_THE_COUNT + 1
+
+
+@respx.mock
+@pytest.mark.parametrize(
+    ("status", "code"),
+    [
+        (503, "ENGINE_UNAVAILABLE"),
+        (502, "ENGINE_UNAVAILABLE"),
+        (503, "CONVERSION_TOOL_UNAVAILABLE"),
+        (502, "DATABASE_UNAVAILABLE"),
+        (429, "RATE_LIMITED"),
+        (429, "ACCOUNT_THROTTLED"),
+    ],
+)
+def test_coded_answers_are_retried_by_the_count_only(status: int, code: str) -> None:
+    # An engine timeout answers ENGINE_UNAVAILABLE too, and each retried 429 counts
+    # toward the account's throttle, so these keep the count.
+    route = respx.get(ME_URL).mock(return_value=_err(status, code))
+    with pytest.raises(BeliqApiError) as caught:
+        Beliq(API_KEY).me()
+    assert caught.value.code == code
+    assert route.call_count == DEFAULT_MAX_RETRIES + 1
+
+
+@respx.mock
+@pytest.mark.usefixtures("fast_backoff")
+def test_max_retries_set_by_the_caller_caps_the_budget_class() -> None:
+    route = respx.get(ME_URL).mock(return_value=_err(503, "DATABASE_UNAVAILABLE"))
+    # A short budget, so a client that ignored the cap would fail here in seconds.
+    with pytest.raises(BeliqApiError):
+        Beliq(API_KEY, max_retries=2, retry_budget=2.0).me()
+    assert route.call_count == 3
+
+
+@respx.mock
+def test_max_retries_zero_stops_a_refused_connection_too() -> None:
+    route = respx.get(ME_URL).mock(side_effect=httpx.ConnectError("refused"))
+    with pytest.raises(httpx.ConnectError):
+        Beliq(API_KEY, max_retries=0, retry_budget=2.0).me()
+    assert route.call_count == 1
+
+
+@respx.mock
+def test_retry_budget_zero_disables_retrying() -> None:
+    route = respx.get(ME_URL).mock(return_value=_err(503, "DATABASE_UNAVAILABLE"))
+    with pytest.raises(BeliqApiError):
+        Beliq(API_KEY, retry_budget=0).me()
+    assert route.call_count == 1
+
+
+@respx.mock
+def test_retry_after_longer_than_30_seconds_is_waited_in_full(clock: FakeClock) -> None:
+    # The header was capped at 30 s before the budget existed; now the budget is
+    # what keeps one header from hanging a call, so the server's value holds.
+    respx.get(ME_URL).mock(side_effect=[_err(503, "DATABASE_UNAVAILABLE", retry_after="45"), _ok()])
+    Beliq(API_KEY).me()
+    assert len(clock.sleeps) == 1
+    assert 45.0 <= clock.sleeps[0] < 45.25
+
+
+@respx.mock
+def test_stops_at_the_exported_default_budget(clock: FakeClock) -> None:
+    # Retry-After: 60 against a 900 s budget: attempts at 0, 60, ... 840 s, and the
+    # wait after the one at 840 s would start an attempt past the budget.
+    route = respx.get(ME_URL).mock(return_value=_err(503, "DATABASE_UNAVAILABLE", retry_after="60"))
+    with pytest.raises(BeliqApiError):
+        Beliq(API_KEY).me()
+    assert route.call_count == int(DEFAULT_RETRY_BUDGET_SECONDS // 60)
+    assert clock.now <= DEFAULT_RETRY_BUDGET_SECONDS
+
+
+@respx.mock
+def test_no_backoff_wait_reaches_the_ceiling(clock: FakeClock) -> None:
+    bare = httpx.Response(503, text="Service Unavailable")
+    respx.get(ME_URL).mock(side_effect=[bare] * 40 + [_ok()])
+    Beliq(API_KEY).me()
+    assert max(clock.sleeps) < beliq.client.BACKOFF_CEILING_SECONDS
+
+
+@respx.mock
+@pytest.mark.usefixtures("fast_backoff")
+def test_async_client_retries_by_the_budget_too() -> None:
+    route = respx.get(ME_URL).mock(
+        side_effect=[httpx.ConnectError("refused"), *[_err(503, "DATABASE_UNAVAILABLE")] * PAST_THE_COUNT, _ok()]
+    )
+
+    async def go() -> object:
+        client = AsyncBeliq(API_KEY)
+        try:
+            return await client.me()
+        finally:
+            await client.aclose()
+
+    asyncio.run(go())
+    assert route.call_count == PAST_THE_COUNT + 2
+
+
+
+def test_a_failed_tls_handshake_is_raised_at_once() -> None:
+    # TLS against a socket that answers plain HTTP: httpx raises ConnectError
+    # caused by ssl.SSLError, the same chain as a certificate that fails
+    # verification. No wait fixes it. The short budget makes a client that
+    # retried it fail here in seconds rather than hang.
+    accepted: list[int] = []
+    with socket.socket() as srv:
+        srv.bind(("127.0.0.1", 0))
+        srv.listen()
+        srv.settimeout(5.0)
+
+        def serve() -> None:
+            while True:
+                try:
+                    conn, _ = srv.accept()
+                except OSError:
+                    return
+                accepted.append(1)
+                with conn:
+                    conn.recv(4096)
+                    conn.sendall(b"HTTP/1.1 400 Bad Request\r\ncontent-length: 0\r\n\r\n")
+
+        threading.Thread(target=serve, daemon=True).start()
+        with pytest.raises(httpx.ConnectError):
+            Beliq(API_KEY, base_url=f"https://127.0.0.1:{srv.getsockname()[1]}", retry_budget=2.0).me()
+    assert accepted == [1]

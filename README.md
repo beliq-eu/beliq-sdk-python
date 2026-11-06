@@ -88,18 +88,57 @@ backoff around it.
 ```python
 Beliq(
     api_key="blq_...",
-    timeout=90.0,     # per-attempt deadline in seconds (default)
-    max_retries=3,    # extra attempts after the first (default)
+    timeout=90.0,         # per-attempt deadline in seconds (default)
+    retry_budget=900.0,   # seconds to keep retrying an outage: 15 minutes (default)
 )
 ```
 
-Only `429`, `502` and `503` are retried, honouring the server's `Retry-After`
-with jitter. beliq refunds the document's quota unit on a `503`, so a retry never
-costs you a second document.
+Leave `max_retries` unset unless you want to bound every retry: unset, it allows
+3 retries of the failures retried by count and leaves the budget's failures to
+the budget, while any number you pass, `DEFAULT_MAX_RETRIES` included, bounds
+them all.
 
-`504` and a client-side timeout are deliberately **not** retried: both mean the
-work may still be running on beliq's side, so retrying risks producing a second
-document rather than recovering the first.
+| Failure | Retried |
+|---|---|
+| `503` `DATABASE_UNAVAILABLE` | until the budget is spent |
+| `502` or `503` with no beliq error code, which a proxy in front of the API sends | until the budget is spent |
+| A connection that could not be opened: `httpx.ConnectError` or `httpx.ConnectTimeout`, other than a failed TLS handshake | until the budget is spent |
+| `429` `RATE_LIMITED` or `ACCOUNT_THROTTLED` | up to `max_retries` times |
+| `503` `ENGINE_UNAVAILABLE`, and any other `502` or `503` with a beliq error code | up to `max_retries` times |
+| `429` `QUOTA_EXCEEDED`, `504`, a timeout, a failed TLS handshake, a connection lost after the request was sent, and every other status | never |
+
+Every wait follows the server's `Retry-After` in full, plus up to 0.25 s of
+jitter. Without one, the client backs off exponentially from 0.5 s with jitter,
+and no wait reaches 30 s. No attempt starts after the budget, so a `Retry-After`
+longer than the time left ends the call at once with that error, and an outage
+longer than the budget ends it with the last error. A call that meets an outage
+can therefore take up to 15 minutes to return, plus the last attempt's own
+deadline of up to `timeout`. A host name that does not resolve counts as an
+outage too, so a misspelt `base_url` takes the whole budget to fail. Where your
+code cannot wait that long, such as inside a request with a time limit of its
+own, pass a shorter `retry_budget`. The 15 minutes are beliq's own choice, not
+a standard's: they outlast two of the three database outages beliq has
+measured, of about 9 and 12 minutes. The third lasted 33 minutes, and a call
+that meets one like it ends with the last error.
+
+`max_retries=0` turns retrying off, and so does `retry_budget=0`.
+
+What a retry costs:
+
+- Most `DATABASE_UNAVAILABLE` answers come before any quota unit is spent, and a
+  retry of one of those costs nothing. When the request had spent a unit, beliq
+  tries to refund it at once and says on the `x-beliq-quota-refunded` header
+  whether that worked. While the database is out, the refund usually cannot be
+  applied; https://docs.beliq.eu/api-reference/errors/ says how such a unit is
+  reconciled.
+- The unit of an `ENGINE_UNAVAILABLE` is refunded, within the cap that page
+  names.
+- A test key's sandbox units are never refunded.
+
+`504`, a client-side timeout and a connection lost after the request was sent
+are deliberately **not** retried: each can mean the work is still running, or
+has finished, on beliq's side, so a retry would run it, and charge it, a second
+time.
 
 A `429` carrying `QUOTA_EXCEEDED` is not retried either. `RATE_LIMITED` and
 `ACCOUNT_THROTTLED` clear on their own, but a spent monthly allowance only returns
@@ -143,7 +182,7 @@ asyncio.run(main())
 
 JSON responses are Pydantic models. Any field not explicitly typed (such as the per-country authority versions on a validation result) is preserved and accessible. An error answer from beliq raises `BeliqApiError` with a typed `.code`, HTTP `.status`, and any `.details`.
 
-A timeout or a failed connection is not an answer from beliq, so it is not a `BeliqApiError`. It raises httpx's own exception, a subclass of `httpx.TransportError` (such as `httpx.ReadTimeout` or `httpx.ConnectError`), and is not retried. Catch both to handle every failure:
+A timeout or a failed connection is not an answer from beliq, so it is not a `BeliqApiError`. It raises httpx's own exception, a subclass of `httpx.TransportError` (such as `httpx.ReadTimeout` or `httpx.ConnectError`). A connection that could not be opened raises once the retries above end; any other transport error raises at once. Catch both to handle every failure:
 
 ```python
 import httpx
