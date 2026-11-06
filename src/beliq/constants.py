@@ -21,15 +21,16 @@ DEFAULT_BASE_URL = "https://api.beliq.eu"
 DEFAULT_TIMEOUT_SECONDS = 90.0
 
 # Extra attempts after the first for the failures retried by count: a 429 other
-# than QUOTA_EXCEEDED, and a 502 or 503 carrying a beliq error code other than
+# than QUOTA_EXCEEDED, and a 502 or 503 carrying any beliq error code but a 503
 # DATABASE_UNAVAILABLE.
 DEFAULT_MAX_RETRIES = 3
 
 # How long the client keeps retrying, in seconds from the start of the first
 # attempt: 15 minutes. A 503 DATABASE_UNAVAILABLE, a 502 or 503 with no beliq error
 # code, and a connection that could not be opened are retried until it is spent.
-# No standard sets the value: it is sized to outlast the database outages beliq
-# has measured, of about 9 and 12 minutes.
+# No standard sets the value: it is beliq's own, sized to outlast two of the three
+# database outages beliq has measured, of about 9 and 12 minutes. The third lasted
+# 33 minutes.
 DEFAULT_RETRY_BUDGET_SECONDS = 900.0
 
 # The statuses that can be retried. Which of their answers are, and how often,
