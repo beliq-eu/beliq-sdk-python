@@ -6,6 +6,7 @@ import asyncio
 import base64
 import json
 import random
+import ssl
 import time
 from types import TracebackType
 from typing import Any, Literal
@@ -70,7 +71,9 @@ TEST_KEY_PREFIX = "blq_test_"
 RetryClass = Literal["budget", "count"]
 
 # httpx's errors for a connection that never opened: nothing reached the server,
-# so nothing ran or was charged.
+# so nothing ran or was charged. httpx raises a refused connection, a DNS failure,
+# a missing route and a failed TLS handshake all as ConnectError; the last is
+# told apart by _is_tls_failure.
 _BEFORE_SEND_ERRORS = (httpx.ConnectError, httpx.ConnectTimeout)
 
 # Clamped so a long run of attempts cannot overflow the float; the ceiling holds
@@ -101,6 +104,21 @@ def _retry_delay(response: httpx.Response | None, attempt: int) -> float:
         BACKOFF_CEILING_SECONDS / 2,
     )
     return backoff + random.random() * backoff
+
+
+def _is_tls_failure(exc: BaseException) -> bool:
+    """True when an ssl error caused it, such as a certificate that fails verification.
+
+    No wait fixes that, so it is raised at once instead of retried for the budget.
+    """
+    seen: set[int] = set()
+    cause: BaseException | None = exc
+    while cause is not None and id(cause) not in seen:
+        if isinstance(cause, ssl.SSLError):
+            return True
+        seen.add(id(cause))
+        cause = cause.__cause__ or cause.__context__
+    return False
 
 
 def _error_code(response: httpx.Response) -> str | None:
@@ -334,8 +352,8 @@ class Beliq:
         Every wait follows the server's ``Retry-After`` in full. A retried answer
         that runs out of retries or budget is returned for the caller to raise; a
         connection that never opened raises httpx's ``ConnectError`` or
-        ``ConnectTimeout`` once retrying ends, and any other transport error
-        raises at once. A caller-supplied ``client`` keeps its own timeout, which
+        ``ConnectTimeout`` once retrying ends, and a failed TLS handshake and any
+        other transport error raise at once. A caller-supplied ``client`` keeps its own timeout, which
         this does not override.
         """
         kwargs = _request_kwargs(self._base_url, self._api_key, self._auth, req)
@@ -343,8 +361,8 @@ class Beliq:
         while True:
             try:
                 response = self._client.request(**kwargs)
-            except _BEFORE_SEND_ERRORS:
-                delay = retries.wait("budget", None)
+            except _BEFORE_SEND_ERRORS as exc:
+                delay = None if _is_tls_failure(exc) else retries.wait("budget", None)
                 if delay is None:
                     raise
             else:
@@ -483,8 +501,8 @@ class AsyncBeliq:
         while True:
             try:
                 response = await self._client.request(**kwargs)
-            except _BEFORE_SEND_ERRORS:
-                delay = retries.wait("budget", None)
+            except _BEFORE_SEND_ERRORS as exc:
+                delay = None if _is_tls_failure(exc) else retries.wait("budget", None)
                 if delay is None:
                     raise
             else:

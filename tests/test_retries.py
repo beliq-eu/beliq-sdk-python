@@ -10,6 +10,8 @@ with a ``Retry-After`` saying exactly when.
 from __future__ import annotations
 
 import asyncio
+import socket
+import threading
 from pathlib import Path
 
 import httpx
@@ -355,3 +357,32 @@ def test_async_client_retries_by_the_budget_too() -> None:
 
     asyncio.run(go())
     assert route.call_count == PAST_THE_COUNT + 2
+
+
+
+def test_a_failed_tls_handshake_is_raised_at_once() -> None:
+    # TLS against a socket that answers plain HTTP: httpx raises ConnectError
+    # caused by ssl.SSLError, the same chain as a certificate that fails
+    # verification. No wait fixes it. The short budget makes a client that
+    # retried it fail here in seconds rather than hang.
+    accepted: list[int] = []
+    with socket.socket() as srv:
+        srv.bind(("127.0.0.1", 0))
+        srv.listen()
+        srv.settimeout(5.0)
+
+        def serve() -> None:
+            while True:
+                try:
+                    conn, _ = srv.accept()
+                except OSError:
+                    return
+                accepted.append(1)
+                with conn:
+                    conn.recv(4096)
+                    conn.sendall(b"HTTP/1.1 400 Bad Request\r\ncontent-length: 0\r\n\r\n")
+
+        threading.Thread(target=serve, daemon=True).start()
+        with pytest.raises(httpx.ConnectError):
+            Beliq(API_KEY, base_url=f"https://127.0.0.1:{srv.getsockname()[1]}", retry_budget=2.0).me()
+    assert accepted == [1]

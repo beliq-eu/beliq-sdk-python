@@ -12,7 +12,8 @@ read; it does not gate the caller.
 ## 0.5.0 - 2026-11-06
 
 A minor, because a call that meets an outage can now take up to 15 minutes to
-return, where 0.4 gave up after 3 retries or at once.
+return, plus the last attempt's deadline, where 0.4 gave up after 3 retries or
+at once.
 
 - The client retries an outage by a time budget, the new keyword
   `retry_budget`, default `beliq.constants.DEFAULT_RETRY_BUDGET_SECONDS` (900.0,
@@ -20,7 +21,8 @@ return, where 0.4 gave up after 3 retries or at once.
   `DATABASE_UNAVAILABLE` and a `502` or `503` with no beliq error code, which
   0.4 retried 3 times, about 2 minutes at `Retry-After: 30`, and a connection
   that could not be opened (`httpx.ConnectError`, `httpx.ConnectTimeout`),
-  which 0.4 raised at once. No attempt starts after the budget.
+  which 0.4 raised at once. A `ConnectError` from a failed TLS handshake is
+  still raised at once. No attempt starts after the budget.
 - Every wait follows the server's `Retry-After` in full. 0.4 cut the header to
   30 s. A `Retry-After` longer than the budget left ends the call at once with
   that error. `beliq.constants.MAX_RETRY_AFTER_SECONDS` is removed.
@@ -30,8 +32,9 @@ return, where 0.4 gave up after 3 retries or at once.
 - `max_retries` keeps its default of 3 for everything else that is retried: a
   `429` `RATE_LIMITED` or `ACCOUNT_THROTTLED`, and a `503` `ENGINE_UNAVAILABLE`
   and any other `502` or `503` with a beliq error code. Its default is now
-  `None`, which means that. When you pass a number, it bounds every retry, the
-  budget's included, so `max_retries=0` still turns retrying off.
+  `None`, which means that. When you pass a number, `DEFAULT_MAX_RETRIES`
+  included, it bounds every retry, the budget's included, so `max_retries=0`
+  still turns retrying off.
 - A timeout and a connection lost after the request was sent still raise
   httpx's own exception at once.
 - The README and the code comments no longer say that a retry never costs a
