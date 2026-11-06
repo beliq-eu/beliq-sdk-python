@@ -87,6 +87,22 @@ def test_validate_advanced_query_wins():
     assert r.query == {"format": "auto", "franceCtc": True}
 
 
+def test_validate_ruleset_is_a_header_never_a_query_key():
+    r = build_validate(raw_body=b"<x/>", content_type="application/xml", format="auto", ruleset="previous")
+    assert r.headers == {"Beliq-Ruleset": "previous"}
+    assert r.query == {"format": "auto"}
+
+
+def test_validate_without_ruleset_sets_no_header():
+    assert build_validate(raw_body=b"<x/>", content_type="application/xml", format="auto").headers == {}
+
+
+def test_other_operations_set_no_header():
+    assert build_parse(raw_body=b"<x/>", content_type="application/xml").headers == {}
+    assert build_convert(raw_body=b"<x/>", content_type="application/xml", target_format="ubl").headers == {}
+    assert build_generate(standard="xrechnung", invoice={}).headers == {}
+
+
 def test_parse():
     r = build_parse(raw_body=b"<x/>", content_type="application/xml", format="ubl")
     assert r.path == "/v1/parse"

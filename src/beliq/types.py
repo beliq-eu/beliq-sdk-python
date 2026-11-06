@@ -208,6 +208,20 @@ class ValidationResult(_Model):
     #: no such rule fired and when that rule pack did not run.
     france_ctc_blocking_rule_ids: list[str] | None = None
     pdf_input: PdfInput | None = None
+    #: The ruleset channel the request ran under, ``latest`` or ``previous``.
+    #: Left out on the default path, where neither the ``ruleset`` option nor
+    #: the organisation's default chose a ruleset. Under exact pins it reads
+    #: ``latest``, whatever version a pin ran: ``ruleset_artifacts`` says
+    #: what ran.
+    ruleset_channel: str | None = None
+    #: True when ``previous`` was asked for and the format had nothing for the
+    #: channel to reach, so the latest rules ran. Set only beside
+    #: ``ruleset_channel``.
+    ruleset_fell_back: bool | None = None
+    #: ISO date the retained ruleset that served this request stops being
+    #: served; the earliest when several ran. Set only when a retained ruleset
+    #: ran.
+    ruleset_sunsets_on: str | None = None
 
 
 class ParseElementCount(_Model):

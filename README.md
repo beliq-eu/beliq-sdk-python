@@ -208,6 +208,16 @@ Keyword arguments the examples on this page do not show. `Beliq` and `AsyncBeliq
 `validate`:
 
 - `france_ctc=True` also runs the FNFE-MPE BR-FR-CTC Flux 2 rules of the French e-invoicing reform on a CII or UBL document. They run without it when the document's BT-24 is the EXTENDED-CTC-FR CustomizationID or its BT-23 carries a French *cadre de facturation* code, so `france_ctc=False` does not switch them off.
+- `ruleset` chooses the rules to validate against, sent as given in the `Beliq-Ruleset` header: `"previous"` runs the retained rules before the latest, where the format has any, and comma-separated `"<artifactKey>:<version>"` pins run exact versions, with the keys and versions `GET /v1/rulesets` lists. Left out, no header is sent, and the API runs your organisation's default channel, which is `latest` unless your organisation chose `previous` in the dashboard.
+
+  ```python
+  result = beliq.validate(xml, ruleset="previous")
+  print(result.ruleset_channel, result.ruleset_fell_back, result.ruleset_artifacts)
+  ```
+
+  The result says what applied. `ruleset_channel` and `ruleset_fell_back` say which channel: `ruleset_fell_back` is `True` when the format had nothing for `previous` to reach, so the latest rules ran. Under exact pins `ruleset_channel` reads `latest`, whatever version a pin ran. `ruleset_artifacts` and the per-format version fields, such as `schematron_version`, say which rules ran, and `ruleset_sunsets_on` says until when a retained ruleset is served. `GET /v1/rulesets` gives each format's `previousChannel`: what `previous` reaches for it today.
+
+  The API answers a malformed value with a 400 `VALIDATION_ERROR`, raised as `BeliqApiError`, before any quota is used. It answers a pin to a version it no longer serves with a 422 `VALIDATION_ERROR`, and that request uses up a document. The API's `Beliq-Ruleset-Resolved` response header is not returned: it is built from the request, so for pins it repeats the pins sent even when a pinned artifact did not run. `ruleset_artifacts` says what ran.
 
 `convert`:
 
