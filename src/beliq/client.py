@@ -8,7 +8,7 @@ import json
 import random
 import time
 from types import TracebackType
-from typing import Any
+from typing import Any, Literal
 
 import httpx
 
@@ -23,11 +23,14 @@ from ._build_request import (
 from ._internal import DocumentInput, sniff_content_type, to_bytes
 from .constants import (
     BACKOFF_BASE_SECONDS,
+    BACKOFF_CEILING_SECONDS,
+    DATABASE_UNAVAILABLE_CODE,
     DEFAULT_BASE_URL,
     DEFAULT_MAX_RETRIES,
+    DEFAULT_RETRY_BUDGET_SECONDS,
     DEFAULT_TIMEOUT_SECONDS,
-    MAX_RETRY_AFTER_SECONDS,
     QUOTA_EXHAUSTED_CODE,
+    RETRY_AFTER_JITTER_SECONDS,
     RETRYABLE_STATUSES,
 )
 from .errors import BeliqApiError, error_from_response, parse_envelope
@@ -49,12 +52,40 @@ from .types import (
 TEST_KEY_PREFIX = "blq_test_"
 
 
+# How a failure is retried.
+#
+# "budget": an outage a wait can outlast, retried until the time budget is spent.
+# A 503 DATABASE_UNAVAILABLE, a 502 or 503 with no beliq error code (the edge
+# answered, or the pod that held the connection is gone), and a connection that
+# could not be opened.
+#
+# "count": retried up to max_retries times. A 429 other than QUOTA_EXCEEDED, since
+# each one counts toward the account's throttle, and a 502 or 503 with any other
+# beliq code, ENGINE_UNAVAILABLE included, since an engine timeout answers that
+# code too and a budget would run the same slow document dozens of times.
+#
+# Anything else is not retried, and a timeout or a connection lost after the
+# request was sent raises httpx's own exception: the work may still be running on
+# beliq's side, so a retry would run it, and charge it, a second time.
+RetryClass = Literal["budget", "count"]
+
+# httpx's errors for a connection that never opened: nothing reached the server,
+# so nothing ran or was charged.
+_BEFORE_SEND_ERRORS = (httpx.ConnectError, httpx.ConnectTimeout)
+
+# Clamped so a long run of attempts cannot overflow the float; the ceiling holds
+# long before it.
+_BACKOFF_MAX_EXPONENT = 64
+
+
 def _retry_delay(response: httpx.Response | None, attempt: int) -> float:
     """Seconds to wait before the next attempt.
 
-    Uses the server's ``Retry-After`` when it sent one, otherwise exponential
-    backoff. Jittered either way, so a fleet of clients throttled together does
-    not all return at the same instant and re-trigger the throttle.
+    Uses the server's ``Retry-After`` in full when it sent one, otherwise
+    exponential backoff. Jittered either way, so a fleet of clients that failed
+    together does not all return at the same instant. The backoff is held to half
+    the ceiling before its jitter of up to 100%, so no wait reaches the ceiling and
+    clients at the cap still spread out.
     """
     if response is not None:
         header = response.headers.get("retry-after")
@@ -64,26 +95,65 @@ def _retry_delay(response: httpx.Response | None, attempt: int) -> float:
             except ValueError:
                 seconds = -1.0
             if seconds >= 0:
-                return min(seconds, MAX_RETRY_AFTER_SECONDS) + random.random() * 0.25
-    # Annotated because mypy widens `int ** int` to Any (a negative exponent
-    # would yield a float), which would then leak out of this return type.
-    backoff: float = BACKOFF_BASE_SECONDS * (2**attempt)
+                return seconds + random.random() * RETRY_AFTER_JITTER_SECONDS
+    backoff: float = min(
+        BACKOFF_BASE_SECONDS * 2.0 ** min(attempt, _BACKOFF_MAX_EXPONENT),
+        BACKOFF_CEILING_SECONDS / 2,
+    )
     return backoff + random.random() * backoff
 
 
-def _is_quota_exhausted(response: httpx.Response) -> bool:
-    """True for the 429 that only the billing window can clear."""
-    if response.status_code != 429:
-        return False
+def _error_code(response: httpx.Response) -> str | None:
     envelope = parse_envelope(response.content) or {}
     err = envelope.get("error")
-    return isinstance(err, dict) and err.get("code") == QUOTA_EXHAUSTED_CODE
+    code = err.get("code") if isinstance(err, dict) else None
+    return code if isinstance(code, str) and code else None
 
 
-def _should_retry(response: httpx.Response, attempt: int, max_retries: int) -> bool:
-    if response.status_code not in RETRYABLE_STATUSES or attempt >= max_retries:
-        return False
-    return not _is_quota_exhausted(response)
+def _retry_class(response: httpx.Response) -> RetryClass | None:
+    status = response.status_code
+    if status not in RETRYABLE_STATUSES:
+        return None
+    code = _error_code(response)
+    if status == 429:
+        return None if code == QUOTA_EXHAUSTED_CODE else "count"
+    if code is None:
+        return "budget"
+    return "budget" if status == 503 and code == DATABASE_UNAVAILABLE_CODE else "count"
+
+
+class _Retries:
+    """The retry decisions of one call, shared by the sync and async clients.
+
+    ``max_retries`` is the caller's, None when it set none. Unset, only the
+    failures retried by count are bounded, by DEFAULT_MAX_RETRIES; set, it bounds
+    every retry. No attempt starts after ``budget`` seconds from the first one, so
+    a Retry-After longer than the budget left ends the call at once.
+    """
+
+    def __init__(self, budget: float, max_retries: int | None) -> None:
+        self._started = time.monotonic()
+        self._budget = budget
+        self._max_retries = max_retries
+        self._retries = 0
+        self._counted = 0
+
+    def wait(self, kind: RetryClass | None, response: httpx.Response | None) -> float | None:
+        """Seconds to wait before the next attempt, or None to give up."""
+        if kind is None:
+            return None
+        if self._max_retries is not None:
+            if self._retries >= self._max_retries:
+                return None
+        elif kind == "count" and self._counted >= DEFAULT_MAX_RETRIES:
+            return None
+        delay = _retry_delay(response, self._retries)
+        if time.monotonic() - self._started + delay > self._budget:
+            return None
+        self._retries += 1
+        if kind == "count":
+            self._counted += 1
+        return delay
 
 
 def _request_kwargs(base_url: str, api_key: str, auth: str, req: BuiltRequest) -> dict[str, Any]:
@@ -233,7 +303,7 @@ def _convert_result(resp: httpx.Response) -> ConvertResult:
 class Beliq:
     """Synchronous client for the beliq e-invoicing compliance API."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913  # one keyword per client option, 2026-11-06
         self,
         api_key: str,
         *,
@@ -241,7 +311,8 @@ class Beliq:
         auth: str = "header",
         client: httpx.Client | None = None,
         timeout: float = DEFAULT_TIMEOUT_SECONDS,
-        max_retries: int = DEFAULT_MAX_RETRIES,
+        max_retries: int | None = None,
+        retry_budget: float = DEFAULT_RETRY_BUDGET_SECONDS,
     ) -> None:
         if not api_key:
             raise ValueError("beliq: api_key is required")
@@ -255,22 +326,32 @@ class Beliq:
         self._client = client or httpx.Client(timeout=timeout)
         self._owns_client = client is None
         self._max_retries = max_retries
+        self._retry_budget = retry_budget
 
     def _send(self, req: BuiltRequest) -> httpx.Response:
-        """Issue the request, retrying transient failures.
+        """Issue the request, retrying transient failures (see ``RetryClass``).
 
-        Only 429/502/503 are retried and only up to ``max_retries``; anything
-        else, including a timeout and a 429 whose body says the monthly quota is
-        spent, is surfaced immediately. A caller-supplied ``client`` keeps its own
-        timeout, which this does not override.
+        Every wait follows the server's ``Retry-After`` in full. A retried answer
+        that runs out of retries or budget is returned for the caller to raise; a
+        connection that never opened raises httpx's ``ConnectError`` or
+        ``ConnectTimeout`` once retrying ends, and any other transport error
+        raises at once. A caller-supplied ``client`` keeps its own timeout, which
+        this does not override.
         """
         kwargs = _request_kwargs(self._base_url, self._api_key, self._auth, req)
-        for attempt in range(self._max_retries + 1):
-            response = self._client.request(**kwargs)
-            if not _should_retry(response, attempt, self._max_retries):
-                return response
-            time.sleep(_retry_delay(response, attempt))
-        raise AssertionError("unreachable: loop returns on its final attempt")
+        retries = _Retries(self._retry_budget, self._max_retries)
+        while True:
+            try:
+                response = self._client.request(**kwargs)
+            except _BEFORE_SEND_ERRORS:
+                delay = retries.wait("budget", None)
+                if delay is None:
+                    raise
+            else:
+                delay = retries.wait(_retry_class(response), response)
+                if delay is None:
+                    return response
+            time.sleep(delay)
 
     def me(self) -> AccountInfo:
         return AccountInfo.model_validate(_data_from_json(self._send(build_me())))
@@ -370,7 +451,7 @@ class Beliq:
 class AsyncBeliq:
     """Asynchronous client for the beliq e-invoicing compliance API."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913  # one keyword per client option, 2026-11-06
         self,
         api_key: str,
         *,
@@ -378,7 +459,8 @@ class AsyncBeliq:
         auth: str = "header",
         client: httpx.AsyncClient | None = None,
         timeout: float = DEFAULT_TIMEOUT_SECONDS,
-        max_retries: int = DEFAULT_MAX_RETRIES,
+        max_retries: int | None = None,
+        retry_budget: float = DEFAULT_RETRY_BUDGET_SECONDS,
     ) -> None:
         if not api_key:
             raise ValueError("beliq: api_key is required")
@@ -392,16 +474,24 @@ class AsyncBeliq:
         self._client = client or httpx.AsyncClient(timeout=timeout)
         self._owns_client = client is None
         self._max_retries = max_retries
+        self._retry_budget = retry_budget
 
     async def _send(self, req: BuiltRequest) -> httpx.Response:
         """Issue the request, retrying transient failures. See ``Beliq._send``."""
         kwargs = _request_kwargs(self._base_url, self._api_key, self._auth, req)
-        for attempt in range(self._max_retries + 1):
-            response = await self._client.request(**kwargs)
-            if not _should_retry(response, attempt, self._max_retries):
-                return response
-            await asyncio.sleep(_retry_delay(response, attempt))
-        raise AssertionError("unreachable: loop returns on its final attempt")
+        retries = _Retries(self._retry_budget, self._max_retries)
+        while True:
+            try:
+                response = await self._client.request(**kwargs)
+            except _BEFORE_SEND_ERRORS:
+                delay = retries.wait("budget", None)
+                if delay is None:
+                    raise
+            else:
+                delay = retries.wait(_retry_class(response), response)
+                if delay is None:
+                    return response
+            await asyncio.sleep(delay)
 
     async def me(self) -> AccountInfo:
         return AccountInfo.model_validate(_data_from_json(await self._send(build_me())))
