@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.24.0"
+    "version": "0.25.0"
   },
   "components": {
     "securitySchemes": {
@@ -3718,6 +3718,12 @@
                   "type": "string"
                 },
                 "description": "How the returned PDF was built: \"hybrid\" (PDF/A-3 with the XML embedded) or \"visualization\" (rendered pages only, no XML embedded)."
+              },
+              "x-beliq-idempotent-replay": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "\"true\" when this request repeats one your organisation sent in the same mode and was charged for in the last 15 minutes: the same route, query, Content-Type, Accept, ruleset selection and body, and for generate the same stored PDF template. The request was computed again and not charged. One charge covers 10 such repeats; the 11th is charged and starts a new 15 minutes. The window, what makes two requests the same and the cap are a choice Beliq made; no standard sets them. Absent when the request was charged."
               },
               "x-beliq-livemode": {
                 "schema": {
@@ -7667,6 +7673,12 @@
                 },
                 "description": "The ruleset selection that actually applied. Set when the request carried a Beliq-Ruleset header, or carried none and the API key's organisation has \"previous\" as its default channel. Reveals a \"previous\"→\"latest\" fallback."
               },
+              "x-beliq-idempotent-replay": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "\"true\" when this request repeats one your organisation sent in the same mode and was charged for in the last 15 minutes: the same route, query, Content-Type, Accept, ruleset selection and body, and for generate the same stored PDF template. The request was computed again and not charged. One charge covers 10 such repeats; the 11th is charged and starts a new 15 minutes. The window, what makes two requests the same and the cap are a choice Beliq made; no standard sets them. Absent when the request was charged."
+              },
               "x-beliq-livemode": {
                 "schema": {
                   "type": "string"
@@ -11203,6 +11215,12 @@
                 },
                 "description": "One-line verdict, e.g. \"pass · 0 err · 1 warn\"."
               },
+              "x-beliq-idempotent-replay": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "\"true\" when this request repeats one your organisation sent in the same mode and was charged for in the last 15 minutes: the same route, query, Content-Type, Accept, ruleset selection and body, and for generate the same stored PDF template. The request was computed again and not charged. One charge covers 10 such repeats; the 11th is charged and starts a new 15 minutes. The window, what makes two requests the same and the cap are a choice Beliq made; no standard sets them. Absent when the request was charged."
+              },
               "x-beliq-livemode": {
                 "schema": {
                   "type": "string"
@@ -14700,6 +14718,12 @@
                   "type": "string"
                 },
                 "description": "Compact JSON naming the ruleset/artifact versions pinned for the produced format."
+              },
+              "x-beliq-idempotent-replay": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "\"true\" when this request repeats one your organisation sent in the same mode and was charged for in the last 15 minutes: the same route, query, Content-Type, Accept, ruleset selection and body, and for generate the same stored PDF template. The request was computed again and not charged. One charge covers 10 such repeats; the 11th is charged and starts a new 15 minutes. The window, what makes two requests the same and the cap are a choice Beliq made; no standard sets them. Absent when the request was charged."
               },
               "x-beliq-livemode": {
                 "schema": {
