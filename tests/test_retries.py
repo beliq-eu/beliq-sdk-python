@@ -175,7 +175,7 @@ def test_refused_connection_raises_httpx_connect_error_once_retrying_ends() -> N
 )
 def test_a_connection_lost_after_it_opened_is_retried_by_the_count(error: httpx.TransportError) -> None:
     # beliq does not charge a repeat of a charged request inside 15 minutes, so a
-    # retry costs no second unit. tests/test_retry_lost_connection.py runs the
+    # retry of a charged request is not charged again. tests/test_retry_lost_connection.py runs the
     # close and the reset against a real socket. The short budget makes a client
     # that retried it by the budget fail here in seconds rather than hang.
     route = respx.get(ME_URL).mock(side_effect=error)

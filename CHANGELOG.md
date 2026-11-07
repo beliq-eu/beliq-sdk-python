@@ -20,10 +20,10 @@ can now take longer to return, where 0.6 raised at once.
   `httpx.RemoteProtocolError`, which 0.6 raised on the first attempt. Once the
   retries end, httpx's exception is raised as before. beliq does not charge a
   repeat of a charged `generate`, `validate`, `parse` or `convert` request
-  again within 15 minutes of the charge, up to 10 repeats, and every retry
-  sends the same request, so with the default `max_retries` such a retry is
-  not charged again. It is charged when beliq cannot read or write its record
-  of charged requests, and past the 10 repeats or the 15 minutes.
+  again within 15 minutes of the charge, up to 10 repeats, values beliq chose
+  and no standard sets, and every retry sends the same request. When a repeat
+  is charged after all is listed at
+  https://docs.beliq.eu/api-reference/errors/#repeated-requests-are-not-charged-again.
 - The client's own timeout is still not retried: a repeat runs the same
   document again from the start.
 

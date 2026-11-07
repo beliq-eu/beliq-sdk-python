@@ -139,7 +139,8 @@ What a retry costs:
   request and charged it. beliq does not charge a repeat of a charged
   `generate`, `validate`, `parse` or `convert` request again within 15 minutes
   of the charge, up to 10 repeats, and every retry sends the same request. The
-  answer to such a repeat carries `x-beliq-idempotent-replay: true`. A
+  15 minutes and the 10 repeats are beliq's own choice; no standard sets them.
+  The answer to such a repeat carries `x-beliq-idempotent-replay: true`. A
   `max_retries` above 10 can be charged again. When beliq cannot read or write
   its record of charged requests, it charges every attempt.
   https://docs.beliq.eu/api-reference/errors/#repeated-requests-are-not-charged-again
