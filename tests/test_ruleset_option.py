@@ -135,10 +135,11 @@ def test_channel_fields_are_typed(servers: list[Recorder]) -> None:
 
 
 def test_channel_fields_absent_are_none(servers: list[Recorder]) -> None:
-    """(3) A body without the three fields gives None for each."""
+    """(3) A body without the three fields, or rulesetSupersededOn, gives None for each."""
     s = start(servers, DEFAULT_BODY)
     with Beliq(API_KEY, base_url=s.base_url, max_retries=0) as beliq:
         result = beliq.validate(DOCUMENT)
     assert result.ruleset_channel is None
     assert result.ruleset_fell_back is None
     assert result.ruleset_sunsets_on is None
+    assert result.ruleset_superseded_on is None

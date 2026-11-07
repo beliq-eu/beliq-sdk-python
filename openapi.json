@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.25.0"
+    "version": "0.26.0"
   },
   "components": {
     "securitySchemes": {
@@ -4064,6 +4064,11 @@
                               "description": "ISO date the retained ruleset serving this request stops being served. Present only when a retained ruleset ran (never on a default request); the earliest date when several ran. After it an exact pin 422s. It bounds the pin, not the channel: `previous` stops reaching the version on this date or on the authority's mandatory date for the successor, whichever comes first.",
                               "type": "string"
                             },
+                            "rulesetSupersededOn": {
+                              "format": "date",
+                              "description": "ISO date the authority made the successor of a ruleset this request selected mandatory, when that date is on or before the day of the verdict; the earliest date when several were. Each such ruleset also adds a `RULESET_SUPERSEDED` warning naming it, its version, the successor and the date. Absent when none was. `valid` is still the verdict of the version that ran.",
+                              "type": "string"
+                            },
                             "pdfInput": {
                               "description": "Present only when the document sent to `POST /v1/validate` was a PDF: which embedded file the verdict is about, and that the PDF around it was not checked.",
                               "type": "object",
@@ -7982,6 +7987,11 @@
                         "rulesetSunsetsOn": {
                           "format": "date",
                           "description": "ISO date the retained ruleset serving this request stops being served. Present only when a retained ruleset ran (never on a default request); the earliest date when several ran. After it an exact pin 422s. It bounds the pin, not the channel: `previous` stops reaching the version on this date or on the authority's mandatory date for the successor, whichever comes first.",
+                          "type": "string"
+                        },
+                        "rulesetSupersededOn": {
+                          "format": "date",
+                          "description": "ISO date the authority made the successor of a ruleset this request selected mandatory, when that date is on or before the day of the verdict; the earliest date when several were. Each such ruleset also adds a `RULESET_SUPERSEDED` warning naming it, its version, the successor and the date. Absent when none was. `valid` is still the verdict of the version that ran.",
                           "type": "string"
                         },
                         "pdfInput": {
