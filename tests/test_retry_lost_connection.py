@@ -186,8 +186,10 @@ def test_1b_the_async_client_retries_it_too(servers: list[RawServer], drop: Drop
 def test_2_the_count_bounds_it_and_httpx_own_error_is_raised(servers: list[RawServer]) -> None:
     s = start(servers, lambda _n: "close")
 
+    # The short budget makes a client that retried it by the budget fail here in
+    # seconds rather than hang.
     with pytest.raises(httpx.RemoteProtocolError) as caught:
-        validate(client(s.port))
+        validate(client(s.port, retry_budget=5.0))
 
     assert not isinstance(caught.value, BeliqApiError)
     assert len(s.requests) == DEFAULT_MAX_RETRIES + 1

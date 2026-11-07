@@ -37,7 +37,8 @@ DEFAULT_RETRY_BUDGET_SECONDS = 900.0
 # is decided per error code in the client.
 #
 # 504 is excluded on purpose: it means the work may still be running server-side,
-# so a retry would run it, and charge it, a second time.
+# and a retry would run the same document again from the start, likely into the
+# same deadline.
 RETRYABLE_STATUSES = frozenset({429, 502, 503})
 
 # The one 429 waiting cannot clear. RATE_LIMITED frees up in seconds and

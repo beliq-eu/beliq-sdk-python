@@ -9,6 +9,22 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.7.0 - unreleased
+
+A minor, because a call whose connection is lost after the request was sent
+can now take longer to return, where 0.6 raised at once.
+
+- The client retries a connection lost after it opened, up to `max_retries`
+  times (3 when unset), counted together with the other failures retried by
+  count. That is `httpx.ReadError`, `httpx.WriteError` and
+  `httpx.RemoteProtocolError`, which 0.6 raised on the first attempt. Once the
+  retries end, httpx's exception is raised as before. beliq does not charge a
+  repeat of a charged `generate`, `validate`, `parse` or `convert` request
+  again within 15 minutes of the charge, up to 10 repeats, and every retry
+  sends the same request, so such a retry no longer costs a second unit.
+- The client's own timeout is still not retried: a repeat runs the same
+  document again from the start.
+
 ## 0.6.0 - 2026-11-06
 
 A minor: code that reads `rulesetChannel`, `rulesetFellBack` or

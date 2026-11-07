@@ -105,7 +105,8 @@ them all.
 | A connection that could not be opened: `httpx.ConnectError` or `httpx.ConnectTimeout`, other than a failed TLS handshake | until the budget is spent |
 | `429` `RATE_LIMITED` or `ACCOUNT_THROTTLED` | up to `max_retries` times |
 | `503` `ENGINE_UNAVAILABLE`, and any other `502` or `503` with a beliq error code | up to `max_retries` times |
-| `429` `QUOTA_EXCEEDED`, `504`, a timeout, a failed TLS handshake, a connection lost after the request was sent, and every other status | never |
+| A connection lost after it opened: `httpx.ReadError`, `httpx.WriteError` or `httpx.RemoteProtocolError` | up to `max_retries` times |
+| `429` `QUOTA_EXCEEDED`, `504`, a timeout, a failed TLS handshake, and every other status | never |
 
 Every wait follows the server's `Retry-After` in full, plus up to 0.25 s of
 jitter. Without one, the client backs off exponentially from 0.5 s with jitter,
@@ -134,11 +135,18 @@ What a retry costs:
 - The unit of an `ENGINE_UNAVAILABLE` is refunded, within the cap that page
   names.
 - A test key's sandbox units are never refunded.
+- A connection lost after the request was sent can mean beliq already ran the
+  request and charged it. beliq does not charge a repeat of a charged
+  `generate`, `validate`, `parse` or `convert` request again within 15 minutes
+  of the charge, up to 10 repeats, and every retry sends the same request. The
+  answer to such a repeat carries `x-beliq-idempotent-replay: true`. When beliq
+  cannot read or write its record of charged requests, it charges every attempt.
+  https://docs.beliq.eu/api-reference/errors/#repeated-requests-are-not-charged-again
+  says what makes two requests the same.
 
-`504`, a client-side timeout and a connection lost after the request was sent
-are deliberately **not** retried: each can mean the work is still running, or
-has finished, on beliq's side, so a retry would run it, and charge it, a second
-time.
+`504` and a client-side timeout are deliberately **not** retried: both can mean
+the work is still running on beliq's side, and a retry runs the same document
+again from the start, so it would likely run out of time again.
 
 A `429` carrying `QUOTA_EXCEEDED` is not retried either. `RATE_LIMITED` and
 `ACCOUNT_THROTTLED` clear on their own, but a spent monthly allowance only returns
@@ -182,7 +190,7 @@ asyncio.run(main())
 
 JSON responses are Pydantic models. Any field not explicitly typed (such as the per-country authority versions on a validation result) is preserved and accessible. An error answer from beliq raises `BeliqApiError` with a typed `.code`, HTTP `.status`, and any `.details`.
 
-A timeout or a failed connection is not an answer from beliq, so it is not a `BeliqApiError`. It raises httpx's own exception, a subclass of `httpx.TransportError` (such as `httpx.ReadTimeout` or `httpx.ConnectError`). A connection that could not be opened raises once the retries above end; any other transport error raises at once. Catch both to handle every failure:
+A timeout or a failed connection is not an answer from beliq, so it is not a `BeliqApiError`. It raises httpx's own exception, a subclass of `httpx.TransportError` (such as `httpx.ReadTimeout` or `httpx.ConnectError`). A connection that could not be opened, or was lost after it opened, raises once the retries above end; a timeout and any other transport error raise at once. Catch both to handle every failure:
 
 ```python
 import httpx
