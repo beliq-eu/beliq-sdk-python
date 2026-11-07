@@ -61,13 +61,16 @@ TEST_KEY_PREFIX = "blq_test_"
 # could not be opened.
 #
 # "count": retried up to max_retries times. A 429 other than QUOTA_EXCEEDED, since
-# each one counts toward the account's throttle, and a 502 or 503 with any other
-# beliq code, ENGINE_UNAVAILABLE included, since an engine timeout answers that
-# code too and a budget would run the same slow document dozens of times.
+# each one counts toward the account's throttle; a 502 or 503 with any other beliq
+# code, ENGINE_UNAVAILABLE included, since an engine timeout answers that code too
+# and a budget would run the same slow document dozens of times; and a connection
+# lost after the request was sent. beliq may have run and charged that request, but
+# it does not charge a repeat of a charged request inside 15 minutes, up to 10
+# repeats (beliq's own values, which no standard sets), and every attempt sends the
+# same bytes.
 #
-# Anything else is not retried, and a timeout or a connection lost after the
-# request was sent raises httpx's own exception: the work may still be running on
-# beliq's side, so a retry would run it, and charge it, a second time.
+# Anything else is not retried. This client's own timeout raises httpx's exception
+# at once: a repeat runs the engine again and takes as long as the first attempt.
 RetryClass = Literal["budget", "count"]
 
 # httpx's errors for a connection that never opened: nothing reached the server,
@@ -75,6 +78,13 @@ RetryClass = Literal["budget", "count"]
 # a missing route and a failed TLS handshake all as ConnectError; the last is
 # told apart by _is_tls_failure.
 _BEFORE_SEND_ERRORS = (httpx.ConnectError, httpx.ConnectTimeout)
+
+# httpx's errors for a connection lost once it was open: reset while the request
+# was written (WriteError) or while the answer was awaited (ReadError), or closed
+# without an answer (RemoteProtocolError). httpx raises a malformed answer as
+# RemoteProtocolError too, so that is retried as well, within the same count. A
+# timeout is not among them.
+_AFTER_SEND_ERRORS = (httpx.ReadError, httpx.WriteError, httpx.RemoteProtocolError)
 
 # Clamped so a long run of attempts cannot overflow the float; the ceiling holds
 # long before it.
@@ -119,6 +129,14 @@ def _is_tls_failure(exc: BaseException) -> bool:
         seen.add(id(cause))
         cause = cause.__cause__ or cause.__context__
     return False
+
+
+def _thrown_retry_class(exc: httpx.TransportError) -> RetryClass | None:
+    if isinstance(exc, _BEFORE_SEND_ERRORS):
+        return None if _is_tls_failure(exc) else "budget"
+    if isinstance(exc, _AFTER_SEND_ERRORS):
+        return "count"
+    return None
 
 
 def _error_code(response: httpx.Response) -> str | None:
@@ -352,18 +370,18 @@ class Beliq:
 
         Every wait follows the server's ``Retry-After`` in full. A retried answer
         that runs out of retries or budget is returned for the caller to raise; a
-        connection that never opened raises httpx's ``ConnectError`` or
-        ``ConnectTimeout`` once retrying ends, and a failed TLS handshake and any
-        other transport error raise at once. A caller-supplied ``client`` keeps its own timeout, which
-        this does not override.
+        connection that never opened, or was lost after it opened, raises httpx's
+        own exception once retrying ends, and a failed TLS handshake, a timeout and
+        any other transport error raise at once. A caller-supplied ``client`` keeps
+        its own timeout, which this does not override.
         """
         kwargs = _request_kwargs(self._base_url, self._api_key, self._auth, req)
         retries = _Retries(self._retry_budget, self._max_retries)
         while True:
             try:
                 response = self._client.request(**kwargs)
-            except _BEFORE_SEND_ERRORS as exc:
-                delay = None if _is_tls_failure(exc) else retries.wait("budget", None)
+            except httpx.TransportError as exc:
+                delay = retries.wait(_thrown_retry_class(exc), None)
                 if delay is None:
                     raise
             else:
@@ -510,8 +528,8 @@ class AsyncBeliq:
         while True:
             try:
                 response = await self._client.request(**kwargs)
-            except _BEFORE_SEND_ERRORS as exc:
-                delay = None if _is_tls_failure(exc) else retries.wait("budget", None)
+            except httpx.TransportError as exc:
+                delay = retries.wait(_thrown_retry_class(exc), None)
                 if delay is None:
                     raise
             else:

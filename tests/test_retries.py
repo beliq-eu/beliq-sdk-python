@@ -168,13 +168,30 @@ def test_refused_connection_raises_httpx_connect_error_once_retrying_ends() -> N
 
 
 @respx.mock
+@pytest.mark.usefixtures("fast_backoff")
 @pytest.mark.parametrize(
     "error",
-    [httpx.ReadError("reset"), httpx.RemoteProtocolError("closed"), httpx.WriteTimeout("timed out")],
+    [httpx.ReadError("reset"), httpx.WriteError("broken pipe"), httpx.RemoteProtocolError("closed")],
 )
-def test_transport_error_after_the_send_is_not_retried(error: httpx.TransportError) -> None:
-    # The request may have reached beliq and been charged, so a retry could charge
-    # it again.
+def test_a_connection_lost_after_it_opened_is_retried_by_the_count(error: httpx.TransportError) -> None:
+    # beliq does not charge a repeat of a charged request inside 15 minutes, so a
+    # retry of a charged request is not charged again. tests/test_retry_lost_connection.py runs the
+    # close and the reset against a real socket. The short budget makes a client
+    # that retried it by the budget fail here in seconds rather than hang.
+    route = respx.get(ME_URL).mock(side_effect=error)
+    with pytest.raises(type(error)):
+        Beliq(API_KEY, retry_budget=5.0).me()
+    assert route.call_count == DEFAULT_MAX_RETRIES + 1
+
+
+@respx.mock
+@pytest.mark.parametrize(
+    "error",
+    [httpx.WriteTimeout("timed out"), httpx.PoolTimeout("timed out"), httpx.LocalProtocolError("bad header")],
+)
+def test_other_transport_errors_are_not_retried(error: httpx.TransportError) -> None:
+    # A timeout is this client's own deadline, and a repeat would take as long
+    # again; a local protocol error is the same on every attempt.
     route = respx.get(ME_URL).mock(side_effect=error)
     with pytest.raises(type(error)):
         Beliq(API_KEY).me()
