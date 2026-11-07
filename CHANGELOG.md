@@ -9,6 +9,19 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.7.1 - 2026-11-07
+
+- `ValidationResult` has `ruleset_superseded_on`, the API's
+  `rulesetSupersededOn` from document 0.26.0: the ISO date the authority made
+  the successor of a ruleset the request selected mandatory, when that date
+  is on or before the day of the verdict, and the earliest such date when
+  there are several. Each such ruleset also adds a `RULESET_SUPERSEDED`
+  warning that names it, its version, the successor and the date. `valid` is
+  still the verdict of the version that ran. In 0.7.0 the field reached a
+  result only as an untyped extra under its wire name.
+- The vendored `openapi.json` is document `0.26.0` of the API, up from
+  `0.25.0`.
+
 ## 0.7.0 - 2026-11-07
 
 A minor, because a call whose connection is lost after the request was sent
