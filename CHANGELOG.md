@@ -26,6 +26,10 @@ can now take longer to return, where 0.6 raised at once.
   https://docs.beliq.eu/api-reference/errors/#repeated-requests-are-not-charged-again.
 - The client's own timeout is still not retried: a repeat runs the same
   document again from the start.
+- The vendored `openapi.json` is document `0.25.0` of the API, up from
+  `0.24.0`. It adds the `x-beliq-idempotent-replay` response header on
+  `generate`, `validate`, `parse` and `convert`, which the client does not
+  read.
 
 ## 0.6.0 - 2026-11-06
 
