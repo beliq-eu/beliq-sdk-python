@@ -21,7 +21,9 @@ can now take longer to return, where 0.6 raised at once.
   retries end, httpx's exception is raised as before. beliq does not charge a
   repeat of a charged `generate`, `validate`, `parse` or `convert` request
   again within 15 minutes of the charge, up to 10 repeats, and every retry
-  sends the same request, so such a retry no longer costs a second unit.
+  sends the same request, so with the default `max_retries` such a retry is
+  not charged again. It is charged when beliq cannot read or write its record
+  of charged requests, and past the 10 repeats or the 15 minutes.
 - The client's own timeout is still not retried: a repeat runs the same
   document again from the start.
 

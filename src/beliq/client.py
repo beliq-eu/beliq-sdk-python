@@ -80,7 +80,9 @@ _BEFORE_SEND_ERRORS = (httpx.ConnectError, httpx.ConnectTimeout)
 
 # httpx's errors for a connection lost once it was open: reset while the request
 # was written (WriteError) or while the answer was awaited (ReadError), or closed
-# without an answer (RemoteProtocolError). A timeout is not among them.
+# without an answer (RemoteProtocolError). httpx raises a malformed answer as
+# RemoteProtocolError too, so that is retried as well, within the same count. A
+# timeout is not among them.
 _AFTER_SEND_ERRORS = (httpx.ReadError, httpx.WriteError, httpx.RemoteProtocolError)
 
 # Clamped so a long run of attempts cannot overflow the float; the ceiling holds
@@ -126,6 +128,14 @@ def _is_tls_failure(exc: BaseException) -> bool:
         seen.add(id(cause))
         cause = cause.__cause__ or cause.__context__
     return False
+
+
+def _thrown_retry_class(exc: httpx.TransportError) -> RetryClass | None:
+    if isinstance(exc, _BEFORE_SEND_ERRORS):
+        return None if _is_tls_failure(exc) else "budget"
+    if isinstance(exc, _AFTER_SEND_ERRORS):
+        return "count"
+    return None
 
 
 def _error_code(response: httpx.Response) -> str | None:
@@ -369,12 +379,8 @@ class Beliq:
         while True:
             try:
                 response = self._client.request(**kwargs)
-            except _BEFORE_SEND_ERRORS as exc:
-                delay = None if _is_tls_failure(exc) else retries.wait("budget", None)
-                if delay is None:
-                    raise
-            except _AFTER_SEND_ERRORS:
-                delay = retries.wait("count", None)
+            except httpx.TransportError as exc:
+                delay = retries.wait(_thrown_retry_class(exc), None)
                 if delay is None:
                     raise
             else:
@@ -521,12 +527,8 @@ class AsyncBeliq:
         while True:
             try:
                 response = await self._client.request(**kwargs)
-            except _BEFORE_SEND_ERRORS as exc:
-                delay = None if _is_tls_failure(exc) else retries.wait("budget", None)
-                if delay is None:
-                    raise
-            except _AFTER_SEND_ERRORS:
-                delay = retries.wait("count", None)
+            except httpx.TransportError as exc:
+                delay = retries.wait(_thrown_retry_class(exc), None)
                 if delay is None:
                     raise
             else:

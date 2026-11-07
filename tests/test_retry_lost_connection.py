@@ -3,9 +3,12 @@
 beliq charges a compute request before it runs, and runs it to the end after the
 client has gone, so a connection lost after the send can mean the work ran and was
 charged. beliq does not charge a repeat of a charged request again inside 15
-minutes, up to 10 repeats, and a repeat is the same route, query, Content-Type,
-Accept and body. So the client retries such a loss, by the count, with the same
-request bytes on every attempt. It does not retry its own timeout: a repeat runs
+minutes, up to 10 repeats. A repeat is the same request from the same
+organisation and mode, where "the same" covers the route, query, Content-Type,
+Accept and body, and on validate the ruleset selection that applies
+(https://docs.beliq.eu/api-reference/errors/#repeated-requests-are-not-charged-again).
+So the client retries such a loss, by the count, with the same request bytes on
+every attempt. It does not retry its own timeout: a repeat runs
 the engine again and takes as long as the first attempt did.
 
 The stub reads the whole request before it decides, so each loss below comes after
