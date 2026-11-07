@@ -221,6 +221,18 @@ def test_validation_result_declares_the_fields_about_the_depth_of_the_check():
     assert names - _wire_names(ValidationResult) == set()
 
 
+def test_validation_result_declares_every_ruleset_field_the_spec_returns():
+    """The fields that say which ruleset a verdict ran and what the catalog says of it.
+
+    The per-format version fields stay extras, so this holds the `ruleset*`
+    names only: a ruleset field the spec gains fails here until the model
+    declares it.
+    """
+    names = {name for name in validate_data_props() if name.startswith("ruleset")}
+    assert "rulesetSupersededOn" in names
+    assert names - _wire_names(ValidationResult) == set()
+
+
 def test_every_validation_result_field_is_one_the_spec_returns():
     assert _wire_names(ValidationResult) - set(validate_data_props()) == set()
 

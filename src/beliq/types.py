@@ -222,6 +222,12 @@ class ValidationResult(_Model):
     #: served; the earliest when several ran. Set only when a retained ruleset
     #: ran.
     ruleset_sunsets_on: str | None = None
+    #: ISO date the authority made the successor of a ruleset this request
+    #: selected mandatory, when that date is on or before the day of the
+    #: verdict; the earliest when several were. Each such ruleset also adds a
+    #: ``RULESET_SUPERSEDED`` warning naming it, its version, the successor and
+    #: the date. ``valid`` is still the verdict of the version that ran.
+    ruleset_superseded_on: str | None = None
 
 
 class ParseElementCount(_Model):
