@@ -9,7 +9,7 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
-## 0.7.0 - unreleased
+## 0.7.0 - 2026-11-07
 
 A minor, because a call whose connection is lost after the request was sent
 can now take longer to return, where 0.6 raised at once.
