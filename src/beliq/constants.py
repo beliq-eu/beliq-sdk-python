@@ -138,6 +138,18 @@ API_ERROR_CODES: tuple[str, ...] = (
     # 409: a PA already rejected these exact bytes, and a French invoice number
     # must be reissued under a new one rather than sent again.
     "FRANCE_INVOICE_NUMBER_BURNED",
+    # Admission: the network refuses the send before anything is queued.
+    # RECIPIENT_ADDRESS_INVALID (400): the recipient is not an address the
+    # network accepts. DOCUMENT_PROFILE_NOT_ACCEPTED (422): the network takes
+    # no document of this profile from beliq, whatever its validation result.
+    # SEND_CANNOT_COMPOSE_FOR_NETWORK (422): POST /v1/send builds no documents
+    # for this network; post one to POST /v1/transmissions instead.
+    # FLOW_OUTSIDE_FRENCH_PERIMETER (409): a live send on the French network
+    # whose sender and recipient beliq does not place both in France.
+    "RECIPIENT_ADDRESS_INVALID",
+    "DOCUMENT_PROFILE_NOT_ACCEPTED",
+    "SEND_CANNOT_COMPOSE_FOR_NETWORK",
+    "FLOW_OUTSIDE_FRENCH_PERIMETER",
     "UNSUPPORTED_SYNTAX",
     "MALFORMED_DOCUMENT",
     "EMPTY_DOCUMENT",
