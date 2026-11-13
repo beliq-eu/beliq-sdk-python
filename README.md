@@ -1,8 +1,10 @@
 # beliq
 
-Official Python SDK for the [beliq](https://beliq.eu) e-invoicing compliance API. Generate, validate, parse, and convert EN 16931 invoices (XRechnung, ZUGFeRD, Factur-X, Peppol BIS) against authority-pinned, nightly-drift-checked rules.
+beliq is the platform for European e-invoicing: one API to generate, validate, convert and parse e-invoices, with the rule pack, version and check depth on its verdicts.
 
-beliq produces and checks the compliant document. Transmission (Peppol, PDP, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.
+Official Python SDK for the [beliq](https://beliq.eu) API: generate, validate, parse and convert EU e-invoices (XRechnung, ZUGFeRD, Factur-X, Peppol BIS) from Python.
+
+beliq produces and checks the document. Transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.
 
 ## Install
 
@@ -63,7 +65,7 @@ generated = beliq.generate(
 )
 print(generated.xml, generated.meta.schematron_version)
 
-# Validate any document against authority-pinned rules.
+# Validate any document against the rule packs and schemas pinned for its format.
 result = beliq.validate(generated.xml, format="auto")
 if not result.valid:
     for issue in result.errors:

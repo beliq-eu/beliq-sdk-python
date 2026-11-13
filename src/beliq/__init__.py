@@ -1,9 +1,9 @@
 """Official beliq SDK for Python.
 
-Generate, validate, parse, and convert EN 16931 e-invoices against
-authority-pinned, drift-checked rules. beliq produces and checks the compliant
-document; transmission, archiving, and tax-authority reporting stay with your
-access point.
+beliq is the platform for European e-invoicing: one API to generate, validate,
+convert and parse e-invoices, with the rule pack, version and check depth on
+its verdicts. beliq produces and checks the document; transmission, archiving,
+and tax-authority reporting stay with your access point.
 """
 
 from __future__ import annotations
