@@ -323,7 +323,6 @@ An unknown standard returns `()` and is allowed, so the API stays the authority 
 ```bash
 uv sync --locked --extra dev             # installs exactly what uv.lock pins
 uv run ruff check src tests
-bash scripts/scrub-check.sh              # no em-dash in any tracked file
 uv run mypy
 uv run pytest                            # unit tests (no network)
 BELIQ_API_KEY=blq_xxx uv run pytest tests/test_integration.py   # hits the live API; draws quota

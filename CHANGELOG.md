@@ -320,8 +320,8 @@ A patch: no field, type, method or exported name changes.
 - BT-6 (VAT accounting currency) and BT-111 (VAT amount in the accounting
   currency) are in the vendored spec.
 - The PyPI project page shows an invoice the API accepts as-is.
-- An em-dash scrub gate runs over the whole tree before publish, and the
-  release workflow carries job timeouts and refuses a tag that is not on `main`.
+- The release workflow carries job timeouts and refuses a tag that is not on
+  `main`.
 
 ## 0.2.1 - 2026-09-02
 
