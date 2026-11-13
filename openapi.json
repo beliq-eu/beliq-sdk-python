@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.26.0"
+    "version": "0.27.0"
   },
   "components": {
     "securitySchemes": {
@@ -664,6 +664,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -988,6 +1012,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -1322,6 +1370,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -1651,6 +1723,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -1975,6 +2071,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -3681,7 +3801,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "CIUS/profile the engine matched, e.g. \"xrechnung_3.0\"."
+                "description": "CIUS/profile the engine matched, e.g. \"xrechnung_3.0\". Absent when the label is not printable ASCII; the body still carries it."
               },
               "x-schematron-version": {
                 "schema": {
@@ -4513,6 +4633,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -4837,6 +4981,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -5171,6 +5339,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -5495,6 +5687,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -5829,6 +6045,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -6153,6 +6393,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -6487,6 +6751,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -6811,6 +7099,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -7145,6 +7457,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -7474,6 +7810,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -7646,7 +8006,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "CIUS/profile the engine matched, e.g. \"xrechnung_3.0\"."
+                "description": "CIUS/profile the engine matched, e.g. \"xrechnung_3.0\". Absent when the label is not printable ASCII; the body still carries it."
               },
               "x-schematron-version": {
                 "schema": {
@@ -8417,6 +8777,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -8741,6 +9125,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -9075,6 +9483,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -9399,6 +9831,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -9733,6 +10189,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -10057,6 +10537,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -10391,6 +10895,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -10715,6 +11243,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -11049,6 +11601,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -11205,7 +11781,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "CIUS/profile the engine matched, e.g. \"xrechnung_3.0\"."
+                "description": "CIUS/profile the engine matched, e.g. \"xrechnung_3.0\". Absent when the label is not printable ASCII; the body still carries it."
               },
               "x-schematron-version": {
                 "schema": {
@@ -11818,6 +12394,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -12142,6 +12742,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -12476,6 +13100,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -12800,6 +13448,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -13134,6 +13806,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -13458,6 +14154,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -13792,6 +14512,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -14116,6 +14860,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -14450,6 +15218,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -14697,7 +15489,7 @@
                 "schema": {
                   "type": "string"
                 },
-                "description": "Profile the engine matched on the source, e.g. \"xrechnung\" or \"facturx:basic\". Absent when the source names none the engine knows."
+                "description": "Profile the engine matched on the source, e.g. \"xrechnung\" or \"facturx:basic\". Absent when the source names none the engine knows, or when the label is not printable ASCII."
               },
               "x-lost-elements-count": {
                 "schema": {
@@ -15044,6 +15836,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -15368,6 +16184,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -15702,6 +16542,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -16026,6 +16890,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -16360,6 +17248,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -16684,6 +17596,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -17018,6 +17954,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -17347,6 +18307,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -17671,6 +18655,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
@@ -18398,6 +19406,30 @@
                             {
                               "type": "string",
                               "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "UNSUPPORTED_SYNTAX"
                               ]
                             },
@@ -18722,6 +19754,30 @@
                               "type": "string",
                               "enum": [
                                 "FRANCE_INVOICE_NUMBER_BURNED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "RECIPIENT_ADDRESS_INVALID"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_PROFILE_NOT_ACCEPTED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "SEND_CANNOT_COMPOSE_FOR_NETWORK"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "FLOW_OUTSIDE_FRENCH_PERIMETER"
                               ]
                             },
                             {
