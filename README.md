@@ -1,8 +1,10 @@
 # beliq
 
-Official Python SDK for the [beliq](https://beliq.eu) e-invoicing compliance API. Generate, validate, parse, and convert EN 16931 invoices (XRechnung, ZUGFeRD, Factur-X, Peppol BIS) against authority-pinned, nightly-drift-checked rules.
+beliq is the platform for European e-invoicing: one API to generate, validate, convert and parse e-invoices, with the rule pack, version and check depth on its verdicts.
 
-beliq produces and checks the compliant document. Transmission (Peppol, PDP, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.
+Official Python SDK for the [beliq](https://beliq.eu) API: generate, validate, parse and convert EU e-invoices (XRechnung, ZUGFeRD, Factur-X, Peppol BIS) from Python.
+
+beliq produces and checks the document. Transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.
 
 ## Install
 
@@ -63,7 +65,7 @@ generated = beliq.generate(
 )
 print(generated.xml, generated.meta.schematron_version)
 
-# Validate any document against authority-pinned rules.
+# Validate any document against the rule packs and schemas pinned for its format.
 result = beliq.validate(generated.xml, format="auto")
 if not result.valid:
     for issue in result.errors:
@@ -106,7 +108,7 @@ them all.
 | `429` `RATE_LIMITED` or `ACCOUNT_THROTTLED` | up to `max_retries` times |
 | `503` `ENGINE_UNAVAILABLE`, and any other `502` or `503` with a beliq error code | up to `max_retries` times |
 | A connection lost after it opened: `httpx.ReadError`, `httpx.WriteError` or `httpx.RemoteProtocolError` | up to `max_retries` times |
-| `429` `QUOTA_EXCEEDED`, `504`, a timeout, a failed TLS handshake, and every other status | never |
+| `429` `QUOTA_EXCEEDED` or `DOCUMENT_CEILING_REACHED`, `504`, a timeout, a failed TLS handshake, and every other status | never |
 
 Every wait follows the server's `Retry-After` in full, plus up to 0.25 s of
 jitter. Without one, the client backs off exponentially from 0.5 s with jitter,
@@ -150,10 +152,11 @@ What a retry costs:
 the work is still running on beliq's side, and a retry runs the same document
 again from the start, so it would likely run out of time again.
 
-A `429` carrying `QUOTA_EXCEEDED` is not retried either. `RATE_LIMITED` and
-`ACCOUNT_THROTTLED` clear on their own, but a spent monthly allowance only returns
-when your billing window turns, so the error is raised straight away and names the
-cause instead of sleeping against it.
+A `429` carrying `QUOTA_EXCEEDED` or `DOCUMENT_CEILING_REACHED` is not retried
+either. `RATE_LIMITED` and `ACCOUNT_THROTTLED` clear on their own, but a spent
+monthly allowance, or the extra-document ceiling above it, does not return before
+your billing window turns unless you raise your cap or your plan. So the error is
+raised straight away and names the cause instead of sleeping against it.
 
 The default deadline is generous because beliq runs the full Schematron rule set
 over each document, and a generate or validate can legitimately take tens of
