@@ -69,14 +69,26 @@ WINDOW_REMAINING_SECONDS = str(29 * 24 * 60 * 60)
 
 
 @respx.mock
-def test_does_not_retry_spent_monthly_quota() -> None:
+@pytest.mark.parametrize("code", ["QUOTA_EXCEEDED", "DOCUMENT_CEILING_REACHED"])
+def test_does_not_retry_spent_monthly_quota(code: str) -> None:
     route = respx.get(ME_URL).mock(
-        return_value=_err(429, "QUOTA_EXCEEDED", retry_after=WINDOW_REMAINING_SECONDS)
+        return_value=_err(429, code, retry_after=WINDOW_REMAINING_SECONDS)
     )
     with pytest.raises(BeliqApiError) as excinfo:
         _client().me()
     assert excinfo.value.status == 429
-    assert excinfo.value.code == "QUOTA_EXCEEDED"
+    assert excinfo.value.code == code
+    assert route.call_count == 1
+
+
+# A window's Retry-After is past the retry budget, so the test above makes one
+# attempt whatever the code. With no wait asked for, only the code stops the retry.
+@respx.mock
+@pytest.mark.parametrize("code", ["QUOTA_EXCEEDED", "DOCUMENT_CEILING_REACHED"])
+def test_does_not_retry_a_final_quota_refusal_even_without_a_wait(code: str) -> None:
+    route = respx.get(ME_URL).mock(side_effect=[_err(429, code, retry_after="0"), _ok()])
+    with pytest.raises(BeliqApiError):
+        _client().me()
     assert route.call_count == 1
 
 
@@ -89,11 +101,12 @@ def test_still_retries_the_429s_that_waiting_clears(code: str) -> None:
 
 
 @respx.mock
-def test_async_client_does_not_retry_spent_monthly_quota() -> None:
+@pytest.mark.parametrize("code", ["QUOTA_EXCEEDED", "DOCUMENT_CEILING_REACHED"])
+def test_async_client_does_not_retry_spent_monthly_quota(code: str) -> None:
     from beliq import AsyncBeliq
 
     route = respx.get(ME_URL).mock(
-        return_value=_err(429, "QUOTA_EXCEEDED", retry_after=WINDOW_REMAINING_SECONDS)
+        return_value=_err(429, code, retry_after=WINDOW_REMAINING_SECONDS)
     )
 
     async def go() -> object:
@@ -105,7 +118,7 @@ def test_async_client_does_not_retry_spent_monthly_quota() -> None:
 
     with pytest.raises(BeliqApiError) as excinfo:
         asyncio.run(go())
-    assert excinfo.value.code == "QUOTA_EXCEEDED"
+    assert excinfo.value.code == code
     assert route.call_count == 1
 
 

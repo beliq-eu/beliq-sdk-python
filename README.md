@@ -108,7 +108,7 @@ them all.
 | `429` `RATE_LIMITED` or `ACCOUNT_THROTTLED` | up to `max_retries` times |
 | `503` `ENGINE_UNAVAILABLE`, and any other `502` or `503` with a beliq error code | up to `max_retries` times |
 | A connection lost after it opened: `httpx.ReadError`, `httpx.WriteError` or `httpx.RemoteProtocolError` | up to `max_retries` times |
-| `429` `QUOTA_EXCEEDED`, `504`, a timeout, a failed TLS handshake, and every other status | never |
+| `429` `QUOTA_EXCEEDED` or `DOCUMENT_CEILING_REACHED`, `504`, a timeout, a failed TLS handshake, and every other status | never |
 
 Every wait follows the server's `Retry-After` in full, plus up to 0.25 s of
 jitter. Without one, the client backs off exponentially from 0.5 s with jitter,
@@ -152,9 +152,10 @@ What a retry costs:
 the work is still running on beliq's side, and a retry runs the same document
 again from the start, so it would likely run out of time again.
 
-A `429` carrying `QUOTA_EXCEEDED` is not retried either. `RATE_LIMITED` and
-`ACCOUNT_THROTTLED` clear on their own, but a spent monthly allowance only returns
-when your billing window turns, so the error is raised straight away and names the
+A `429` carrying `QUOTA_EXCEEDED` or `DOCUMENT_CEILING_REACHED` is not retried
+either. `RATE_LIMITED` and `ACCOUNT_THROTTLED` clear on their own, but a spent
+monthly allowance, or the extra-document ceiling above it, only returns when your
+billing window turns, so the error is raised straight away and names the
 cause instead of sleeping against it.
 
 The default deadline is generous because beliq runs the full Schematron rule set

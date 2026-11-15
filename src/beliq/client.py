@@ -30,7 +30,7 @@ from .constants import (
     DEFAULT_MAX_RETRIES,
     DEFAULT_RETRY_BUDGET_SECONDS,
     DEFAULT_TIMEOUT_SECONDS,
-    QUOTA_EXHAUSTED_CODE,
+    QUOTA_EXHAUSTED_CODES,
     RETRY_AFTER_JITTER_SECONDS,
     RETRYABLE_STATUSES,
 )
@@ -60,8 +60,8 @@ TEST_KEY_PREFIX = "blq_test_"
 # answered, or the pod that held the connection is gone), and a connection that
 # could not be opened.
 #
-# "count": retried up to max_retries times. A 429 other than QUOTA_EXCEEDED, since
-# each one counts toward the account's throttle; a 502 or 503 with any other beliq
+# "count": retried up to max_retries times. A 429 other than QUOTA_EXCEEDED and
+# DOCUMENT_CEILING_REACHED, since each one counts toward the account's throttle; a 502 or 503 with any other beliq
 # code, ENGINE_UNAVAILABLE included, since an engine timeout answers that code too
 # and a budget would run the same slow document dozens of times; and a connection
 # lost after the request was sent. beliq may have run and charged that request, but
@@ -152,7 +152,7 @@ def _retry_class(response: httpx.Response) -> RetryClass | None:
         return None
     code = _error_code(response)
     if status == 429:
-        return None if code == QUOTA_EXHAUSTED_CODE else "count"
+        return None if code in QUOTA_EXHAUSTED_CODES else "count"
     if code is None:
         return "budget"
     return "budget" if status == 503 and code == DATABASE_UNAVAILABLE_CODE else "count"

@@ -23,7 +23,7 @@ from beliq.constants import (
     LIVE_PROFILES_BY_STANDARD,
     LIVE_VALIDATE_FORMATS,
     PARSE_FORMATS_LEFT_OUT,
-    QUOTA_EXHAUSTED_CODE,
+    QUOTA_EXHAUSTED_CODES,
     VALIDATE_FORMATS_LEFT_OUT,
 )
 from beliq.types import AccountInfo, DocumentAllowanceCharge, LineAllowanceCharge, PdfInput, ValidationResult
@@ -74,9 +74,9 @@ def test_error_codes_match_spec():
 
 
 def test_the_codes_the_retry_policy_names_are_api_error_codes():
-    # The client decides retries by these two literals; a code renamed in the spec
+    # The client decides retries by these literals; a code renamed in the spec
     # would otherwise leave them matching nothing, with no test failing.
-    assert {DATABASE_UNAVAILABLE_CODE, QUOTA_EXHAUSTED_CODE} <= set(API_ERROR_CODES)
+    assert {DATABASE_UNAVAILABLE_CODE, *QUOTA_EXHAUSTED_CODES} <= set(API_ERROR_CODES)
 
 
 def test_validate_data_has_core_fields():
