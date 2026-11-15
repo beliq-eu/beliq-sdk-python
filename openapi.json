@@ -2,8 +2,8 @@
   "openapi": "3.0.3",
   "info": {
     "title": "beliq API",
-    "description": "EU e-invoicing platform. Generate, validate, parse, and convert EN 16931 invoices against authority-pinned, nightly-drift-checked rules. beliq produces and checks the compliant document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
-    "version": "0.27.0"
+    "description": "beliq is the platform for European e-invoicing: one API to generate, validate, convert and parse e-invoices, with the rule pack, version and check depth on its verdicts. beliq produces and checks the document; transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.",
+    "version": "0.28.1"
   },
   "components": {
     "securitySchemes": {
@@ -472,6 +472,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -820,6 +826,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -1178,6 +1190,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -1526,6 +1544,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -1884,6 +1908,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -2154,7 +2184,7 @@
     "/v1/generate": {
       "post": {
         "operationId": "generateInvoice",
-        "summary": "Generate a compliant e-invoice from an EN 16931 invoice object.",
+        "summary": "Generate an e-invoice from an EN 16931 invoice object.",
         "tags": [
           "Documents"
         ],
@@ -4441,6 +4471,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -4789,6 +4825,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -5147,6 +5189,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -5495,6 +5543,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -5853,6 +5907,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -6201,6 +6261,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -6559,6 +6625,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -6907,6 +6979,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -7265,6 +7343,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -7618,6 +7702,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -7888,7 +7978,7 @@
     "/v1/validate": {
       "post": {
         "operationId": "validateInvoice",
-        "summary": "Validate an XML or PDF e-invoice against the authority-pinned rules.",
+        "summary": "Validate an XML or PDF e-invoice against the rule packs and schemas of its format, each pinned by version and hash.",
         "tags": [
           "Documents"
         ],
@@ -8585,6 +8675,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -8933,6 +9029,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -9291,6 +9393,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -9639,6 +9747,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -9997,6 +10111,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -10345,6 +10465,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -10703,6 +10829,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -11056,6 +11188,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -11404,6 +11542,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -12202,6 +12346,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -12550,6 +12700,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -12908,6 +13064,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -13256,6 +13418,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -13614,6 +13782,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -13962,6 +14136,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -14320,6 +14500,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -14673,6 +14859,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -15021,6 +15213,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -15644,6 +15842,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -15992,6 +16196,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -16350,6 +16560,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -16698,6 +16914,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -17056,6 +17278,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -17404,6 +17632,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -17762,6 +17996,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -18115,6 +18355,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -18463,6 +18709,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
@@ -19214,6 +19466,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -19562,6 +19820,12 @@
                               "type": "string",
                               "enum": [
                                 "QUOTA_EXCEEDED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DOCUMENT_CEILING_REACHED"
                               ]
                             },
                             {
