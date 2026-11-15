@@ -9,6 +9,25 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.7.2 - 2026-11-16
+
+- A `429` carrying `DOCUMENT_CEILING_REACHED` is raised at once and not
+  retried, like `QUOTA_EXCEEDED`. The API sends it when an org on usage
+  billing reaches its extra-document cap, or the ceiling above its monthly
+  quota, with a `Retry-After` to the end of the billing window. Raising the
+  cap or the plan clears it sooner. Before, the client retried it up to
+  `max_retries` times.
+- `API_ERROR_CODES` gains `DOCUMENT_CEILING_REACHED`, and the four admission
+  codes of the API document 0.27.0: `DOCUMENT_PROFILE_NOT_ACCEPTED`,
+  `FLOW_OUTSIDE_FRENCH_PERIMETER`, `RECIPIENT_ADDRESS_INVALID` and
+  `SEND_CANNOT_COMPOSE_FOR_NETWORK`.
+- The README, the PyPI description and the module docstring open with one
+  sentence on what beliq is, and no longer call its rules "authority-pinned,
+  drift-checked" or its output "compliant". "PDP" is now "plateforme agréée",
+  as in the API document.
+- The vendored `openapi.json` is document `0.28.1` of the API, up from
+  `0.26.0`.
+
 ## 0.7.1 - 2026-11-07
 
 - `ValidationResult` has `ruleset_superseded_on`, the API's
