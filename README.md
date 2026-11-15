@@ -154,9 +154,9 @@ again from the start, so it would likely run out of time again.
 
 A `429` carrying `QUOTA_EXCEEDED` or `DOCUMENT_CEILING_REACHED` is not retried
 either. `RATE_LIMITED` and `ACCOUNT_THROTTLED` clear on their own, but a spent
-monthly allowance, or the extra-document ceiling above it, only returns when your
-billing window turns, so the error is raised straight away and names the
-cause instead of sleeping against it.
+monthly allowance, or the extra-document ceiling above it, does not return before
+your billing window turns unless you raise your cap or your plan. So the error is
+raised straight away and names the cause instead of sleeping against it.
 
 The default deadline is generous because beliq runs the full Schematron rule set
 over each document, and a generate or validate can legitimately take tens of

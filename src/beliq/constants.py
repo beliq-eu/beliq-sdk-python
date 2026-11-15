@@ -21,8 +21,8 @@ DEFAULT_BASE_URL = "https://api.beliq.eu"
 DEFAULT_TIMEOUT_SECONDS = 90.0
 
 # Extra attempts after the first for the failures retried by count: a 429 other
-# than QUOTA_EXCEEDED and DOCUMENT_CEILING_REACHED, and a 502 or 503 carrying any beliq error code but a 503
-# DATABASE_UNAVAILABLE.
+# than QUOTA_EXCEEDED and DOCUMENT_CEILING_REACHED, and a 502 or 503 carrying any
+# beliq error code but a 503 DATABASE_UNAVAILABLE.
 DEFAULT_MAX_RETRIES = 3
 
 # How long the client keeps retrying, in seconds from the start of the first
@@ -43,10 +43,11 @@ RETRYABLE_STATUSES = frozenset({429, 502, 503})
 
 # The 429s waiting cannot clear. RATE_LIMITED frees up in seconds and
 # ACCOUNT_THROTTLED in minutes, but a spent monthly allowance, or the extra-document
-# ceiling above it, only returns when the billing window turns, and beliq's
-# Retry-After states it honestly: the seconds left in the window, which can be
-# weeks. Retrying them waits against a refusal that is already final, so the caller
-# is told the request hung rather than that the allowance is gone.
+# ceiling above it, does not return before the billing window turns unless the
+# account raises its cap or its plan. beliq's Retry-After states it honestly: the
+# seconds left in the window, which can be weeks. Retrying them waits against a
+# refusal no wait clears, so the caller is told the request hung rather than that
+# the allowance is gone.
 QUOTA_EXHAUSTED_CODES = frozenset({"QUOTA_EXCEEDED", "DOCUMENT_CEILING_REACHED"})
 
 # The API's answer while its database is out; the outage it reports outlasts a few
@@ -78,8 +79,8 @@ API_ERROR_CODES: tuple[str, ...] = (
     "INSUFFICIENT_ROLE",
     "QUOTA_EXCEEDED",
     # 429: the org went past its included quota up to its extra-document cap, or
-    # to the ceiling of a multiple of that quota. Final until the window turns,
-    # like QUOTA_EXCEEDED.
+    # to the ceiling of a multiple of that quota. Not retried, like QUOTA_EXCEEDED:
+    # a raised cap or plan clears it, and otherwise only the next window.
     "DOCUMENT_CEILING_REACHED",
     "RATE_LIMITED",
     # Distinct from RATE_LIMITED: the burst limiter clears in seconds, this one

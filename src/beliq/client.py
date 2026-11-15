@@ -61,13 +61,13 @@ TEST_KEY_PREFIX = "blq_test_"
 # could not be opened.
 #
 # "count": retried up to max_retries times. A 429 other than QUOTA_EXCEEDED and
-# DOCUMENT_CEILING_REACHED, since each one counts toward the account's throttle; a 502 or 503 with any other beliq
-# code, ENGINE_UNAVAILABLE included, since an engine timeout answers that code too
-# and a budget would run the same slow document dozens of times; and a connection
-# lost after the request was sent. beliq may have run and charged that request, but
-# it does not charge a repeat of a charged request inside 15 minutes, up to 10
-# repeats (beliq's own values, which no standard sets), and every attempt sends the
-# same bytes.
+# DOCUMENT_CEILING_REACHED, since each one counts toward the account's throttle; a
+# 502 or 503 with any other beliq code, ENGINE_UNAVAILABLE included, since an
+# engine timeout answers that code too and a budget would run the same slow
+# document dozens of times; and a connection lost after the request was sent.
+# beliq may have run and charged that request, but it does not charge a repeat of
+# a charged request inside 15 minutes, up to 10 repeats (beliq's own values, which
+# no standard sets), and every attempt sends the same bytes.
 #
 # Anything else is not retried. This client's own timeout raises httpx's exception
 # at once: a repeat runs the engine again and takes as long as the first attempt.
