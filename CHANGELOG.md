@@ -9,6 +9,21 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.7.3 - 2026-11-16
+
+- The README, and with it the PyPI page, and the module docstring say that
+  delivery through beliq is in development, and that until it is available,
+  transmission (Peppol, plateforme agréée, SDI) and tax-authority reporting
+  stay with your access point. Archiving stays with you, and beliq does not
+  operate KSeF submission. Before, they said that beliq produces and checks
+  the document, with transmission, archiving and reporting at your access
+  point. No behaviour changed.
+- The vendored `openapi.json` is document `0.28.3` of the API, up from
+  `0.28.1`. Only two descriptions change: the API's own description says the
+  same about delivery, and the validate operation's says that a pin whose
+  source cannot be fetched can be confirmed against its mirror, when it names
+  one.
+
 ## 0.7.2 - 2026-11-16
 
 - A `429` carrying `DOCUMENT_CEILING_REACHED` is raised at once and not
