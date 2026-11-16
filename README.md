@@ -79,7 +79,7 @@ Create an API key in the beliq dashboard under API Keys:
 ```python
 Beliq(api_key="blq_...")                    # sends X-API-Key (default)
 Beliq(api_key="blq_...", auth="bearer")      # sends Authorization: Bearer
-Beliq(api_key="blq_...", base_url="https://staging.beliq.eu")
+Beliq(api_key="blq_...", base_url="https://api.beliq.eu")  # where requests go (default shown)
 ```
 
 ## Timeouts and retries
