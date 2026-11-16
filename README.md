@@ -4,7 +4,7 @@ beliq is the platform for European e-invoicing: one API to generate, validate, c
 
 Official Python SDK for the [beliq](https://beliq.eu) API: generate, validate, parse and convert EU e-invoices (XRechnung, ZUGFeRD, Factur-X, Peppol BIS) from Python.
 
-beliq produces and checks the document. Transmission (Peppol, plateforme agréée, KSeF, SDI), archiving, and tax-authority reporting stay with your access point.
+Delivery through beliq is in development; until it is available, transmission (Peppol, plateforme agréée, SDI) and tax-authority reporting stay with your access point. Archiving stays with you, and beliq does not operate KSeF submission.
 
 ## Install
 
