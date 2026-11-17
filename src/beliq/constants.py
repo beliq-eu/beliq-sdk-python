@@ -82,6 +82,11 @@ API_ERROR_CODES: tuple[str, ...] = (
     # to the ceiling of a multiple of that quota. Not retried, like QUOTA_EXCEEDED:
     # a raised cap or plan clears it, and otherwise only the next window.
     "DOCUMENT_CEILING_REACHED",
+    # 403 and 429 on a live delivery (/v1/send, /v1/transmissions), routes this
+    # client does not call: delivery is refused, or the org's monthly delivery
+    # limit is spent.
+    "LIVE_DELIVERY_UNAVAILABLE",
+    "DELIVERY_LIMIT_REACHED",
     "RATE_LIMITED",
     # Distinct from RATE_LIMITED: the burst limiter clears in seconds, this one
     # blocks every /v1 route for minutes, so back off differently.

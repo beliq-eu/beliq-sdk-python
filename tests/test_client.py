@@ -65,6 +65,19 @@ def test_me_request_and_parse():
     assert acct.livemode is True
     assert acct.quota.resets_at == "2026-09-14T09:00:00.000Z"
     assert acct.org.ruleset_channel == "latest"
+    assert acct.deliveries is not None
+    assert acct.deliveries.remaining == 988
+    assert acct.deliveries.resets_at == "2026-09-14T09:00:00.000Z"
+
+
+@respx.mock
+def test_me_parses_null_deliveries_on_a_test_key():
+    body = json.loads(fixture("me.json"))
+    body["data"].update(livemode=False, keyPrefix="blq_test_ab", deliveries=None)
+    respx.get("https://api.beliq.eu/v1/me").mock(return_value=httpx.Response(200, json=body))
+    with Beliq("blq_test") as beliq:
+        acct = beliq.me()
+    assert acct.deliveries is None
 
 
 @respx.mock

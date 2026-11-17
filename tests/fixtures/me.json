@@ -12,6 +12,12 @@
       "used": 137,
       "remaining": 9863,
       "resetsAt": "2026-09-14T09:00:00.000Z"
+    },
+    "deliveries": {
+      "limit": 1000,
+      "used": 12,
+      "remaining": 988,
+      "resetsAt": "2026-09-14T09:00:00.000Z"
     }
   }
 }
