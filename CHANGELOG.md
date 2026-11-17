@@ -9,6 +9,19 @@ accepts needs no SDK release to be usable. A spec sync listed below moves the
 vendored `openapi.json`, which is what the contract tests and the drift check
 read; it does not gate the caller.
 
+## 0.7.4 - 2026-11-17
+
+- The vendored `openapi.json` is document `0.30.0` of the API, up from
+  `0.28.3`. `AccountInfo`, what `me()` returns, gains `deliveries`, a new
+  `Deliveries` model: the organization's monthly live-delivery limit, how
+  many it has used and has left, and when the window resets. It is `None`
+  on a test key.
+- `API_ERROR_CODES` gains `LIVE_DELIVERY_UNAVAILABLE` (403) and
+  `DELIVERY_LIMIT_REACHED` (429). The API sends them only on its delivery
+  routes, which this client does not call, so no retry rule changed.
+- The README's `base_url` example shows the default instead of a staging
+  host. No behaviour changed.
+
 ## 0.7.3 - 2026-11-16
 
 - The README, and with it the PyPI page, and the module docstring say that
