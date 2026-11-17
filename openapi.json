@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "beliq is the platform for European e-invoicing: one API to generate, validate, convert and parse e-invoices, with the rule pack, version and check depth on its verdicts. Delivery through beliq is in development; until it is available, transmission (Peppol, plateforme agréée, SDI) and tax-authority reporting stay with your access point. Archiving stays with you, and beliq does not operate KSeF submission.",
-    "version": "0.28.3"
+    "version": "0.30.0"
   },
   "components": {
     "securitySchemes": {
@@ -306,7 +306,8 @@
                         "org",
                         "plan",
                         "rateLimitPerMinute",
-                        "quota"
+                        "quota",
+                        "deliveries"
                       ],
                       "properties": {
                         "keyId": {
@@ -397,6 +398,34 @@
                               "type": "string"
                             }
                           }
+                        },
+                        "deliveries": {
+                          "description": "The monthly delivery limit and its count, or null on a test key: test sends count no deliveries. Once usage billing is live, a live delivery past the limit is refused with DELIVERY_LIMIT_REACHED.",
+                          "type": "object",
+                          "required": [
+                            "limit",
+                            "used",
+                            "remaining",
+                            "resetsAt"
+                          ],
+                          "properties": {
+                            "limit": {
+                              "description": "Live deliveries the organization may send in this window: its monthly delivery limit.",
+                              "type": "integer"
+                            },
+                            "used": {
+                              "description": "Live deliveries counted in this window.",
+                              "type": "integer"
+                            },
+                            "remaining": {
+                              "type": "integer"
+                            },
+                            "resetsAt": {
+                              "description": "ISO 8601 UTC. The end of the window, the same one quota.resetsAt names.",
+                              "type": "string"
+                            }
+                          },
+                          "nullable": true
                         }
                       }
                     },
@@ -473,6 +502,12 @@
                               "type": "string",
                               "enum": [
                                 "DOCUMENT_CEILING_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "DELIVERY_LIMIT_REACHED"
                               ]
                             },
                             {
@@ -587,6 +622,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -837,6 +878,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -946,6 +993,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -1196,6 +1249,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -1305,6 +1364,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -1555,6 +1620,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -1664,6 +1735,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -1914,6 +1991,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -2023,6 +2106,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -4477,6 +4566,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -4586,6 +4681,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -4836,6 +4937,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -4945,6 +5052,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -5195,6 +5308,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -5304,6 +5423,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -5554,6 +5679,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -5663,6 +5794,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -5913,6 +6050,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -6022,6 +6165,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -6272,6 +6421,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -6381,6 +6536,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -6631,6 +6792,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -6740,6 +6907,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -6990,6 +7163,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -7099,6 +7278,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -7349,6 +7534,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -7458,6 +7649,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -7708,6 +7905,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -7817,6 +8020,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -8681,6 +8890,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -8790,6 +9005,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -9040,6 +9261,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -9149,6 +9376,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -9399,6 +9632,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -9508,6 +9747,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -9758,6 +10003,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -9867,6 +10118,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -10117,6 +10374,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -10226,6 +10489,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -10476,6 +10745,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -10585,6 +10860,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -10835,6 +11116,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -10944,6 +11231,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -11194,6 +11487,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -11303,6 +11602,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -11553,6 +11858,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -11662,6 +11973,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -12352,6 +12669,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -12461,6 +12784,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -12711,6 +13040,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -12820,6 +13155,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -13070,6 +13411,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -13179,6 +13526,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -13429,6 +13782,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -13538,6 +13897,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -13788,6 +14153,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -13897,6 +14268,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -14147,6 +14524,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -14256,6 +14639,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -14506,6 +14895,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -14615,6 +15010,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -14865,6 +15266,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -14974,6 +15381,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -15224,6 +15637,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -15333,6 +15752,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -15848,6 +16273,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -15957,6 +16388,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -16207,6 +16644,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -16316,6 +16759,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -16566,6 +17015,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -16675,6 +17130,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -16925,6 +17386,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -17034,6 +17501,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -17284,6 +17757,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -17393,6 +17872,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -17643,6 +18128,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -17752,6 +18243,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -18002,6 +18499,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -18111,6 +18614,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -18361,6 +18870,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -18470,6 +18985,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -18720,6 +19241,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -18829,6 +19356,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -19472,6 +20005,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -19581,6 +20120,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
@@ -19831,6 +20376,12 @@
                             {
                               "type": "string",
                               "enum": [
+                                "DELIVERY_LIMIT_REACHED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
                                 "RATE_LIMITED"
                               ]
                             },
@@ -19940,6 +20491,12 @@
                               "type": "string",
                               "enum": [
                                 "SENDER_NOT_REGISTERED"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "LIVE_DELIVERY_UNAVAILABLE"
                               ]
                             },
                             {
