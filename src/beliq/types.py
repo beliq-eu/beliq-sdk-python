@@ -99,6 +99,16 @@ class Quota(_Model):
     resets_at: str | None = None
 
 
+class Deliveries(_Model):
+    """The organization's monthly live-delivery limit and its count in the window."""
+
+    limit: int
+    used: int
+    remaining: int
+    #: ISO 8601 UTC. The end of the window, the same one ``Quota.resets_at`` names.
+    resets_at: str
+
+
 class AccountInfo(_Model):
     key_id: str | None = None
     key_prefix: str | None = None
@@ -111,6 +121,8 @@ class AccountInfo(_Model):
     plan: Plan
     rate_limit_per_minute: int
     quota: Quota
+    #: ``None`` on a test key, whose sends count no deliveries.
+    deliveries: Deliveries | None = None
 
 
 class ValidationIssue(_Model):
