@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "beliq is the platform for European e-invoicing: one API to generate, validate, convert and parse e-invoices, with the rule pack, version and check depth on its verdicts. Delivery through beliq is in development; until it is available, transmission (Peppol, plateforme agréée, SDI) and tax-authority reporting stay with your access point. Archiving stays with you, and beliq does not operate KSeF submission.",
-    "version": "0.30.0"
+    "version": "0.31.0"
   },
   "components": {
     "securitySchemes": {
@@ -4318,7 +4318,7 @@
                               ],
                               "properties": {
                                 "containerChecked": {
-                                  "description": "Always `false`. Nothing checked the PDF itself: not its PDF/A conformance, not its XMP metadata, not how the invoice file is attached. The verdict is about the embedded XML only.",
+                                  "description": "Always `false`. Nothing checked the PDF itself: not its PDF/A conformance, not its XMP metadata, not how the invoice file is attached. The answer is about the embedded XML only.",
                                   "type": "boolean",
                                   "enum": [
                                     false
@@ -4330,7 +4330,7 @@
                                   "type": "string"
                                 },
                                 "attachmentFoundBy": {
-                                  "description": "How that file was picked. The steps are tried in this order, and a step whose first file cannot be read hands over to the next. `associated-file`: the first entry of the catalog's `/AF` array under a known invoice attachment name. `embedded-file`: the first entry of the `/EmbeddedFiles` name tree under such a name. `xml-content`: the first `*.xml` file whose content starts like an invoice, whatever its name.",
+                                  "description": "How that file was picked. The steps are tried in this order. The two name steps read only their first file: a file with no stream hands over to the next step, and one that does not decode refuses the request. `associated-file`: the first entry of the catalog's `/AF` array under a known invoice attachment name. `embedded-file`: the first entry of the `/EmbeddedFiles` name tree under such a name. `xml-content`: the first `*.xml` file whose content starts like an invoice, whatever its name.",
                                   "anyOf": [
                                     {
                                       "type": "string",
@@ -8663,7 +8663,7 @@
                           ],
                           "properties": {
                             "containerChecked": {
-                              "description": "Always `false`. Nothing checked the PDF itself: not its PDF/A conformance, not its XMP metadata, not how the invoice file is attached. The verdict is about the embedded XML only.",
+                              "description": "Always `false`. Nothing checked the PDF itself: not its PDF/A conformance, not its XMP metadata, not how the invoice file is attached. The answer is about the embedded XML only.",
                               "type": "boolean",
                               "enum": [
                                 false
@@ -8675,7 +8675,7 @@
                               "type": "string"
                             },
                             "attachmentFoundBy": {
-                              "description": "How that file was picked. The steps are tried in this order, and a step whose first file cannot be read hands over to the next. `associated-file`: the first entry of the catalog's `/AF` array under a known invoice attachment name. `embedded-file`: the first entry of the `/EmbeddedFiles` name tree under such a name. `xml-content`: the first `*.xml` file whose content starts like an invoice, whatever its name.",
+                              "description": "How that file was picked. The steps are tried in this order. The two name steps read only their first file: a file with no stream hands over to the next step, and one that does not decode refuses the request. `associated-file`: the first entry of the catalog's `/AF` array under a known invoice attachment name. `embedded-file`: the first entry of the `/EmbeddedFiles` name tree under such a name. `xml-content`: the first `*.xml` file whose content starts like an invoice, whatever its name.",
                               "anyOf": [
                                 {
                                   "type": "string",
@@ -12588,6 +12588,57 @@
                               }
                             }
                           }
+                        },
+                        "pdfInput": {
+                          "description": "Present only when the document sent to `POST /v1/parse` was a PDF: which embedded file was read, and that the PDF around it was not checked.",
+                          "type": "object",
+                          "required": [
+                            "containerChecked",
+                            "attachmentFoundBy",
+                            "attachmentCandidates"
+                          ],
+                          "properties": {
+                            "containerChecked": {
+                              "description": "Always `false`. Nothing checked the PDF itself: not its PDF/A conformance, not its XMP metadata, not how the invoice file is attached. The answer is about the embedded XML only.",
+                              "type": "boolean",
+                              "enum": [
+                                false
+                              ]
+                            },
+                            "attachmentName": {
+                              "maxLength": 255,
+                              "description": "Name of the embedded file whose XML was read, as the PDF states it. Left out when that name is longer than 255 UTF-16 code units, or holds U+0000 or half of a surrogate pair.",
+                              "type": "string"
+                            },
+                            "attachmentFoundBy": {
+                              "description": "How that file was picked. The steps are tried in this order. The two name steps read only their first file: a file with no stream hands over to the next step, and one that does not decode refuses the request. `associated-file`: the first entry of the catalog's `/AF` array under a known invoice attachment name. `embedded-file`: the first entry of the `/EmbeddedFiles` name tree under such a name. `xml-content`: the first `*.xml` file whose content starts like an invoice, whatever its name.",
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "associated-file"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "embedded-file"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "xml-content"
+                                  ]
+                                }
+                              ]
+                            },
+                            "attachmentCandidates": {
+                              "minimum": 1,
+                              "description": "How many embedded files the step in `attachmentFoundBy` accepts, the one that was read included. Above 1, the PDF holds another file that could be taken for the invoice, and nothing compared the two.",
+                              "type": "integer"
+                            }
+                          }
                         }
                       }
                     },
@@ -15923,7 +15974,7 @@
         "tags": [
           "Documents"
         ],
-        "description": "A 200 means the engine validated the converted XML before it returned it: the document carries the specification identifier of the target format and profile, and it passed the schemas and rule packs the engine runs for that identifier. For `facturx` and `zugferd` at profile `en16931` that is the plain EN 16931 identifier, and the engine names the target profile, so the document is checked against the Factur-X EN 16931 profile schema and FNFE-MPE's profile rules beside CEN's EN 16931 rules. A converted document that fails is a 422 `CONVERSION_OUTPUT_INVALID` with the verdict in `error.details.validationResult`, and is not returned. The 200 itself carries no verdict. A PDF sent for a `facturx` or `zugferd` target comes back as a PDF. When its embedded XML already is the target, the caller's own PDF comes back, with only its annotation flags normalised for PDF/A: that XML was checked and the PDF container was not. Otherwise the engine re-wraps it: the PDF's own invoice files come out, the converted XML goes in as its one invoice file, and the PDF is returned only when veraPDF's PDF/A-3b profile passes it. A PDF the engine cannot re-wrap is a 422 `CONVERSION_UNSUPPORTED_PAIR`, and `error.message` says why. With a test key the PDF is stamped as a sandbox specimen after those checks. The converters between CII and UBL are not checked field by field, so a 200 does not say that every field of the source arrived.\n\nThe `X-Version-Block` response header (compact JSON) names the versions of the rule packs that judged the returned document, read off its verdict as `POST /v1/generate` reads them. It carries no finding and is not the verdict itself. A query parameter this operation does not declare answers 400 `VALIDATION_ERROR`, and `error.details.fields` names it.",
+        "description": "A 200 means the engine validated the converted XML before it returned it: the document carries the specification identifier of the target format and profile, and it passed the schemas and rule packs the engine runs for that identifier. For `facturx` and `zugferd` at profile `en16931` that is the plain EN 16931 identifier, and the engine names the target profile, so the document is checked against the Factur-X EN 16931 profile schema and FNFE-MPE's profile rules beside CEN's EN 16931 rules. A converted document that fails is a 422 `CONVERSION_OUTPUT_INVALID` with the verdict in `error.details.validationResult`, and is not returned. The 200 itself carries no verdict. A PDF sent for a `facturx` or `zugferd` target comes back as a PDF. When its embedded XML already is the target, the caller's own PDF comes back byte for byte as sent: that XML was checked and the PDF container was not. Otherwise the engine re-wraps it: the PDF's own invoice files come out, the converted XML goes in as its one invoice file, and the PDF is returned only when veraPDF's PDF/A-3b profile passes it. A PDF the engine cannot re-wrap is a 422 `CONVERSION_UNSUPPORTED_PAIR`, and `error.message` says why. With a test key the PDF is stamped as a sandbox specimen after those checks. The converters between CII and UBL are not checked field by field, so a 200 does not say that every field of the source arrived.\n\nThe `X-Version-Block` response header (compact JSON) names the versions of the rule packs that judged the returned document, read off its verdict as `POST /v1/generate` reads them. It carries no finding and is not the verdict itself. A query parameter this operation does not declare answers 400 `VALIDATION_ERROR`, and `error.details.fields` names it.",
         "requestBody": {
           "required": true,
           "content": {
