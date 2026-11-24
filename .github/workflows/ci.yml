@@ -112,7 +112,7 @@ jobs:
         run: pytest tests/test_integration.py
 
   guard:
-    uses: beliq-eu/.github/.github/workflows/guard.yml@9f552c747edbbb0cef2a8b2f5c732fa658a55fcc # main
+    uses: beliq-eu/.github/.github/workflows/guard.yml@dd2e4b5888e5a0c49b3b929c1650d365a4d589f5 # main
 
   # Branch protection requires this one check instead of each leg of the `test` matrix, so
   # adding or dropping a version needs no change there. It passes only when every leg passed.
