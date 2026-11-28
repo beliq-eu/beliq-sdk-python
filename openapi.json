@@ -3,7 +3,7 @@
   "info": {
     "title": "beliq API",
     "description": "beliq is the platform for European e-invoicing: one API to generate, validate, convert and parse e-invoices, with the rule pack, version and check depth on its verdicts. Delivery through beliq is in development; until it is available, transmission (Peppol, plateforme agréée, SDI) and tax-authority reporting stay with your access point. Archiving stays with you, and beliq does not operate KSeF submission.",
-    "version": "0.31.0"
+    "version": "0.32.0"
   },
   "components": {
     "securitySchemes": {
@@ -256,6 +256,143 @@
             "items": {
               "$ref": "#/components/schemas/InvoiceLine"
             }
+          },
+          "italy": {
+            "additionalProperties": false,
+            "type": "object",
+            "properties": {
+              "natura": {
+                "description": "FatturaPA Natura code. Required at a 0 % rate and refused at any other rate, except on `italy.tipoDocumento` TD16 (SdI controls 00400, 00401, 00429, 00430). An N6 code under `italy.esigibilitaIVA` S is refused (00420). Never derived from `vatCategoryCode`.",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N1"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N2.1"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N2.2"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N3.1"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N3.2"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N3.3"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N3.4"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N3.5"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N3.6"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N4"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N5"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N6.1"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N6.2"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N6.3"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N6.4"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N6.5"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N6.6"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N6.7"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N6.8"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N6.9"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "N7"
+                    ]
+                  }
+                ]
+              }
+            }
           }
         }
       }
@@ -394,7 +531,7 @@
                               "type": "integer"
                             },
                             "resetsAt": {
-                              "description": "ISO 8601 UTC. The end of the window limit and used were counted over. On a live key that window is one month anchored on the organization billing day, so only an organization billed on the 1st resets at the turn of the month; on a test key it is the turn of the UTC month.",
+                              "description": "ISO 8601 UTC. The end of the window limit and used were counted over. On a live key that window is one month counted from the organization billing date: it resets on that day of the month (the last day of a shorter month), at the time of day billing started, in UTC. An organization that has not been billed yet resets at 00:00 UTC on the 1st, and one whose subscription ended keeps its old billing day. On a test key it is the turn of the UTC month.",
                               "type": "string"
                             }
                           }
@@ -3276,6 +3413,143 @@
                               "items": {
                                 "$ref": "#/components/schemas/InvoiceLine"
                               }
+                            },
+                            "italy": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "properties": {
+                                "natura": {
+                                  "description": "FatturaPA Natura code. Required at a 0 % rate and refused at any other rate, except on `italy.tipoDocumento` TD16 (SdI controls 00400, 00401, 00429, 00430). An N6 code under `italy.esigibilitaIVA` S is refused (00420). Never derived from `vatCategoryCode`.",
+                                  "anyOf": [
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N1"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N2.1"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N2.2"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.1"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.2"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.3"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.4"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.5"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.6"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N4"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N5"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.1"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.2"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.3"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.4"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.5"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.6"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.7"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.8"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.9"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N7"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
                             }
                           }
                         }
@@ -3316,6 +3590,143 @@
                             "exemptionReasonCode": {
                               "maxLength": 100,
                               "type": "string"
+                            },
+                            "italy": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "properties": {
+                                "natura": {
+                                  "description": "FatturaPA Natura code. Required at a 0 % rate and refused at any other rate, except on `italy.tipoDocumento` TD16 (SdI controls 00400, 00401, 00429, 00430). An N6 code under `italy.esigibilitaIVA` S is refused (00420). Never derived from `vatCategoryCode`.",
+                                  "anyOf": [
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N1"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N2.1"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N2.2"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.1"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.2"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.3"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.4"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.5"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N3.6"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N4"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N5"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.1"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.2"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.3"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.4"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.5"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.6"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.7"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.8"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N6.9"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "N7"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
                             }
                           }
                         }
@@ -3576,7 +3987,7 @@
                           "codiceDestinatario": {
                             "minLength": 7,
                             "maxLength": 7,
-                            "pattern": "^[A-Za-z0-9]{7}$",
+                            "pattern": "^[A-Z0-9]{7}$",
                             "type": "string"
                           },
                           "regimeFiscale": {
